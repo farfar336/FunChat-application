@@ -1,0 +1,52 @@
+<!----------
+  Simple register/login application to get started with MongoDB/Mongoose
+----------->
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name = "viewport" content = "width = device-width, initial-scale = 1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src="client.js"></script>
+    <title>Chat Application</title>
+  </head>
+  <body class="flexCol">
+    <!---Authentication(login/register) module-->
+    <div id="authentication" class="flexCol">
+      <!---FunChat header-->
+      <div id="title" class="flexRow">FunChat</div>
+      
+      <!---Login form-->
+      <form id="loginForm" action="">
+        <div class="label">Email:</div>
+        <input type="text" id="logEmail"><br>
+        <div class="label">Password:</div>
+        <input type="password" id="logPassword"><br><br>
+        <button id="loginButton" style="display: inline;" type="button">login</button>
+        <button id="registerButton" style="display: inline;" type="button">Register</button>
+      </form>
+      
+      <!---Registration form-->
+      <form id="registerForm" action="">
+        <div class="label">Email:</div>
+        <input type="text" id="regEmail"><br>
+        <div class="label">Password:</div>
+        <input type="password" id="regPassword"><br>
+        <div class="label">Display Name:</div>
+        <input type="text" id="regDispName"><br><br>
+        <button id="User" class= "regButton" style="display: inline;" type="button">Register as User</button><button id="Moderator" class="regButton" style="display: inline;" type="button">Register as Moderator</button>
+        <p id="returnToLogin">Already have an account? Login Here</p>
+      </form>
+
+    </div>
+
+    <!---Homepage module-->
+    <div id="homepage" class="flexCol">
+      <div id="homeTitle" class="flexRow">FunChat</div>
+      <div id="homeContent">Home page content here</div>
+    </div>
+
+  </body>
+</html>
