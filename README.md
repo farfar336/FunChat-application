@@ -1,12 +1,13 @@
 # Setting up MongoDB
-1. Install link: https://www.mongodb.com/try/download/community?tck=docs_server&fbclid=IwAR1l9EjS7C6sJBqhvGU9fQN0UTrFosWcm4xgfJGvKr3zevr9XLSzrV-k8jI
+1. Download it here: https://www.mongodb.com/try/download/community?tck=docs_server&fbclid=IwAR1l9EjS7C6sJBqhvGU9fQN0UTrFosWcm4xgfJGvKr3zevr9XLSzrV-k8jI
 2. When selecting the directory to install MongoDB into, choose a directory path that has no spaces. For example, in 'C:\Program Files', there is a space between 'Program' and 'Files', so this would not be good choice for a directory path. 
 3. Find the file called 'mongod.exe', which will be in the MongoDB directory. More specifically, the directory path is: (Your directory path)\MongoDB\Server\4.4\bin\mongod.exe. Copy this file path
-4. Open Visual Studio Code, open a new terminal and and paste the copied directory address in step 3, putting 'mongod.exe' at the end. So it'll look something like this:
-MongoDB\Server\4.4\bin\mongod.exe (Your directory path)\MongoDB\Server\4.4\bin\mongod.exe. If this is done correctly, it will output multiple lines. The last line should say "Waiting for connections","attr":{"port":27017,"ssl":"off"}}"
+4. Open Visual Studio Code, open a new terminal and paste the copied directory address in step 3, putting 'mongod.exe' at the end. So it'll look something like this:
+(Your directory path)\MongoDB\Server\4.4\bin\mongod.exe. If this is done correctly, it will output multiple lines. The last line should say 
+"Waiting for connections","attr":{"port":27017,"ssl":"off"}}"
 
 # Running the application
-1. Open a new terminal, but make sure to not close the terminal in 'Setting up MongoDB' step 4.So, 2 terminals should be open at this moment.
+1. Open a new terminal, but make sure to not close the terminal in 'Setting up MongoDB' step 4. So, 2 terminals should be open at this moment.
 1. Pull the files from the main branch
 2. run the command 'node index.js'
 3. Go to this link: http://localhost:3000/. It should display the login screen
