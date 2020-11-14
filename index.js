@@ -53,16 +53,31 @@ io.on('connection', function(socket){
   
   //Register event received from client - create and save new user object in database - send back register success or error event
   socket.on('register', function(obj){
-    let newUser = new user({type: obj.type, approved: true, email:obj.em, password:obj.pass, displayName:obj.dn, chats:[], friends:[]});
-    
-    newUser.save(function (error, document) {
-      if (error){
-        console.error(error)
-        socket.emit("register error", "Error: unable to register");
+    //Check if a user already exists with the submitted email
+    user.exists({email:obj.em}, function (error, document) { 
+      if (error){ 
+          console.log(error)
+          socket.emit("register error", "Error: unable to register"); 
       }
-      else socket.emit("register success", "Registration Successful");
-    })
-
+      
+      else{
+        //If there is no existing user with given email then proceed with registering new user
+        if(document === false){
+          //Create new user object with submitted info
+          let newUser = new user({type: obj.type, approved: true, email:obj.em, password:obj.pass, displayName:obj.dn, chats:[], friends:[]});
+          //Save user to the database
+          newUser.save(function (error, document) {
+            if (error){
+              console.error(error)
+              socket.emit("register error", "Error: unable to register");
+            }
+            else socket.emit("register success", "Registration Successful");
+          })
+        }
+        //If a user with the submitted email exists then return a registration error event
+        else socket.emit("register error", "This email already exists!");
+      } 
+    }); 
   });
 
 });
