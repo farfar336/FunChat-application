@@ -19,7 +19,7 @@
 4. Click "funchat"
 5. Click any of the schemas, for example, "users". If done correctly, all the entries for that schema will be displayed
 
-# Team coding tips:
+# Team coding tips
 * Use constants instead of numbers. For example, const MAX_USERS = 100;
 * Use self-explanatory variable and function names.
 * For each function, give a short comment of what it does.
