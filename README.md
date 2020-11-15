@@ -6,6 +6,8 @@
 (Your directory path)\MongoDB\Server\4.4\bin\mongod.exe. If this is done correctly, it will output multiple lines. The last line should say 
 "Waiting for connections","attr":{"port":27017,"ssl":"off"}}"
 
+**Note: mongod.exe is the main MongoDB server. This means that mongod must be running in a terminal to use the application and to use MongoDB Compass**
+
 # Running the application
 1. Open a new terminal, but make sure to not close the terminal in 'Setting up MongoDB' step 4. So, 2 terminals should be open at this moment.
 1. Pull the files from the main branch
