@@ -16,11 +16,12 @@
     <title>Chat Application</title>
   </head>
   <body class="flexCol">
+    <!---FunChat header-->
+    <div id="title" class="flexRow">FunChat</div>
+
     <!---Authentication(login/register) module-->
+
     <div id="authentication" class="flexCol">
-      <!---FunChat header-->
-      <div id="title" class="flexRow">FunChat</div>
-      
       <!---Login form-->
       <form id="loginForm" action="">
         <div class="label">Email:</div>
@@ -39,17 +40,16 @@
         <input type="password" id="regPassword"><br>
         <div class="label">Display Name:</div>
         <input type="text" id="regDispName"><br><br>
-        <button id="User" class= "regButton" style="display: inline;" type="button">Register as User</button><button id="Moderator" class="regButton" style="display: inline;" type="button">Register as Moderator</button>
-        <p id="returnToLogin">Already have an account? Login Here</p>
+        <button id="User" class= "regButton" style="display: inline;" type="button">Register as User</button>
+        <button id="Moderator" class="regButton" style="display: inline;" type="button">Register as Moderator</button>
+        <p id="returnToLoginLink">Already have an account? Login Here</p>
       </form>
 
     </div>
 
-    <!---Homepage module-->
-    <div id="homepage" class="flexCol">
-      <div id="homeTitle" class="flexRow">FunChat</div>
-      <div id="homeContent">Home page content here</div>
-    </div>
+    <!---Home module-->
+    <div id="home" class="label displayNameLabel">
+      <div class = "label" id="homeContent" >Home page content here</div>
 
   </body>
 </html>

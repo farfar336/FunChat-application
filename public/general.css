@@ -7,7 +7,18 @@ Visual styling for the application
     margin: 0; 
     padding: 0; 
     box-sizing: border-box; 
-    color:  rgb(41, 41, 41);
+}
+
+#title{
+    font-size: 50px;
+    color: rgb(15, 92, 235);
+    font-weight: bold;
+    padding: 20px;
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+    position: absolute;
+    top: 0;
 }
 
 body { 
@@ -15,8 +26,15 @@ body {
     box-sizing: border-box;
     justify-content: center;
     align-items: center;
-    background-color: rgb(212, 212, 212);
+    background-color: white;
     height: 100vh;
+}
+
+.label{
+    margin-top: 10px;
+    margin-bottom:5px;
+    text-align: left;
+    color: black;
 }
 
 .flexRow{
@@ -29,4 +47,23 @@ body {
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
+}
+
+button{
+    margin-top: 5px;
+    margin-left: 10px;
+    margin-right: 10px;
+    padding: 5px;
+    width: 37%;
+    cursor: pointer;
+    border-radius: 5px;
+    border: solid 1px rgb(15, 92, 235);
+    background-color: white;
+    color: rgb(15, 92, 235);
+}
+
+button:hover{
+    color:white;
+    background-color: rgb(15, 92, 235);
+    border: rgb(15, 92, 235);
 }

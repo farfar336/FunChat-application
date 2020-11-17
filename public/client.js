@@ -44,7 +44,7 @@ $(function () {
   });
 
   //Event handler for return to login link in registration form
-  $('#returnToLogin').click(function(){
+  $('#returnToLoginLink').click(function(){
     $('#registerForm').hide();
     $('#loginForm').show();
 
@@ -74,7 +74,7 @@ $(function () {
   //Server returns login success
   socket.on('login success', function(userObj){
     $('#authentication').hide();
-    $('#homepage').show();
+    $('#home').show();
     $('#homeContent').text("Welcome " + userObj.displayName + "!");
     userID = userObj._id;     //store user's id for future database queries
   })
