@@ -5,15 +5,7 @@
     display: none;
 }
 
-#homeContent{
-    font-size: 30px;
-    margin-top: 25px;
-    justify-content: flex-start;
-    align-items: center;
-    text-align: center;
-}
-
-.displayNameLabel{
+#displayName{
     font-size: 30px;
     margin-top: 25px;
     justify-content: flex-start;
