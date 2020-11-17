@@ -78,6 +78,22 @@ $(function () {
     $('#displayName').text("Welcome " + userObj.displayName + "!");
     userID = userObj._id;     //store user's id for future database queries
   })
+
+  //Server returns lobby entered
+  socket.on('lobby entered', function(userObj){
+    $('#home').hide();
+    $('#lobby').show();
+
+    //Buttons displayed based on user type
+    if (userObj.type == "User"){
+      $('#chatEnterButton').show();
+      $('#chatApprovalButtons').hide();
+    }
+    else if(userObj.type == "Moderator"){
+      $('#chatEnterButton').hide();
+      $('#chatApprovalButtons').show();
+    }
+  })  
   
 
   

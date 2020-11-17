@@ -18,8 +18,8 @@
   </head>
   <body class="flexCol">
     <!---Authentication(login/register) module-->
-
     <div id="authentication" class="flexCol">
+
       <!---Login form-->
       <form id="loginForm" action="">
         <div id="FunChatLabel" class="flexRow">FunChat</div>
@@ -58,6 +58,31 @@
       <button id="logOutButton" type="button">log out</button>
     </div>
 
+    <!---Lobby module-->
+    <div id="lobby">
+      <div id="FunChatLabel" class="flexRow">FunChat</div>
+      <div id = "screenTitle">Lobby</div>
+      <button id="createChatButton"  type="button">create chat</button>
+      <button id="homeButton" type="button">home</button><br>
+
+      <!---Chats list-->
+      <label class="generalLabel">Chats</label><br>
+      <select id="chatsDisplayed" name="chatsDisplayed" size="10">
+        <!-- Incomplete. Needs to display the values in a populated array -->
+        <option value="option1">chat 1</option>
+        <option value="option2">chat 2</option>
+      </select><br>
+
+      <!---Display this button if the person is a user-->
+      <div id = "chatEnterButton">
+      <button id="enterChatButton" type="button">enter chat</button>
+      </div>
+
+      <!---Display these buttons if the person is a moderator-->
+      <div id ="chatApprovalButtons">
+      <button id="approveChatButton" type="button">approve chat</button>
+      <button id="rejectChatButton" type="button"> reject chat</button>
+      </div>
 
   </body>
 </html>
