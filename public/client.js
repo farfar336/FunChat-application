@@ -8,6 +8,8 @@ $(function () {
 
   //userID variable stores current user's database id upon login for future database queries
   let userID = "";
+  let displayName = "";
+  let userType = "";
   
   //Event handler for login button
   $('#loginButton').click(function(){
@@ -71,25 +73,26 @@ $(function () {
     alert(msg);
   })
 
-  //Server returns login success
+  // Note:  May need to store other variables as well such a displayname to reduce the amount of socket events
   socket.on('login success', function(userObj){
     $('#authentication').hide();
     $('#home').show();
     $('#displayName').text("Welcome " + userObj.displayName + "!");
     userID = userObj._id;     //store user's id for future database queries
+    displayName = userObj.displayName;
+    userType = userObj.type;
   })
 
-  //Server returns lobby entered
-  socket.on('lobby entered', function(userObj){
+  $('#lobbyButton').click(function(){
     $('#home').hide();
     $('#lobby').show();
 
     //Buttons displayed based on user type
-    if (userObj.type == "User"){
+    if (userType == "User"){
       $('#chatEnterButton').show();
       $('#chatApprovalButtons').hide();
     }
-    else if(userObj.type == "Moderator"){
+    else if(userType == "Moderator"){
       $('#chatEnterButton').hide();
       $('#chatApprovalButtons').show();
     }
