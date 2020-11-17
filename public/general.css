@@ -9,7 +9,7 @@ Visual styling for the application
     box-sizing: border-box; 
 }
 
-#title{
+#FunChatLabel{
     font-size: 50px;
     color: rgb(15, 92, 235);
     font-weight: bold;
@@ -17,20 +17,27 @@ Visual styling for the application
     width: 100%;
     justify-content: center;
     text-align: center;
-    position: absolute;
-    top: 0;
+}
+
+#screenTitle{
+    font-size: 30px;
+    color: black;
+    font-weight: bold;
+    padding: 20px;
+    width: 100%;
+    justify-content: center;
+    text-align: center;
 }
 
 body { 
     font: 13px Helvetica, Arial;
     box-sizing: border-box;
-    justify-content: center;
     align-items: center;
     background-color: white;
     height: 100vh;
 }
 
-.label{
+.generalLabel{
     margin-top: 10px;
     margin-bottom:5px;
     text-align: left;
@@ -54,7 +61,7 @@ button{
     margin-left: 10px;
     margin-right: 10px;
     padding: 5px;
-    width: 37%;
+    width: 100px;
     cursor: pointer;
     border-radius: 5px;
     border: solid 1px rgb(15, 92, 235);

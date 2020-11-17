@@ -75,7 +75,7 @@ $(function () {
   socket.on('login success', function(userObj){
     $('#authentication').hide();
     $('#home').show();
-    $('#homeContent').text("Welcome " + userObj.displayName + "!");
+    $('#displayName').text("Welcome " + userObj.displayName + "!");
     userID = userObj._id;     //store user's id for future database queries
   })
   
