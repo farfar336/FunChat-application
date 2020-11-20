@@ -107,6 +107,10 @@ $(function () {
     $('#chatCreate').show();
     socket.emit('get users for create chat', {});
   })
+  $('#createChatToLobby').click(function(){
+    $('#lobby').show();
+    $('#chatCreate').hide();
+  })
 
 
   socket.on('user list for create chat', function(userObj){
@@ -142,6 +146,14 @@ $(function () {
     //$("chat name").val();
     socket.emit('create chat', {users: $('#usersDisplay').val(), mods: $('#modDisplay').val(), chatname: $('#chatname').val()});
   })
-  
+
+  socket.on('chat create success', function(userObj){
+    alert(userObj);
+    $('#lobby').show();
+    $('#chatCreate').hide();
+  })
+  socket.on('chat create failure', function(userObj){
+    alert(userObj);
+  })
 
 });

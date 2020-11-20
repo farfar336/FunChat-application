@@ -4,6 +4,10 @@
 #chatCreate{
     display: none;
 }
+#createChatToLobby
+{
+    /*todo try to center*/
+}
 
 #displayUsers {
     width: 100%;
