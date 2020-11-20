@@ -59,6 +59,8 @@
       <button id="logOutButton" type="button">log out</button>
     </div>
 
+    
+
     <!---Lobby module-->
     <div id="lobby">
       <div id="FunChatLabel" class="flexRow">FunChat</div>
@@ -76,22 +78,46 @@
 
       <!---Display this button if the person is a user-->
       <div id = "chatEnterButton">
-      <button id="enterChatButton" type="button">enter chat</button>
+        <button id="enterChatButton" type="button">enter chat</button>
       </div>
  
       <!---Display these buttons if the person is a moderator-->
       <div id ="chatApprovalButtons">
-      <button id="approveChatButton" type="button">approve chat</button>
-      <button id="rejectChatButton" type="button"> reject chat</button>
+        <button id="approveChatButton" type="button">approve chat</button>
+        <button id="rejectChatButton" type="button"> reject chat</button>
+      </div>
     </div>
 
 
-    <!---Home module-->
+    <!---Create Chat Module-->
     <div id="chatCreate">
       <div id="FunChatLabel" class="flexRow">FunChat</div>
       <div id = "screenTitle">Create Chat</div>
 
+      <form>
+        <ul id=displayUsers>
+          <li>
+            <label class="generalLabel">Users</label><br>
+            <select id="usersDisplay" class="userSelects" name="usersDisplay" size="10" multiple>
+            </select>
+          </li>
+
+          <li>  
+            <label class="generalLabel">Moderators</label><br>
+            <select id="modDisplay" class="userSelects" name="modDisplay" size="10" multiple>
+            </select>  
+          </li>
+        </ul>
+
+        <input type="text" id="chatname" >
+        <button id="submitChat" style="display: inline;" type="button">Create</button>
+      </form>
     </div>
+
+    
+
+
+    
 
   </body>
 </html>

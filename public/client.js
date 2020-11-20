@@ -95,15 +95,53 @@ $(function () {
     else if(userType == "Moderator"){
       $('#chatEnterButton').hide();
       $('#chatApprovalButtons').show();
+      
     }
   })  
   
-
+  /**
+   * @Section Chat Creation
+   */
   $('#createChatButton').click(function(){
-    $('#chatCreate').show();
-  })
-  $('#homeToLobbyButton').click(function(){
     $('#lobby').hide();
+    $('#chatCreate').show();
+    socket.emit('get users for create chat', {});
+  })
+
+
+  socket.on('user list for create chat', function(userObj){
+    //clear all previous information
+    $('#usersDisplay').empty();
+    $('#modDisplay').empty();
+
+    for(let i = 0; i < userObj.length; i++)
+    {
+      if(userObj[i].type === "Moderator")
+      {
+        $('#modDisplay').append($('<option>', {
+          value: userObj[i].displayName,
+          text: userObj[i].displayName
+        }));
+      }
+      else{
+        $('#usersDisplay').append($('<option>', {
+          value: userObj[i].displayName,
+          text: userObj[i].displayName 
+        }));
+      }
+    }
+
+    console.log(userObj);
+  })
+
+  $('#submitChat').click(function(){
+    //alert(msg); //when they have no ppl in the chat?
+    //console.log($('#usersDisplay').val());
+    //$('#usersDisplay').val();
+    //$('#modDisplay').val();
+    //$("chat name").val();
+    socket.emit('create chat', {users: $('#usersDisplay').val(), mods: $('#modDisplay').val(), chatname: $('#chatname').val()});
   })
   
+
 });

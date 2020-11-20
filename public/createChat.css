@@ -4,3 +4,18 @@
 #chatCreate{
     display: none;
 }
+
+#displayUsers {
+    width: 100%;
+    border: 1px solid black;
+  
+}
+
+#displayUsers li{
+    display: inline;
+    float: left;
+}
+
+.userSelects{
+    width: 200px;
+}

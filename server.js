@@ -80,6 +80,60 @@ io.on('connection', function(socket){
     }); 
   });
 
+
+  //Get User list
+  socket.on('get users for create chat', function(obj){
+    //Check if a user already exists with the submitted email
+    user.find({}, {}, function(err, users){
+      if(err){
+        console.log(err);
+      } else{
+        socket.emit('user list for create chat' ,users);
+        //console.log('retrieved list of names', users.length, users);
+      }
+    })
+    
+  });
+
+  //Create Chat
+  socket.on('create chat', function(obj){
+    //Check if a chat already exists with the chatname
+    chat.exists({name: obj.chatname}, function (error, document) { 
+      if (error){ 
+          console.log(error)
+          //socket.emit("register error", "Error: unable to register"); 
+      }
+      else{
+        //If there is no existing chat with given name then proceed with registering new user
+        if(document === false){
+          //Create new user object with submitted info
+          let newChat = new chat({approved: false, name: obj.chatname, participants: obj.users, mods: obj.mods});
+          //Save user to the database
+          newChat.save(function (error, document) {
+            if (error){
+              console.error(error)
+              //socket.emit("register error", "Error: unable to register");
+            }
+            else 
+            {
+              console.log("added");
+              //socket.emit("register success", "Registration Successful");
+            }
+          })
+        }
+        //If a user with the submitted email exists then return a registration error event
+        else 
+        {
+          socket.emit("register error", "This email already exists!");
+        }
+      } 
+    });
+    console.log(obj);
+
+    
+  });
+  
+
 });
 
 //Socket listening on port 
