@@ -2,7 +2,7 @@
 
 /*Homepage styling*/
 #home{
-    display: none;
+    /* display: none; */
 }
 
 #displayName{
@@ -12,5 +12,33 @@
     align-items: center;
     text-align: center;
     position: relative;
+    top: 0;
+}
+#viewprofile{
+    display: inline-block;
+    width: 20vw;
+    height: 20vw;
+    border-radius: 25px;
+    border: 2px solid #8AC007;
+}
+
+#charlobby{
+    display: inline-block;
+    width: 20vw;
+    height: 20vw;
+    border-radius: 25px;
+    border: 2px solid #8AC007;
+}
+
+#friendlist{
+    display: inline-block;
+    width: 20vw;
+    height: 20vw;
+    border-radius: 25px;
+    border: 2px solid #8AC007;
+}
+.photo{
+    width: 70%;
+    height: auto;
     top: 0;
 }

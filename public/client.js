@@ -83,6 +83,11 @@ $(function () {
     userType = userObj.type;
   })
 
+  $('#logOutButton').click(function(){
+    $('#home').hide();
+    $('#authentication').show();
+  })
+
   $('#lobbyButton').click(function(){
     $('#home').hide();
     $('#lobby').show();
