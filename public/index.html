@@ -11,6 +11,7 @@
     <link rel="stylesheet" type="text/css" href="registration.css">
     <link rel="stylesheet" type="text/css" href="home.css">
     <link rel="stylesheet" type="text/css" href="lobby.css">
+    <link rel="stylesheet" type="text/css" href="createChat.css">
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript" src="client.js"></script>
@@ -77,12 +78,20 @@
       <div id = "chatEnterButton">
       <button id="enterChatButton" type="button">enter chat</button>
       </div>
-
+ 
       <!---Display these buttons if the person is a moderator-->
       <div id ="chatApprovalButtons">
       <button id="approveChatButton" type="button">approve chat</button>
       <button id="rejectChatButton" type="button"> reject chat</button>
-      </div>
+    </div>
+
+
+    <!---Home module-->
+    <div id="chatCreate">
+      <div id="FunChatLabel" class="flexRow">FunChat</div>
+      <div id = "screenTitle">Create Chat</div>
+
+    </div>
 
   </body>
 </html>

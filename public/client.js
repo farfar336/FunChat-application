@@ -99,5 +99,11 @@ $(function () {
   })  
   
 
+  $('#createChatButton').click(function(){
+    $('#chatCreate').show();
+  })
+  $('#homeToLobbyButton').click(function(){
+    $('#lobby').hide();
+  })
   
 });
