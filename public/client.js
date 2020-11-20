@@ -83,10 +83,26 @@ $(function () {
     userType = userObj.type;
   })
 
+  
+  $('#homeToLobbyButton').click(function(){
+    $('#lobby').hide();
+    $('#home').show();
+  })
+  
+
   $('#logOutButton').click(function(){
     $('#home').hide();
     $('#authentication').show();
   })
+
+  $('#createChatButton').click(function(){
+    $('#lobby').hide();
+    $('#chatCreate').show();
+  })
+
+  
+
+
 
   $('#lobbyButton').click(function(){
     $('#home').hide();

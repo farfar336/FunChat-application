@@ -11,6 +11,7 @@
     <link rel="stylesheet" type="text/css" href="registration.css">
     <link rel="stylesheet" type="text/css" href="home.css">
     <link rel="stylesheet" type="text/css" href="lobby.css">
+    <link rel="stylesheet" type="text/css" href="createChat.css">
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript" src="client.js"></script>
@@ -53,20 +54,22 @@
     <div id="home">
       <div id="FunChatLabel" class="flexRow">FunChat</div>
       <div id = "screenTitle">Home</div>
-      
       <div class = "generalLabel" id="displayName" >
-        <span id="viewprofile">
+        <!-- <span id="viewprofile">
           <img src="https://openclipart.org/download/247324/abstract-user-flat-1.svg" class="photo">View Profile
         </span>
         <span id="charlobby"><img src="https://static.thenounproject.com/png/423449-200.png" class="photo">  Chat lobby</span>
            
         <span id=friendlist>
-          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGpuKaPJfRWlefz7DrvevsgdbiyL14i206ww&usqp=CAU" class="photo"> Friend List</span>
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGpuKaPJfRWlefz7DrvevsgdbiyL14i206ww&usqp=CAU" class="photo"> Friend List
+        </span> -->
+
       </div>
-      
       <button id="lobbyButton"  type="button">lobby</button>
       <button id="logOutButton" type="button">log out</button>
     </div>
+
+    
 
     <!---Lobby module-->
     <div id="lobby">
@@ -85,14 +88,48 @@
 
       <!---Display this button if the person is a user-->
       <div id = "chatEnterButton">
-      <button id="enterChatButton" type="button">enter chat</button>
+        <button id="enterChatButton" type="button">enter chat</button>
       </div>
-
+ 
       <!---Display these buttons if the person is a moderator-->
       <div id ="chatApprovalButtons">
-      <button id="approveChatButton" type="button">approve chat</button>
-      <button id="rejectChatButton" type="button"> reject chat</button>
+        <button id="approveChatButton" type="button">approve chat</button>
+        <button id="rejectChatButton" type="button"> reject chat</button>
       </div>
+    </div>
+
+
+    <!---Create Chat Module-->
+    <div id="chatCreate">
+      <div id="FunChatLabel" class="flexRow">FunChat</div>
+      <div id = "screenTitle">Create Chat</div>
+
+      <button id="createChatToLobby" type="button">Return to Lobby</button><br>
+
+      <form>
+        <ul id=displayUsers>
+          <li>
+            <label class="generalLabel">Users</label><br>
+            <select id="usersDisplay" class="userSelects" name="usersDisplay" size="10" multiple>
+            </select>
+          </li>
+
+          <li>  
+            <label class="generalLabel">Moderators</label><br>
+            <select id="modDisplay" class="userSelects" name="modDisplay" size="10" multiple>
+            </select>  
+          </li>
+        </ul>
+
+        <input type="text" id="chatname" >
+        <button id="submitChat" style="display: inline;" type="button">Create</button>
+      </form>
+    </div>
+
+    
+
+
+    
 
   </body>
 </html>
