@@ -117,7 +117,17 @@ $(function () {
       $('#chatEnterButton').hide();
       $('#chatApprovalButtons').show();
     }
+
   })  
+
+  $('#rejectChatButton').click(function(){
+    var x = document.getElementById("chatsDisplayed")
+    var i = x.selectedIndex;
+    x.options.remove(i);
+  })
+
+
+  
   
 
   
