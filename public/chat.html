@@ -1,0 +1,95 @@
+<!----------
+  Simple register/login application to get started with MongoDB/Mongoose
+----------->
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name = "viewport" content = "width = device-width, initial-scale = 1">
+    <link rel="stylesheet" type="text/css" href="general.css">
+    <link rel="stylesheet" type="text/css" href="login.css">
+    <link rel="stylesheet" type="text/css" href="registration.css">
+    <link rel="stylesheet" type="text/css" href="home.css">
+    <link rel="stylesheet" type="text/css" href="lobby.css">
+    <link rel="stylesheet" type="text/css" href="chat.css">
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src="client.js"></script>
+    <script src="https://kit.fontawesome.com/86d78876c2.js" crossorigin="anonymous"></script>
+    <title>Chat Design</title>
+  </head>
+  <body class="flexCol">
+    
+      <!--Chat Module-->
+      <div id="chat">
+        <div id="FunChatLabel" class="flexRow">
+          <button id="goHome"><i class="fas fa-arrow-left"></i>Home</button>
+          FunChat
+          <div id="centering"></div>
+        </div>
+        <div id="chatPage">
+          <div id="chatWindow" class="windows">
+            <div id="chatTitle">Calgary Foothills Soccer Club</div>
+            <ul id="chatMessages" class="scrollable">
+              <li class="message">#1 Hello World!</li>
+              <li class="message">Hello World!</li>
+              <li class="message">Hello World!</li>
+              <li class="message">Hello World!</li>
+              <li class="message">Hello World!</li>
+              <li class="message">Hello World!</li>
+              <li class="message">Hello World!</li>
+              <li class="message">Hello World!</li>
+              <li class="message">Hello World!</li>
+              <li class="message">Hello World!</li>
+              <li class="message">Hello World!</li>
+              <li class="message">Hello World!</li>
+              <li class="message">Hello World!</li>
+              <li class="message">Hello World!</li>
+              <li class="message">Hello World!</li>
+              <li class="message">Hello World!</li>
+              <li class="message">Hello World!</li>
+              <li class="message">Hello World!</li>
+              <li class="message">Hello World!</li>
+              <li class="message">Hello World!</li>
+            </ul>
+          </div>
+          <div id="userWindow" class="windows">
+            <ul id="chatUsers" class="scrollable">
+              <li class="message">User 1</li>
+              <li class="message">User 2</li>
+              <li class="message">User 3</li>
+              <li class="message">User 4</li>
+              <li class="message">User 6</li>
+              <li class="message">User 7</li>
+              <li class="message">User 8</li>
+              <li class="message">User 9</li>
+              <li class="message">User 10</li>
+              <li class="message">User 11</li>
+              <li class="message">User 12</li>
+              <li class="message">User 13</li>
+              <li class="message">User 14</li>
+              <li class="message">User 15</li>
+              <li class="message">User 16</li>
+              <li class="message">User 17</li>
+              <li class="message">User 18</li>
+              <li class="message">User 19</li>
+              <li class="message">User 20</li>
+              <li class="message">User 21</li>
+            </ul>
+            <button id="inviteButton"><i class="fas fa-user-plus"></i>  Invite</button>
+          </div>
+          <div id="messageWindow" class="windows">
+            <div id="imageAndSearch">
+              <button><i class="fas fa-camera"></i></button>
+              <button><i class="fas fa-search"></i></button>
+            </div>
+            <form action="">
+                <input id="m" autocomplete="off" placeholder="Write a message..."/>                  
+            </form>          
+          </div>
+          <button id="send" class="windows"><i class="fas fa-arrow-circle-right"></i> Send</button>
+        </div>
+      </div>
+
+  </body>
+</html>
