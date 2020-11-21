@@ -97,7 +97,7 @@ $(function () {
       $('#chatApprovalButtons').show();
     }
   })  
-  
+
   $('#homeToLobbyButton').click(function(){
     $('#lobby').hide();
     $('#home').show();
@@ -113,10 +113,39 @@ $(function () {
 
   
   $('#rejectChatButton').click(function(){
-    var x = document.getElementById("chatsDisplayed")
-    var i = x.selectedIndex;
-    x.options.remove(i);
+    var chatsDisplayed = document.getElementById("chatsDisplayed")
+    var chat = chatsDisplayed.selectedIndex;
+    var name=chatsDisplayed.children[chat].innerHTML
+    socket.emit("rejectChat",name)
+    chatsDisplayed.options.remove(chat);
   })  
+
+
+  $('#approveChatButton').click(function(){
+    var chatsDisplayed = document.getElementById("chatsDisplayed")
+    var chat = chatsDisplayed.selectedIndex;
+    var name=chatsDisplayed.children[chat].innerHTML
+    socket.emit("approveChat",name)
+   
+  })
+  updateChats();
+  function updateChats(){
+    var chatsDisplayed = document.getElementById("chatsDisplayed");
+    chatsDisplayed.innerHTML="";
+    socket.on('updateChats', function(chats){
+      console.log(chats)
+      chats.forEach(element => {
+        var chat=document.createElement("option");
+        chat.innerHTML=element;
+        chatsDisplayed.appendChild(chat)
+      });
+    })
+  }
+
+  
+
+
+
 
   
 });

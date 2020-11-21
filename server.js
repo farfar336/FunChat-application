@@ -80,9 +80,80 @@ io.on('connection', function(socket){
     }); 
   });
 
+
+
+  socket.on("rejectChat", function(name){
+    chat.findOne({name:name}, function(error, document){
+      if (error)console.error(error);
+      else{
+        chat.remove(document);
+      }
+    })
+  })
+
+  socket.on("approveChat", function(name){
+    
+    chat.findOne({name:name}, function(error, document){
+      if (error)console.error(error);
+      else{
+        
+        
+          console.log(name)
+          if(document!=null){
+            document.approved=true;
+            document.update( function(err) {
+              if (err) {
+              console.log("error")
+             } 
+             });
+            
+          }
+          
+   
+        
+      }
+    })
+  })
+  let achat = new chat({ approved: true, name:"chatroom11111111"});
+          //Save user to the database
+          achat.save(function (error, document) {
+            if (error){
+              console.error(error)
+            }
+            
+          })
+  updatechat()
+  
+ async function updatechat(){
+  var chats = []
+  await chat.find({}, function(err, result) {
+    
+
+    result.forEach(function(user) {
+      console.log(user.name);
+      chats.push(user.name);
+    }); 
+  });
+  chats.push("aaa")
+
+//   var chats=[]
+// chats=user.find({}).name
+   //chats=chat.find().select('name')
+  console.log(chats)
+  socket.emit("updateChats",chats,function(){
+
+  });
+
+ }
 });
+
+
+
+
 
 //Socket listening on port 
 http.listen(port, function(){
   console.log('listening on *:' + port);
 });
+
+
