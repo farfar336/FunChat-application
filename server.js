@@ -83,13 +83,12 @@ io.on('connection', function(socket){
 
   //Get User list
   socket.on('get users for create chat', function(obj){
-    //Check if a user already exists with the submitted email
+    //Fetch list of all users in database
     user.find({}, {}, function(err, users){
       if(err){
         console.log(err);
       } else{
         socket.emit('user list for create chat' ,users);
-        //console.log('retrieved list of names', users.length, users);
       }
     })
     
@@ -135,7 +134,6 @@ io.on('connection', function(socket){
             newChat.save(function (error, document) {
               if (error){
                 console.error(error)
-                //socket.emit("register error", "Error: unable to register");
               }
               else 
               {
@@ -144,7 +142,7 @@ io.on('connection', function(socket){
               }
             })
           }
-          //If a user with the submitted email exists then return a registration error event
+          //Display error message for failing to create a chat
           else 
           {
             socket.emit("chat create failure", "This chat already exists!");
