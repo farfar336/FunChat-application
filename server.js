@@ -86,7 +86,10 @@ io.on('connection', function(socket){
     chat.findOne({name:name}, function(error, document){
       if (error)console.error(error);
       else{
-        chat.remove(document);
+        chat.deleteOne({ name: name }, function (err) {
+          if(err) console.log(err);
+          console.log("Successful deletion");
+        });
       }
     })
   })
@@ -95,50 +98,29 @@ io.on('connection', function(socket){
     
     chat.findOne({name:name}, function(error, document){
       if (error)console.error(error);
-      else{
-        
-        
-          console.log(name)
-          if(document!=null){
-            document.approved=true;
-            document.update( function(err) {
-              if (err) {
-              console.log("error")
-             } 
-             });
-            
-          }
-          
-   
-        
+      else{ 
+          console.log(name)  
+          document.update({approved:true}, function (err, result) { 
+            if (err){ 
+                console.log(err) 
+            }else{ 
+                console.log("Result :", result)  
+            } 
+        });   
       }
     })
   })
-  let achat = new chat({ approved: true, name:"chatroom11111111"});
-          //Save user to the database
-          achat.save(function (error, document) {
-            if (error){
-              console.error(error)
-            }
-            
-          })
+
   updatechat()
   
  async function updatechat(){
   var chats = []
   await chat.find({}, function(err, result) {
-    
-
-    result.forEach(function(user) {
-      console.log(user.name);
-      chats.push(user.name);
+   result.forEach(function(user) {
+    console.log(user.name);
+    chats.push(user.name);
     }); 
   });
-  chats.push("aaa")
-
-//   var chats=[]
-// chats=user.find({}).name
-   //chats=chat.find().select('name')
   console.log(chats)
   socket.emit("updateChats",chats,function(){
 
