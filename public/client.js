@@ -83,23 +83,12 @@ $(function () {
     userType = userObj.type;
   })
 
-  
-  $('#homeToLobbyButton').click(function(){
-    $('#lobby').hide();
-    $('#home').show();
-  })
-  
-
   $('#logOutButton').click(function(){
     $('#home').hide();
     $('#authentication').show();
   })
-
-  $('#createChatButton').click(function(){
-    $('#lobby').hide();
-    $('#chatCreate').show();
-  })
-
+  
+  
   
 
 
@@ -120,11 +109,6 @@ $(function () {
 
   })  
 
-  $('#rejectChatButton').click(function(){
-    var x = document.getElementById("chatsDisplayed")
-    var i = x.selectedIndex;
-    x.options.remove(i);
-  })
 
 
   
