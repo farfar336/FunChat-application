@@ -3,7 +3,7 @@
 2. When selecting the directory to install MongoDB into, choose a directory path that has no spaces. For example, in 'C:\Program Files', there is a space between 'Program' and 'Files', so this would not be good choice for a directory path. 
 3. Find the file called 'mongod.exe', which will be in the MongoDB directory. More specifically, the directory path is: (Your directory path)\MongoDB\Server\4.4\bin\mongod.exe. Copy this file path
 4. Open Visual Studio Code, open a new terminal and run this command: cd c:\ [**Added this step**]
-5. Now run this command: md "\data\DB" [**Added this step**]
+5. Now run this command: md \data\DB [**Added this step**]
 6. In the terminal, paste the copied directory address in step 3, putting 'mongod.exe' at the end. So it'll look something like this:
 (Your directory path)\MongoDB\Server\4.4\bin\mongod.exe. If this is done correctly, it will output multiple lines. The last line should say 
 "Waiting for connections","attr":{"port":27017,"ssl":"off"}}"
