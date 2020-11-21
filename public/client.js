@@ -83,6 +83,7 @@ $(function () {
     userType = userObj.type;
   })
 
+  //a button in home,take user to lobby,
   $('#lobbyButton').click(function(){
     $('#home').hide();
     $('#lobby').show();
@@ -98,20 +99,35 @@ $(function () {
     }
   })  
 
+  //a button in lobby page, take user to home
   $('#homeToLobbyButton').click(function(){
     $('#lobby').hide();
     $('#home').show();
   })
   
+  //a button in home page take user to login page
+  $('#logOutButton').click(function(){
+    $('#home').hide();
+    $('#authentication').show();
+  })
+
+
+  // a button in lobby page, will take user to chat screen
+  $('#enterChatButton').click(function(){
+    $('#lobby').hide();
+    $('#chat').show();
+  })
+
+
 
   
-
+  //a button take user to char create page
   $('#createChatButton').click(function(){
     $('#lobby').hide();
     $('#chatCreate').show();
   })
 
-  
+  //reject chat room button, delete this chat, and send the chat name to server
   $('#rejectChatButton').click(function(){
     var chatsDisplayed = document.getElementById("chatsDisplayed")
     var chat = chatsDisplayed.selectedIndex;
@@ -120,7 +136,7 @@ $(function () {
     chatsDisplayed.options.remove(chat);
   })  
 
-
+//approved chat button, will approved this chat, send the chat name to server
   $('#approveChatButton').click(function(){
     var chatsDisplayed = document.getElementById("chatsDisplayed")
     var chat = chatsDisplayed.selectedIndex;
@@ -129,9 +145,14 @@ $(function () {
    
   })
   updateChats();
+
+
+  // this function will upload the chatname at displayed chat
   function updateChats(){
     var chatsDisplayed = document.getElementById("chatsDisplayed");
+    //clear current chat displayed
     chatsDisplayed.innerHTML="";
+    //read a  array from server, this array called chats will include all the chat room name
     socket.on('updateChats', function(chats){
       console.log(chats)
       chats.forEach(element => {
