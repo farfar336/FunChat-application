@@ -98,6 +98,25 @@ $(function () {
     }
   })  
   
+  $('#homeToLobbyButton').click(function(){
+    $('#lobby').hide();
+    $('#home').show();
+  })
+  
+
+  
+
+  $('#createChatButton').click(function(){
+    $('#lobby').hide();
+    $('#chatCreate').show();
+  })
+
+  
+  $('#rejectChatButton').click(function(){
+    var x = document.getElementById("chatsDisplayed")
+    var i = x.selectedIndex;
+    x.options.remove(i);
+  })  
 
   
 });
