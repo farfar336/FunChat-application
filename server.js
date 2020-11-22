@@ -80,9 +80,71 @@ io.on('connection', function(socket){
     }); 
   });
 
+
+  //if a chat is rejected, this chat will be romove from the database
+  socket.on("rejectChat", function(name){
+    //find the rejected chat room
+    chat.findOne({name:name}, function(error, document){
+      if (error)console.error(error);
+      else{
+        //if there is no error, delete the chat room
+        chat.deleteOne({ name: name }, function (err) {
+          if(err) console.log(err);
+          console.log("Successful deletion");
+        });
+      }
+    })
+  })
+
+  //if a chat is proved, the approved will be true
+  socket.on("approveChat", function(name){
+    //find this chat
+    chat.findOne({name:name}, function(error, document){
+      if (error)console.error(error);
+      else{ 
+          console.log(name)  
+          //if there is no error update the approved to true at database
+          document.update({approved:true}, function (err, result) { 
+            if (err){ 
+                console.log(err) 
+            }else{ 
+                console.log("Result :", result)  
+            } 
+        });   
+      }
+    })
+  })
+
+
+  updatechat()
+  
+
+  //read the chat rooms from database, send them to client side
+ async function updatechat(){
+  var chats = []
+  //read all the chat rooms in chat and put them into a array called chats
+  await chat.find({}, function(err, result) {
+   result.forEach(function(user) {
+    console.log(user.name);
+    chats.push(user.name);
+    }); 
+  });
+  console.log(chats)
+  //send the chats to client side
+  socket.emit("updateChats",chats,function(){
+
+  });
+
+ }
 });
+
+
+
+
 
 //Socket listening on port 
 http.listen(port, function(){
   console.log('listening on *:' + port);
 });
+
+
