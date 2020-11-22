@@ -11,6 +11,7 @@
     <link rel="stylesheet" type="text/css" href="registration.css">
     <link rel="stylesheet" type="text/css" href="home.css">
     <link rel="stylesheet" type="text/css" href="lobby.css">
+    <link rel="stylesheet" type="text/css" href="createChat.css">
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript" src="client.js"></script>
@@ -58,6 +59,8 @@
       <button id="logOutButton" type="button">log out</button>
     </div>
 
+    
+
     <!---Lobby module-->
     <div id="lobby">
       <div id="FunChatLabel" class="flexRow">FunChat</div>
@@ -75,14 +78,50 @@
 
       <!---Display this button if the person is a user-->
       <div id = "chatEnterButton">
-      <button id="enterChatButton" type="button">enter chat</button>
+        <button id="enterChatButton" type="button">enter chat</button>
       </div>
-
+ 
       <!---Display these buttons if the person is a moderator-->
       <div id ="chatApprovalButtons">
-      <button id="approveChatButton" type="button">approve chat</button>
-      <button id="rejectChatButton" type="button"> reject chat</button>
+        <button id="approveChatButton" type="button">approve chat</button>
+        <button id="rejectChatButton" type="button"> reject chat</button>
       </div>
+    </div>
+
+
+    <!---Create Chat Module-->
+    <div id="chatCreate">
+      <div id="FunChatLabel" class="flexRow">FunChat</div>
+      <div id = "screenTitle">Create Chat</div>
+
+      <button id="createChatToLobby" type="button">Return to Lobby</button><br><br>
+      <label class="generalLabel">Hold ctrl while clicking users to select multiple users</label>
+
+      <form>
+        <ul id=displayUsers>
+          <li>
+            <label class="generalLabel">Users</label><br>
+            <select id="usersDisplay" class="userSelects" name="usersDisplay" size="10" multiple>
+            </select>
+          </li>
+
+          <li>  
+            <label class="generalLabel">Moderators</label><br>
+            <select id="modDisplay" class="userSelects" name="modDisplay" size="10" multiple>
+            </select>  
+          </li>
+        </ul>
+
+        <label class="generalLabel">Chat Name</label>
+        <input type="text" id="chatname" >
+        <button id="submitChat" style="display: inline;" type="button">Create</button>
+      </form>
+    </div>
+
+    
+
+
+    
 
   </body>
 </html>
