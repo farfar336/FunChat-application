@@ -11,8 +11,10 @@
     <link rel="stylesheet" type="text/css" href="registration.css">
     <link rel="stylesheet" type="text/css" href="home.css">
     <link rel="stylesheet" type="text/css" href="lobby.css">
+    <link rel="stylesheet" type="text/css" href="chat.css">
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://kit.fontawesome.com/86d78876c2.js" crossorigin="anonymous"></script>
     <script type="text/javascript" src="client.js"></script>
     <title>Chat Application</title>
   </head>
@@ -75,14 +77,57 @@
 
       <!---Display this button if the person is a user-->
       <div id = "chatEnterButton">
-      <button id="enterChatButton" type="button">enter chat</button>
+      <button id="enterChatButton" type="button">enter chat</button>  
       </div>
 
       <!---Display these buttons if the person is a moderator-->
       <div id ="chatApprovalButtons">
-      <button id="approveChatButton" type="button">approve chat</button>
-      <button id="rejectChatButton" type="button"> reject chat</button>
+        <button id="approveChatButton" type="button">approve chat</button>
+        <button id="rejectChatButton" type="button"> reject chat</button>
       </div>
+    </div>
+    
+    <!--Chat Module-->
+    <div id="chat">
+      <div id="chatLayout">
+        <!--Chat Header-->
+        <div id="FunChatLabel" class="flexRow">
+          <button id="goHome" class="chatButtons"><i class="fas fa-arrow-left"></i>Home</button>
+          FunChat
+          <div id="centering"></div>
+        </div>
+  
+        <!--Chat Body-->
+        <div id="chatPage">
+          <div id="chatWindow" class="windows">
+            <div id="chatTitle">Calgary Foothills Soccer Club</div>
+            <ul id="chatMessages" class="scrollable">
+              <!--Example Messages to be deleted...-->
+              <li>Today at 12:12:12   User 1: Hi!</li>
+              <li>Today at 12:13:15   User 2: Hello there!</li>
+            </ul>
+          </div>
+          <div id="userWindow" class="windows">
+            <ul id="chatUsers" class="scrollable">
+              <!--Example Users to be deleted...-->
+              <li>User 1</li>
+              <li>User 2</li>
+            </ul>
+            <button id="inviteButton" class="chatButtons"><i class="fas fa-user-plus"></i>  Invite</button>
+          </div>
+          <div id="messageWindow" class="windows">
+            <div id="imageAndSearch">
+              <button class="chatButtons"><i class="fas fa-camera"></i></button>
+              <button class="chatButtons"><i class="fas fa-search"></i></button>
+            </div>
+            <form id="messageForm" action="">
+                <input id="m" autocomplete="off" placeholder="Write a message..."/>                  
+            </form>          
+          </div>
+          <button id="send" class="windows chatButtons"><i class="fas fa-arrow-circle-right"></i> Send</button>
+        </div>
+      </div>
+    </div>    
 
   </body>
 </html>

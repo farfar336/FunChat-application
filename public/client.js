@@ -168,5 +168,18 @@ $(function () {
 
 
 
+  // Chat Logic
+  $('#enterChatButton').click(function(){
+    $('#lobby').hide();
+    $('#chat').css('display', 'contents');
+  })
+
+  $('#messageForm').submit(function(e){
+    e.preventDefault(); // prevents page reloading
+    socket.emit('chat message', $('#m').val());
+    console.log("emitted message");
+    $('#m').val('');
+    return false;
+  });
   
 });
