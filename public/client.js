@@ -114,21 +114,6 @@ $(function () {
 
   socket.on('chat message', function(msg){
     let messages = [];
-    // msg.forEach(message => {
-    //     let un = message.user.username;
-    //     un = un.fontcolor(message.user.color);
-    //     if(message.msg == " connected...") messages.unshift($('<li class="connection">').text(message.timeStamp).append(un).append(': ' + message.msg));
-    //     else if(message.msg == " disconnected...") messages.unshift($('<li class="disconnection">').text(message.timeStamp).append(un).append(': ' + message.msg));
-    //     else if(message.msg == "changed username...") messages.unshift($('<li class="nameChange">').text(message.timeStamp).append(un).append(': ' + message.msg));
-    //     else if(message.msg == "changed color...") messages.unshift($('<li class="colorChange">').text(message.timeStamp).append(un).append(': ' + message.msg));
-    //     else if(message.user.username == myUsername) {
-    //         // normal message from this user
-    //         messages.unshift($('<li class="normalMessage" style="font-weight:bold">').text(message.timeStamp).append(un).append(': ' + message.msg.replace(':)', '😁').replace(':(', '🙁').replace(':o', '😲')));
-    //     } else {
-    //         // normal message from another user
-    //         messages.unshift($('<li class="normalMessage">').text(message.timeStamp).append(un).append(': ' + message.msg.replace(':)', '😁').replace(':(', '🙁').replace(':o', '😲')));
-    //     }
-    // });
     messages.unshift($('<li>').text(msg));
     $('#chatMessages').empty().append(messages);
     $('#chatMessages').animate({scrollTop: $('#chatMessages').prop("scrollHeight")}, 500);
