@@ -98,7 +98,6 @@ $(function () {
     }
   })  
 
-
   // Chat Logic
   $('#enterChatButton').click(function(){
     $('#lobby').hide();
@@ -108,15 +107,9 @@ $(function () {
   $('#messageForm').submit(function(e){
     e.preventDefault(); // prevents page reloading
     socket.emit('chat message', $('#m').val());
+    console.log("emitted message");
     $('#m').val('');
     return false;
   });
-
-  socket.on('chat message', function(msg){
-    let messages = [];
-    messages.unshift($('<li>').text(msg));
-    $('#chatMessages').empty().append(messages);
-    $('#chatMessages').animate({scrollTop: $('#chatMessages').prop("scrollHeight")}, 500);
-});
   
 });
