@@ -1,0 +1,25 @@
+@import "general.css"; 
+
+/*chatCreate styling*/
+#chatCreate{
+    display: none;
+}
+#createChatToLobby
+{
+    /*todo try to center*/
+}
+
+#displayUsers {
+    width: 100%;
+    border: 1px solid black;
+  
+}
+
+#displayUsers li{
+    display: inline;
+    float: left;
+}
+
+.userSelects{
+    width: 200px;
+}

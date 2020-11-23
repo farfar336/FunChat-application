@@ -96,6 +96,7 @@ $(function () {
     else if(userType == "Moderator"){
       $('#chatEnterButton').hide();
       $('#chatApprovalButtons').show();
+      
     }
   })  
 
@@ -111,16 +112,72 @@ $(function () {
     $('#authentication').show();
   })
 
-
-  // a button in lobby page, will take user to chat screen
-  $('#enterChatButton').click(function(){
-    $('#lobby').hide();
-    $('#chat').show();
-  })
+// Will be replaced by Connors code. Delete this after merge
+  // // a button in lobby page, will take user to chat screen 
+  // $('#enterChatButton').click(function(){
+  //   $('#lobby').hide();
+  //   $('#chat').show();
+  // })
 
 
 
   
+  /**
+   * @Section Chat Creation
+   */
+  $('#createChatButton').click(function(){
+    $('#lobby').hide();
+    $('#chatCreate').show();
+    socket.emit('get users for create chat', {});
+  })
+  $('#createChatToLobby').click(function(){
+    $('#lobby').show();
+    $('#chatCreate').hide();
+  })
+
+
+  socket.on('user list for create chat', function(userObj){
+    //clear all previous information
+    $('#usersDisplay').empty();
+    $('#modDisplay').empty();
+
+    for(let i = 0; i < userObj.length; i++)
+    {
+      if(userObj[i].type === "Moderator")
+      {
+        $('#modDisplay').append($('<option>', {
+          value: userObj[i].displayName,
+          text: userObj[i].displayName
+        }));
+      }
+      else{
+        $('#usersDisplay').append($('<option>', {
+          value: userObj[i].displayName,
+          text: userObj[i].displayName 
+        }));
+      }
+    }
+
+    console.log(userObj);
+  })
+
+  $('#submitChat').click(function(){
+    //alert(msg); //when they have no ppl in the chat?
+    //console.log($('#usersDisplay').val());
+    //$('#usersDisplay').val();
+    //$('#modDisplay').val();
+    //$("chat name").val();
+    socket.emit('create chat', {users: $('#usersDisplay').val(), mods: $('#modDisplay').val(), chatname: $('#chatname').val()});
+  })
+
+  socket.on('chat create success', function(userObj){
+    alert(userObj);
+    $('#lobby').show();
+    $('#chatCreate').hide();
+  })
+  socket.on('chat create failure', function(userObj){
+    alert(userObj);
+  })
   //a button take user to char create page
   $('#createChatButton').click(function(){
     $('#lobby').hide();

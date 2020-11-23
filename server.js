@@ -81,6 +81,81 @@ io.on('connection', function(socket){
   });
 
 
+  //Get User list
+  socket.on('get users for create chat', function(obj){
+    //Fetch list of all users in database
+    user.find({}, {}, function(err, users){
+      if(err){
+        console.log(err);
+      } else{
+        socket.emit('user list for create chat' ,users);
+      }
+    })
+    
+  });
+
+  //Create Chat
+  socket.on('create chat', function(obj){
+    //Check if a chat already exists with the chatname
+    let chatNameCheck = (obj.chatname === "");
+    let userSelectCheck = (obj.users.length === 0);
+    let modSelectCheck = (obj.mods.length === 0);
+
+    if(chatNameCheck || userSelectCheck || modSelectCheck)
+    {
+      console.log("fail");
+      let chatInputFail = "";
+      if(chatNameCheck)
+      {
+        chatInputFail = chatInputFail + "Input Error: Need to Fill in Chat Name\n";
+      }
+      if(userSelectCheck)
+      {
+        chatInputFail = chatInputFail + "Input Error: Select at Least One User\n";
+      }
+      if(modSelectCheck)
+      {
+        chatInputFail = chatInputFail + "Input Error: Select at Least One Moderator\n";
+      }
+      socket.emit("chat create failure", chatInputFail);
+    }
+    else{
+      chat.exists({name: obj.chatname}, function (error, document) { 
+        if (error){ 
+            console.log(error)
+            //socket.emit("register error", "Error: unable to register"); 
+        }
+        else{
+          //If there is no existing chat with given name then proceed with registering new user
+          if(document === false){
+            //Create new user object with submitted info
+            let newChat = new chat({approved: false, name: obj.chatname, participants: obj.users, mods: obj.mods});
+            //Save user to the database
+            newChat.save(function (error, document) {
+              if (error){
+                console.error(error)
+              }
+              else 
+              {
+                console.log("added");
+                socket.emit("chat create success", "Create of " + obj.chatname + " Chat Successful");
+              }
+            })
+          }
+          //Display error message for failing to create a chat
+          else 
+          {
+            socket.emit("chat create failure", "This chat already exists!");
+          }
+        } 
+      });
+    }
+    console.log(obj);
+
+    
+  });
+  
+
   //if a chat is rejected, this chat will be romove from the database
   socket.on("rejectChat", function(name){
     //find the rejected chat room
