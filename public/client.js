@@ -87,15 +87,16 @@ $(function () {
   $('#lobbyButton').click(function(){
     $('#home').hide();
     $('#lobby').show();
+    updateChats();
 
     //Buttons displayed based on user type
     if (userType == "User"){
-      $('#chatEnterButton').show();
-      $('#chatApprovalButtons').hide();
+      $('#approveChatButton').hide();
+      $('#rejectChatButton').hide();
     }
     else if(userType == "Moderator"){
-      $('#chatEnterButton').hide();
-      $('#chatApprovalButtons').show();
+      $('#approveChatButton').show();
+      $('#rejectChatButton').show();
       
     }
   })  
@@ -112,15 +113,6 @@ $(function () {
     $('#authentication').show();
   })
 
-// Will be replaced by Connors code. Delete this after merge
-  // // a button in lobby page, will take user to chat screen 
-  // $('#enterChatButton').click(function(){
-  //   $('#lobby').hide();
-  //   $('#chat').show();
-  // })
-
-
-
   
   /**
    * @Section Chat Creation
@@ -133,6 +125,7 @@ $(function () {
   $('#createChatToLobby').click(function(){
     $('#lobby').show();
     $('#chatCreate').hide();
+    updateChats();
   })
 
 
@@ -162,22 +155,25 @@ $(function () {
   })
 
   $('#submitChat').click(function(){
-    //alert(msg); //when they have no ppl in the chat?
-    //console.log($('#usersDisplay').val());
-    //$('#usersDisplay').val();
-    //$('#modDisplay').val();
-    //$("chat name").val();
-    socket.emit('create chat', {users: $('#usersDisplay').val(), mods: $('#modDisplay').val(), chatname: $('#chatname').val()});
+    //Check if user has selected themselves or not. We cannot allow a user to create a chat in which they are not participating
+    if($('#modDisplay').val().includes(displayName) || $('#usersDisplay').val().includes(displayName)){
+      socket.emit('create chat', {users: $('#usersDisplay').val(), mods: $('#modDisplay').val(), chatname: $('#chatname').val()});
+      $('#chatname').val('');    //clear the chat name text box
+    }
+    else alert("Please include yourself as a participant in this chat");
   })
 
   socket.on('chat create success', function(userObj){
+    updateChats();
     alert(userObj);
     $('#lobby').show();
     $('#chatCreate').hide();
   })
+
   socket.on('chat create failure', function(userObj){
     alert(userObj);
   })
+
   //a button take user to char create page
   $('#createChatButton').click(function(){
     $('#lobby').hide();
@@ -199,18 +195,21 @@ $(function () {
     var chat = chatsDisplayed.selectedIndex;
     var name=chatsDisplayed.children[chat].innerHTML
     socket.emit("approveChat",name)
+    alert(name + " has been approved");
    
   })
-  updateChats();
-
+  
 
   // this function will upload the chatname at displayed chat
   function updateChats(){
-    var chatsDisplayed = document.getElementById("chatsDisplayed");
-    //clear current chat displayed
-    chatsDisplayed.innerHTML="";
+    //Emit an event to server to pull the latest chat list
+    socket.emit("refreshChatList", displayName);
+
     //read a  array from server, this array called chats will include all the chat room name
     socket.on('updateChats', function(chats){
+      var chatsDisplayed = document.getElementById("chatsDisplayed");
+      //clear current chat displayed
+      chatsDisplayed.innerHTML="";
       console.log(chats)
       chats.forEach(element => {
         var chat=document.createElement("option");
@@ -219,10 +218,6 @@ $(function () {
       });
     })
   }
-
-  
-
-
 
 
   // Chat Logic
