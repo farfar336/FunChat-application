@@ -87,6 +87,7 @@ $(function () {
   $('#lobbyButton').click(function(){
     $('#home').hide();
     $('#lobby').show();
+    updateChats();
 
     //Buttons displayed based on user type
     if (userType == "User"){
@@ -133,6 +134,7 @@ $(function () {
   $('#createChatToLobby').click(function(){
     $('#lobby').show();
     $('#chatCreate').hide();
+    updateChats();
   })
 
 
@@ -167,10 +169,17 @@ $(function () {
     //$('#usersDisplay').val();
     //$('#modDisplay').val();
     //$("chat name").val();
-    socket.emit('create chat', {users: $('#usersDisplay').val(), mods: $('#modDisplay').val(), chatname: $('#chatname').val()});
+
+    //Check if user has selected themselves or not. We cannot allow a user to create a chat in which they are not participating
+    if($('#modDisplay').val().includes(displayName) || $('#usersDisplay').val().includes(displayName)){
+      socket.emit('create chat', {users: $('#usersDisplay').val(), mods: $('#modDisplay').val(), chatname: $('#chatname').val()});
+      $('#chatname').val('');    //clear the chat name text box
+    }
+    else alert("Please include yourself as a participant in this chat");
   })
 
   socket.on('chat create success', function(userObj){
+    updateChats();
     alert(userObj);
     $('#lobby').show();
     $('#chatCreate').hide();
@@ -199,18 +208,21 @@ $(function () {
     var chat = chatsDisplayed.selectedIndex;
     var name=chatsDisplayed.children[chat].innerHTML
     socket.emit("approveChat",name)
+    alert(name + " has been approved");
    
   })
-  updateChats();
-
+  
 
   // this function will upload the chatname at displayed chat
   function updateChats(){
-    var chatsDisplayed = document.getElementById("chatsDisplayed");
-    //clear current chat displayed
-    chatsDisplayed.innerHTML="";
+    //Emit an event to server to pull the latest chat list
+    socket.emit("refreshChatList", displayName);
+
     //read a  array from server, this array called chats will include all the chat room name
     socket.on('updateChats', function(chats){
+      var chatsDisplayed = document.getElementById("chatsDisplayed");
+      //clear current chat displayed
+      chatsDisplayed.innerHTML="";
       console.log(chats)
       chats.forEach(element => {
         var chat=document.createElement("option");
@@ -226,9 +238,15 @@ $(function () {
 
 
   // Chat Logic
-  $('#enterChatButton').click(function(){
+  $('#chatEnterButton').click(function(){
     $('#lobby').hide();
     $('#chat').css('display', 'contents');
+  })
+
+  $('#chatToLobby').click(function(){
+    $('#chat').css('display', 'none');
+    $('#lobby').show();
+    updateChats();
   })
 
   $('#messageForm').submit(function(e){

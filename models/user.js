@@ -10,8 +10,8 @@ const userSchema = new Schema({
   email: String,
   password: String,
   displayName: String,
-  chats: Array,
-  friends: Array
+  friends: Array,
+  friendRequests: Array
 })
 
 //Export this schema model for use in the index.js file

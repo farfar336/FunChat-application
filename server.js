@@ -138,7 +138,7 @@ io.on('connection', function(socket){
               else 
               {
                 console.log("added");
-                socket.emit("chat create success", "Create of " + obj.chatname + " Chat Successful");
+                socket.emit("chat create success", "Creation of Chat: " + obj.chatname + " Successful");
               }
             })
           }
@@ -191,24 +191,28 @@ io.on('connection', function(socket){
   })
 
 
-  updatechat()
+  //updatechat()
   
+  socket.on("refreshChatList", function(userName){
+    updatechat(userName);
+  })
 
   //read the chat rooms from database, send them to client side
- async function updatechat(){
+ async function updatechat(userName){
   var chats = []
   //read all the chat rooms in chat and put them into a array called chats
   await chat.find({}, function(err, result) {
-   result.forEach(function(user) {
-    console.log(user.name);
-    chats.push(user.name);
+   result.forEach(function(userChat) {
+     if(userChat.participants.includes(userName) || userChat.mods.includes(userName)){
+      console.log(userChat.name);
+      chats.push(userChat.name);
+     }
+    
     }); 
   });
   console.log(chats)
   //send the chats to client side
-  socket.emit("updateChats",chats,function(){
-
-  });
+  socket.emit("updateChats",chats);
 
  }
 });
