@@ -243,12 +243,6 @@ $(function () {
     $('#chat').css('display', 'contents');
   })
 
-  $('#chatToLobby').click(function(){
-    $('#chat').css('display', 'none');
-    $('#lobby').show();
-    updateChats();
-  })
-
   $('#messageForm').submit(function(e){
     e.preventDefault(); // prevents page reloading
     socket.emit('chat message', $('#m').val());
