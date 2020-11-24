@@ -238,7 +238,7 @@ $(function () {
 
 
   // Chat Logic
-  $('#chatEnterButton').click(function(){
+  $('#enterChatButton').click(function(){
     $('#lobby').hide();
     $('#chat').css('display', 'contents');
   })
