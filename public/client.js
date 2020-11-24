@@ -91,12 +91,12 @@ $(function () {
 
     //Buttons displayed based on user type
     if (userType == "User"){
-      $('#chatEnterButton').show();
-      $('#chatApprovalButtons').hide();
+      $('#approveChatButton').hide();
+      $('#rejectChatButton').hide();
     }
     else if(userType == "Moderator"){
-      $('#chatEnterButton').hide();
-      $('#chatApprovalButtons').show();
+      $('#approveChatButton').show();
+      $('#rejectChatButton').show();
       
     }
   })  
