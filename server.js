@@ -64,7 +64,7 @@ io.on('connection', function(socket){
         //If there is no existing user with given email then proceed with registering new user
         if(document === false){
           //Create new user object with submitted info
-          let newUser = new user({type: obj.type, approved: true, email:obj.em, password:obj.pass, displayName:obj.dn, chats:[], friends:[]});
+          let newUser = new user({type: obj.type, approved: true, email:obj.em, password:obj.pass, displayName:obj.dn, friends:[], friendRequests:[]});
           //Save user to the database
           newUser.save(function (error, document) {
             if (error){
@@ -190,8 +190,6 @@ io.on('connection', function(socket){
     })
   })
 
-
-  //updatechat()
   
   socket.on("refreshChatList", function(userName){
     updatechat(userName);
