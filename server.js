@@ -61,19 +61,34 @@ io.on('connection', function(socket){
       }
       
       else{
+
         //If there is no existing user with given email then proceed with registering new user
         if(document === false){
-          //Create new user object with submitted info
-          let newUser = new user({type: obj.type, approved: true, email:obj.em, password:obj.pass, displayName:obj.dn, friends:[], friendRequests:[]});
-          //Save user to the database
-          newUser.save(function (error, document) {
-            if (error){
-              console.error(error)
-              socket.emit("register error", "Error: unable to register");
+          user.exists({displayName:obj.dn}, function (error, doc) { 
+            if (error){ 
+                console.log(error)
+                socket.emit("register error", "Error: unable to register"); 
             }
-            else socket.emit("register success", "Registration Successful");
-          })
-        }
+            
+            else{
+              //If there is no existing user with given email then proceed with registering new user
+              if(doc === false){
+                //Create new user object with submitted info
+                let newUser = new user({type: obj.type, approved: true, email:obj.em, password:obj.pass, displayName:obj.dn, friends:[], friendRequests:[]});
+                //Save user to the database
+                newUser.save(function (error, document) {
+                  if (error){
+                    console.error(error)
+                    socket.emit("register error", "Error: unable to register");
+                  }
+                  else socket.emit("register success", "Registration Successful");
+                })
+              }
+              //If a user with the submitted email exists then return a registration error event
+              else socket.emit("register error", "This display name already exists!");
+            }
+        })
+      }
         //If a user with the submitted email exists then return a registration error event
         else socket.emit("register error", "This email already exists!");
       } 
