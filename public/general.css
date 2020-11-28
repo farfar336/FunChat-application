@@ -10,20 +10,31 @@ Visual styling for the application
 }
 
 #FunChatLabel{
-    font-size: 50px;
+    font-size: 45px;
     color: rgb(15, 92, 235);
     font-weight: bold;
     padding: 20px;
     width: 100%;
-    justify-content: center;
-    text-align: center;
+    /*justify-content: center;
+    text-align: center;*/
+    text-align: right;
+    justify-content: flex-end;
+    align-items: center;
 }
 
-#screenTitle{
+.logOutButton{
+    width:16%;
+    max-height: 35px;
+    margin:0px;
+    padding-right: 0px;
+    padding-left: 0px;
+}
+
+.screenTitle{
     font-size: 30px;
     color: black;
     font-weight: bold;
-    padding: 20px;
+    margin-bottom: 10px;
     width: 100%;
     justify-content: center;
     text-align: center;
@@ -61,7 +72,7 @@ button{
     margin-left: 10px;
     margin-right: 10px;
     padding: 5px;
-    width: 100px;
+    width: 38%;
     cursor: pointer;
     border-radius: 5px;
     border: solid 1px rgb(15, 92, 235);
@@ -74,3 +85,7 @@ button:hover{
     background-color: rgb(15, 92, 235);
     border: rgb(15, 92, 235);
 }
+
+select:active, select:hover {
+    outline-color: rgb(15, 92, 235);
+  }

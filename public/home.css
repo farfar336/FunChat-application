@@ -3,14 +3,28 @@
 /*Homepage styling*/
 #home{
     display: none;
+    width: 100%;
+    max-width: 700px;
+    text-align: center;
+    justify-content: center;
 }
 
 #displayName{
     font-size: 30px;
     margin-top: 25px;
+    margin-bottom: 30px;
     justify-content: flex-start;
     align-items: center;
     text-align: center;
     position: relative;
     top: 0;
+}
+
+.homeButtons{
+    width: 26%;
+    min-height: 80px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
 }

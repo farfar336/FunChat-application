@@ -213,10 +213,161 @@ io.on('connection', function(socket){
   socket.emit("updateChats",chats);
 
  }
+
+  //Friends page events
+  socket.on("send friend request", function(reqObj){
+    user.findOne({displayName: reqObj.receiver}, function (err, doc) {
+      if(err) socket.emit("friends page error", "Error sending friend request");
+      else{
+        if(doc === null) socket.emit("friends page error", "This user does not exist");
+        else{
+          if(doc.friendRequests.includes(reqObj.senderID) === true || doc.friends.includes(reqObj.senderID) === true) socket.emit("friends page error", "This user is already a friend or has sent a friend request");
+          else{
+            doc.friendRequests.push(reqObj.senderID);
+
+            doc.save(function (err) {
+              if(err) socket.emit("friends page error", "Error sending friend request");
+              else{
+                socket.emit("friend request success", "Friend request sent successfully!");
+                io.emit("friend lists refresh", {friend:reqObj.senderID, user:doc._id});
+              }
+            
+            });
+          }
+        }
+      }
+    });
+  })
+
+  socket.on("fetch friend requests", function(userID){
+    user.findById(userID, function (err, doc) {
+      if(err) socket.emit("friends page error", "Unable to load user's friend requests");
+      else{
+        if(doc === null) socket.emit("friends page error", "Unable to load user's friend requests");
+        else{
+          user.find({_id: { $in: doc.friendRequests}}, function(error, requests){
+            if(error) socket.emit("friends page error", "Unable to load user's friend requests");
+            else socket.emit("display friend requests successful", requests);
+          });
+          
+        }
+      }
+    });
+  });
+
+  socket.on("fetch added friends", function(userID){
+    user.findById(userID, function (err, doc) {
+      if(err) socket.emit("friends page error", "Unable to load user's friends");
+      else{
+        if(doc === null) socket.emit("friends page error", "Unable to load user's friends");
+        else{
+          user.find({_id: { $in: doc.friends}}, function(error, requests){
+            if(error) socket.emit("friends page error", "Unable to load user's friends");
+            else socket.emit("display added friends successful", requests);
+          });
+          
+        }
+      }
+    });
+  });
+
+  
+  socket.on("accept friend request", function(obj){
+    user.findById(obj.request, function (err, doc) {
+      if(err) socket.emit("friends page error", "Error accepting request");
+      else{
+        if(doc === null) socket.emit("friends page error", "Error accepting request");
+        else{
+          
+          doc.friends.push(obj.user);
+          
+          doc.save(function (err) {
+            if(err) socket.emit("friends page error", "Error accepting request");
+          });
+        }
+      }
+    })
+
+    user.findById(obj.user, function (err, doc) {
+      if(err) socket.emit("friends page error", "Error accepting request");
+      else{
+        if(doc === null) socket.emit("friends page error", "Error accepting request");
+        else{
+          var filtered = doc.friendRequests.filter(function(value, index, arr){
+            return value !== obj.request;
+          });
+          doc.friendRequests = filtered;
+          doc.friends.push(obj.request);
+          
+          doc.save(function (err) {
+            if(err) socket.emit("friends page error", "Error accepting request");
+            else io.emit("friend lists refresh", {friend:obj.request, user:doc._id});
+          }); 
+        }
+      }
+    })
+  })
+
+  socket.on("unfriend", function(obj){
+    user.findById(obj.friend, function (err, doc) {
+      if(err) socket.emit("friends page error", "Error unfriending");
+      else{
+        if(doc === null) socket.emit("friends page error", "Error unfriending");
+        else{
+          
+          var filtered = doc.friends.filter(function(value, index, arr){
+            return value !== obj.user;
+          });
+          doc.friends = filtered;
+          
+          doc.save(function (err) {
+            if(err) socket.emit("friends page error", "Error unfriending");
+          });
+        }
+      }
+    })
+
+    user.findById(obj.user, function (err, doc) {
+      if(err) socket.emit("friends page error", "Error unfriending");
+      else{
+        if(doc === null) socket.emit("friends page error", "Error unfriending");
+        else{
+          var filtered = doc.friends.filter(function(value, index, arr){
+            return value !== obj.friend;
+          });
+          doc.friends = filtered;
+          
+          doc.save(function (err) {
+            if(err) socket.emit("friends page error", "Error unfriending");
+            else io.emit("friend lists refresh", {friend:obj.friend, user:doc._id});
+          }); 
+        }
+      }
+    })
+  })
+
+  socket.on("decline friend request", function(obj){
+   
+    user.findById(obj.user, function (err, doc) {
+      if(err) console.log(err); 
+      else{
+        if(doc === null) socket.emit("friends page error", "Error declining request");
+        else{
+          var filtered = doc.friendRequests.filter(function(value, index, arr){
+            return value !== obj.request;
+          });
+          doc.friendRequests = filtered;
+          
+          doc.save(function (err) {
+            if(err) console.log(err);
+            else io.emit("friend lists refresh", {friend:obj.request, user:doc._id});
+          }); 
+        }
+      }
+    }) 
+  })
+  
 });
-
-
-
 
 
 //Socket listening on port 

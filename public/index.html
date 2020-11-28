@@ -13,6 +13,7 @@
     <link rel="stylesheet" type="text/css" href="lobby.css">
     <link rel="stylesheet" type="text/css" href="chat.css">
     <link rel="stylesheet" type="text/css" href="createChat.css">
+    <link rel="stylesheet" type="text/css" href="friends.css">
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://kit.fontawesome.com/86d78876c2.js" crossorigin="anonymous"></script>
@@ -25,8 +26,8 @@
 
       <!---Login form-->
       <form id="loginForm" action="">
-        <div id="FunChatLabel" class="flexRow">FunChat</div>
-        <div id = "screenTitle">Login</div>
+        <div id="FunChatLabel" style="width: 100%;justify-content: center;text-align: center;" class="flexRow">FunChat</div>
+        <div class="screenTitle">Login</div>
         <div class="generalLabel">Email:</div>
         <input type="text" id="logEmail"><br>
         <div class="generalLabel">Password:</div>
@@ -38,7 +39,7 @@
       <!---Registration form-->
       <form id="registerForm" action="">
         <div id="FunChatLabel" class="flexRow">FunChat</div>
-        <div id = "screenTitle">Register</div>
+        <div class="screenTitle">Register</div>
         <div class="generalLabel">Email:</div>
         <input type="text" id="regEmail"><br>
         <div class="generalLabel">Password:</div>
@@ -54,35 +55,36 @@
 
     <!---Home module-->
     <div id="home">
-      <div id="FunChatLabel" class="flexRow">FunChat</div>
-      <div id = "screenTitle">Home</div>
+      <div id="FunChatLabel" class="flexRow"><p style="width:67%;text-align: center;">FunChat</p><button class="logOutButton" type="button">log out</button></div>
+      <div class="screenTitle">Home</div>
       <div class = "generalLabel" id="displayName" >Home page content here</div>
-      <button id="lobbyButton"  type="button">lobby</button>
-      <button id="logOutButton" type="button">log out</button>
+      <button  class="homeButtons" id="profileButton" type="button">Profile</button>
+      <button  class="homeButtons" id="lobbyButton"  type="button">lobby</button>
+      <button  class="homeButtons" id="friendsButton" type="button">Friends</button>
     </div>
 
     
 
     <!---Lobby module-->
     <div id="lobby">
-      <div id="FunChatLabel" class="flexRow">FunChat</div>
-      <div id = "screenTitle">Lobby</div>
-      <button id="createChatButton"  type="button">create chat</button>
-      <button id="homeToLobbyButton" type="button">home</button><br>
+      <div id="FunChatLabel" class="flexRow"><p style="width:67%;text-align: center;">FunChat</p><button  class="logOutButton" type="button">log out</button></div>
+      <div class="screenTitle">Lobby</div>
+      <button class="lobbyButtons" id="createChatButton"  type="button">create chat</button>
+      <button class="lobbyButtons" id="homeToLobbyButton" type="button">home</button><br><br>
 
       <!---Chats list-->
-      <label class="generalLabel">Chats</label><br>
+      <label id="chatListLabel" class="generalLabel">Chats</label><br>
       <select id="chatsDisplayed" name="chatsDisplayed" size="10">
-        <!-- Incomplete. Needs to display the values in a populated array -->
+        <!-- Pulls info from database and only lists chat if current user is a member -->
         <option value="option1">chat 1</option>
         <option value="option2">chat 2</option>
       </select><br>
 
       <!---Lobby buttons - display approve/reject buttons only if user is a Mod-->
       <div id ="chatLobbyButtons">
-        <button id="enterChatButton" type="button">enter chat</button>
-        <button id="approveChatButton" type="button">approve chat</button>
-        <button id="rejectChatButton" type="button"> reject chat</button>
+        <button class="lobbyButtons" id="enterChatButton" type="button">enter chat</button>
+        <button class="lobbyButtons" id="approveChatButton" type="button">approve chat</button>
+        <button class="lobbyButtons" id="rejectChatButton" type="button"> reject chat</button>
       </div>
     </div>
     
@@ -90,7 +92,7 @@
     <div id="chat">
       <div id="chatLayout">
         <!--Chat Header-->
-        <div id="FunChatLabel" class="flexRow">
+        <div id="FunChatLabel" class="flexRow" style="width: 100%;justify-content: center;text-align: center;">
           <button id="goHome" class="chatButtons"><i class="fas fa-arrow-left"></i>Home</button>
           FunChat
           <div id="centering"></div>
@@ -131,37 +133,49 @@
 
     <!---Create Chat Module-->
     <div id="chatCreate">
-      <div id="FunChatLabel" class="flexRow">FunChat</div>
-      <div id = "screenTitle">Create Chat</div>
+      <div id="FunChatLabel" class="flexRow"><p style="width:67%;text-align: center;">FunChat</p><button  class="logOutButton" type="button">log out</button></div>
+      <div class="screenTitle">Create Chat</div>
 
-      <button id="createChatToLobby" type="button">Return to Lobby</button><br><br>
-      <label class="generalLabel">Hold ctrl while clicking users to select multiple users</label>
+      <button class="createChatButtons" id="createChatToLobby" type="button">Return to Lobby</button><br><br>
+      <label id="ctrlWarning" class="generalLabel">Hold ctrl while clicking users to select multiple users</label><br>
 
       <form>
         <ul id=displayUsers>
           <li>
-            <label class="generalLabel">Users</label><br>
+            <label id="userListLabel" class="generalLabel">Users</label><br>
             <select id="usersDisplay" class="userSelects" name="usersDisplay" size="10" multiple>
             </select>
           </li>
 
           <li>  
-            <label class="generalLabel">Moderators</label><br>
+            <label id="userListLabel" class="generalLabel">Moderators</label><br>
             <select id="modDisplay" class="userSelects" name="modDisplay" size="10" multiple>
             </select>  
           </li>
-        </ul>
-
-        <label class="generalLabel">Chat Name</label>
+        </ul></form>
+        
+        <label id="chatnameLabel" class="generalLabel">Chat Name</label>
         <input type="text" id="chatname" >
-        <button id="submitChat" style="display: inline;" type="button">Create</button>
-      </form>
+        <button class="createChatButtons" id="submitChat" style="display: inline;" type="button">Create</button>
+      
     </div>
 
-    
-
-
-    
-
+    <!-----------View Friends and Friend Requests Page-------------->
+    <div id="friends" class="flexCol">
+      <div id="FunChatLabel" class="flexRow"><button  id="friendsToHomeButton" type="button">Home</button><p style="width:67%;text-align: center;">FunChat</p><button  class="logOutButton" type="button">log out</button></div>
+      <div class="screenTitle">My Friends</div>
+      <div id="friendsSearch" class="flexRow">
+        <input type="text" id="friendName" placeholder="Enter a display name to send friend request"><button class="friendButtons" id="submitFriend" style="display: inline;" type="button">Send Request</button>
+      </div>
+      <p class="friendsSubHeader">Friend Requests</p>
+      <div id="friendRequests" class="tileContainers flexRow">
+        <p class="emptyFriends">There are no friend requests.</p>
+      </div>
+      <p class="friendsSubHeader">Friends Added</p>
+      <div id="approvedFriends" class="tileContainers flexRow">
+         <p class="emptyFriends">You don't have any friends added yet. Enter a display name to send a request!</p>
+        -------------->
+      </div>
+    </div>
   </body>
 </html>
