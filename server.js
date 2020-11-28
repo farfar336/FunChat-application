@@ -215,6 +215,8 @@ io.on('connection', function(socket){
  }
 
   //Friends page events
+
+  //Handle incoming friend request
   socket.on("send friend request", function(reqObj){
     user.findOne({displayName: reqObj.receiver}, function (err, doc) {
       if(err) socket.emit("friends page error", "Error sending friend request");
@@ -239,6 +241,7 @@ io.on('connection', function(socket){
     });
   })
 
+  //Fetch and return friend requests for current user
   socket.on("fetch friend requests", function(userID){
     user.findById(userID, function (err, doc) {
       if(err) socket.emit("friends page error", "Unable to load user's friend requests");
@@ -248,13 +251,13 @@ io.on('connection', function(socket){
           user.find({_id: { $in: doc.friendRequests}}, function(error, requests){
             if(error) socket.emit("friends page error", "Unable to load user's friend requests");
             else socket.emit("display friend requests successful", requests);
-          });
-          
+          }); 
         }
       }
     });
   });
 
+  //Fetch and return added friends for current user
   socket.on("fetch added friends", function(userID){
     user.findById(userID, function (err, doc) {
       if(err) socket.emit("friends page error", "Unable to load user's friends");
@@ -271,8 +274,9 @@ io.on('connection', function(socket){
     });
   });
 
-  
+  //Handle friend request acceptance
   socket.on("accept friend request", function(obj){
+    //Save information in database for sender of friend request
     user.findById(obj.request, function (err, doc) {
       if(err) socket.emit("friends page error", "Error accepting request");
       else{
@@ -288,6 +292,7 @@ io.on('connection', function(socket){
       }
     })
 
+    //Save information in database for receiver of friend request
     user.findById(obj.user, function (err, doc) {
       if(err) socket.emit("friends page error", "Error accepting request");
       else{
@@ -308,7 +313,31 @@ io.on('connection', function(socket){
     })
   })
 
+  //Handle friend request rejection
+  socket.on("decline friend request", function(obj){
+    //Save information in database for user who received friend request and declined it
+     user.findById(obj.user, function (err, doc) {
+       if(err) console.log(err); 
+       else{
+         if(doc === null) socket.emit("friends page error", "Error declining request");
+         else{
+           var filtered = doc.friendRequests.filter(function(value, index, arr){
+             return value !== obj.request;
+           });
+           doc.friendRequests = filtered;
+           
+           doc.save(function (err) {
+             if(err) console.log(err);
+             else io.emit("friend lists refresh", {friend:obj.request, user:doc._id});
+           }); 
+         }
+       }
+     }) 
+   })
+  
+  //Handle unfriending action
   socket.on("unfriend", function(obj){
+    //Save information in database for user being unfriended
     user.findById(obj.friend, function (err, doc) {
       if(err) socket.emit("friends page error", "Error unfriending");
       else{
@@ -327,6 +356,7 @@ io.on('connection', function(socket){
       }
     })
 
+    //Save information in database for user doing the unfriending
     user.findById(obj.user, function (err, doc) {
       if(err) socket.emit("friends page error", "Error unfriending");
       else{
@@ -346,27 +376,6 @@ io.on('connection', function(socket){
     })
   })
 
-  socket.on("decline friend request", function(obj){
-   
-    user.findById(obj.user, function (err, doc) {
-      if(err) console.log(err); 
-      else{
-        if(doc === null) socket.emit("friends page error", "Error declining request");
-        else{
-          var filtered = doc.friendRequests.filter(function(value, index, arr){
-            return value !== obj.request;
-          });
-          doc.friendRequests = filtered;
-          
-          doc.save(function (err) {
-            if(err) console.log(err);
-            else io.emit("friend lists refresh", {friend:obj.request, user:doc._id});
-          }); 
-        }
-      }
-    }) 
-  })
-  
 });
 
 
