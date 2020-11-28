@@ -282,7 +282,10 @@ io.on('connection', function(socket){
       else{
         if(doc === null) socket.emit("friends page error", "Error accepting request");
         else{
-          
+          var filtered = doc.friendRequests.filter(function(value, index, arr){
+            return value !== obj.user;
+          });
+          doc.friendRequests = filtered;
           doc.friends.push(obj.user);
           
           doc.save(function (err) {
