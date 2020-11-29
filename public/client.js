@@ -10,6 +10,7 @@ $(function () {
   let userID = "";
   let displayName = "";
   let userType = "";
+  let viewedUserID ="";
   
   //Event handler for login button
   $('#loginButton').click(function(){
