@@ -76,7 +76,7 @@ $(function () {
   // Note:  May need to store other variables as well such a displayname to reduce the amount of socket events
   socket.on('login success', function(userObj){
     $('#authentication').hide();
-    $('#profile').show();
+    $('#home').show();
     $('#displayName').text("Welcome " + userObj.displayName + "!");
     userID = userObj._id;     //store user's id for future database queries
     displayName = userObj.displayName;
