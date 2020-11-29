@@ -85,7 +85,7 @@ $(function () {
 
   //a button in home,take user to lobby,
   $('#lobbyButton').click(function(){
-    $('#home').hide();
+    $('#profile').hide();
     $('#lobby').show();
     updateChats();
 
