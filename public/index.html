@@ -13,6 +13,7 @@
     <link rel="stylesheet" type="text/css" href="lobby.css">
     <link rel="stylesheet" type="text/css" href="chat.css">
     <link rel="stylesheet" type="text/css" href="createChat.css">
+    <link rel="stylesheet" type="text/css" href="editProfile.css">
     <link rel="stylesheet" type="text/css" href="profile.css">
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -159,6 +160,17 @@
       </form>
     </div>
 
+    <!---Edit Profile Module-->
+    <div id="editProfile">
+    <div id="FunChatLabel" class="flexRow">FunChat</div>
+    <div id = "screenTitle">Edit Profile</div>
+    <label class="generalLabel">New display name</label>
+    <input type="text" id="newDisplayNameField">
+    <button id="changeDisplayNameButton"  type="button">Change display name</button>
+    <button id="editProfileToHomeButton" type="button">Home</button>
+  </div>
+
+    
      <!---Profile Module-->
      <div id="profile">
       <div id="FunChatLabel" class="flexRow">FunChat</div>
