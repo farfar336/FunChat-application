@@ -10,6 +10,7 @@ $(function () {
   let userID = "";
   let displayName = "";
   let userType = "";
+  let viewedUserID ="";
   
   //Event handler for login button
   $('#loginButton').click(function(){
@@ -233,5 +234,16 @@ $(function () {
     $('#m').val('');
     return false;
   });
+  
+  $('#profileButton').click(function(){
+    $('#home').hide();
+    $('#profile').show();
+
+    viewedUserID = ""; //To do: for backend to finish: Get user ID of the viewed profile
+    //If user is viewing their own profile
+    if (userID == viewedUserID){
+      $('#editProfileButton').show();
+    }
+  })  
   
 });
