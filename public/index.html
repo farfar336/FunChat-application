@@ -13,6 +13,7 @@
     <link rel="stylesheet" type="text/css" href="lobby.css">
     <link rel="stylesheet" type="text/css" href="chat.css">
     <link rel="stylesheet" type="text/css" href="createChat.css">
+    <link rel="stylesheet" type="text/css" href="profile.css">
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://kit.fontawesome.com/86d78876c2.js" crossorigin="anonymous"></script>
@@ -158,7 +159,15 @@
       </form>
     </div>
 
-    
+     <!---Profile Module-->
+     <div id="profile">
+      <div id="FunChatLabel" class="flexRow">FunChat</div>
+      <div id = "screenTitle">Profile</div>
+      <!-- To do for back end: Replace displayname1 with the actual displayname of the user-->
+      <div class = "generalLabel" id="displayName" >displayname1</div> 
+      <button id="profileToHomeButton"  type="button">Home</button>
+      <button id="editProfileButton" type="button">Edit Profile</button>
+    </div>
 
 
     
