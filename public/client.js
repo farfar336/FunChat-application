@@ -235,11 +235,11 @@ $(function () {
     return false;
   });
   
-    // To do: For profile screen backend to complete
   $('#profileButton').click(function(){
     $('#home').hide();
     $('#profile').show();
 
+    viewedUserID = ""; //To do: for backend to finish: Get user ID of the viewed profile
     //If user is viewing their own profile
     if (userID == viewedUserID){
       $('#editProfileButton').show();
