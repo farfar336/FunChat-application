@@ -1,0 +1,31 @@
+@import "general.css"; 
+
+/*Profile styling*/
+#profile{
+    display: none;
+    width: 100%;
+    max-width: 700px;
+    text-align: center;
+    justify-content: center;
+}
+
+
+.profileText{
+    font-size: 25px;
+    margin-top: 25px;
+    margin-bottom: 30px;
+    justify-content: flex-start;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    top: 0;
+}
+
+.profileButtons{
+    max-width: 24%;
+    min-height: 30px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+}

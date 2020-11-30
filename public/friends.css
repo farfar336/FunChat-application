@@ -34,13 +34,6 @@
     margin-top:2px;
 }
 
-#friendsToHomeButton{
-    width:16%;
-    max-height: 45px;
-    margin:0px;
-    padding-right: 0px;
-    padding-left: 0px;
-}
 
 .friendsSubHeader{
     text-align:left;
@@ -77,6 +70,11 @@
 .dispName{
     margin-top: 5px;
     font-weight: bold;
+    cursor: pointer;
+}
+
+.dispName:hover{
+    text-decoration: underline;
 }
 
 .acctType{

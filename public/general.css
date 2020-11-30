@@ -22,7 +22,7 @@ Visual styling for the application
     align-items: center;
 }
 
-.logOutButton{
+.headerButton{
     width:16%;
     max-height: 35px;
     margin:0px;

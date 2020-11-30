@@ -10,6 +10,7 @@ $(function () {
   let userID = "";
   let displayName = "";
   let userType = "";
+  let viewedUserID ="";
   
   //Event handler for login button
   $('#loginButton').click(function(){
@@ -91,18 +92,15 @@ $(function () {
 
     //Buttons displayed based on user type
     if (userType == "User"){
-      $('#approveChatButton').hide();
-      $('#rejectChatButton').hide();
+      $('#chatApprovalButtons').hide();
     }
     else if(userType == "Moderator"){
-      $('#approveChatButton').show();
-      $('#rejectChatButton').show();
-      
+      $('#chatApprovalButtons').show();
     }
   })  
 
   //a button in lobby page, take user to home
-  $('#homeToLobbyButton').click(function(){
+  $('#lobbyToHomeButton').click(function(){
     $('#lobby').hide();
     $('#home').show();
   })
@@ -122,10 +120,16 @@ $(function () {
     $('#chatCreate').show();
     socket.emit('get users for create chat', {});
   })
+
   $('#createChatToLobby').click(function(){
     $('#lobby').show();
     $('#chatCreate').hide();
     updateChats();
+  })
+
+  $('#createChatToHomeButton').click(function(){
+    $('#chatCreate').hide();
+    $('#home').show();
   })
 
 
@@ -335,5 +339,65 @@ $(function () {
 
     socket.emit('unfriend', {user:userID, friend:pid});
   });
+
+  //Event handler for viewing friend's profile
+  $(".tileContainers").on( "click", ".dispName", function() {
+    //Get the id of the friend. 
+    let pid = $(this).parent().attr("id");
+    pid = pid.substring(4);
+
+    //store id of friend to use in fetching profile info from database
+    viewedUserID = pid;
+    $('#friends').hide();
+    $('#profile').show();
+
+    $('#editProfileButton').hide();
+    $('#profileToFriendsButton').show();
+  });
      
+  //Profile Page Logic
+
+  $('#profileButton').click(function(){
+    $('#home').hide();
+    $('#profile').show();
+
+    //To-do Backend: Use id stored in 'viewedUserID' to fetch profile details
+    //Clicking this button will show current user's profile
+    //Clicking a display name in the friends page will store friend's id in 'viewedUserID'
+    viewedUserID = userID;
+    
+    //If user is viewing their own profile
+    if (userID == viewedUserID){
+      $('#editProfileButton').show();
+      $('#profileToHomeButton').show();
+      $('#profileToFriendsButton').hide();
+    }
+  })
+
+  $('#editProfileButton').click(function(){
+    $('#profile').hide();
+    $('#editProfile').show();
+  })
+
+  $('#returnToProfileButton').click(function(){
+    $('#editProfile').hide();
+    $('#profile').show();
+  })
+  
+  $('#profileToFriendsButton').click(function(){
+    $('#profile').hide();
+    $('#friends').show();
+    refreshFriends();
+  })
+
+  $('#editProfileToHomeButton').click(function(){
+    $('#editProfile').hide();
+    $('#home').show();
+  })
+
+  $('#profileToHomeButton').click(function(){
+    $('#profile').hide();
+    $('#home').show();
+  })
+  
 });

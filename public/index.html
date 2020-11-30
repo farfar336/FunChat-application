@@ -14,6 +14,8 @@
     <link rel="stylesheet" type="text/css" href="chat.css">
     <link rel="stylesheet" type="text/css" href="createChat.css">
     <link rel="stylesheet" type="text/css" href="friends.css">
+    <link rel="stylesheet" type="text/css" href="editProfile.css">
+    <link rel="stylesheet" type="text/css" href="profile.css">
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://kit.fontawesome.com/86d78876c2.js" crossorigin="anonymous"></script>
@@ -55,7 +57,7 @@
 
     <!---Home module-->
     <div id="home">
-      <div id="FunChatLabel" class="flexRow"><p style="width:67%;text-align: center;">FunChat</p><button class="logOutButton" type="button">log out</button></div>
+      <div id="FunChatLabel" class="flexRow"><p style="width:67%;text-align: center;">FunChat</p><button class="logOutButton headerButton" type="button">log out</button></div>
       <div class="screenTitle">Home</div>
       <div class = "generalLabel" id="displayName" >Home page content here</div>
       <button  class="homeButtons" id="profileButton" type="button">Profile</button>
@@ -67,10 +69,10 @@
 
     <!---Lobby module-->
     <div id="lobby">
-      <div id="FunChatLabel" class="flexRow"><p style="width:67%;text-align: center;">FunChat</p><button  class="logOutButton" type="button">log out</button></div>
+      <div id="FunChatLabel" class="flexRow"><button  id="lobbyToHomeButton" class="headerButton" type="button">Home</button><p style="width:67%;text-align: center;">FunChat</p><button  class="logOutButton headerButton" type="button">log out</button></div>
       <div class="screenTitle">Lobby</div>
-      <button class="lobbyButtons" id="createChatButton"  type="button">create chat</button>
-      <button class="lobbyButtons" id="homeToLobbyButton" type="button">home</button><br><br>
+      <button class="lobbyButtons" id="enterChatButton" type="button">enter chat</button>
+      <button class="lobbyButtons" id="createChatButton"  type="button">create chat</button><br><br>
 
       <!---Chats list-->
       <label id="chatListLabel" class="generalLabel">Chats</label><br>
@@ -81,8 +83,7 @@
       </select><br>
 
       <!---Lobby buttons - display approve/reject buttons only if user is a Mod-->
-      <div id ="chatLobbyButtons">
-        <button class="lobbyButtons" id="enterChatButton" type="button">enter chat</button>
+      <div id ="chatApprovalButtons">
         <button class="lobbyButtons" id="approveChatButton" type="button">approve chat</button>
         <button class="lobbyButtons" id="rejectChatButton" type="button"> reject chat</button>
       </div>
@@ -133,7 +134,7 @@
 
     <!---Create Chat Module-->
     <div id="chatCreate">
-      <div id="FunChatLabel" class="flexRow"><p style="width:67%;text-align: center;">FunChat</p><button  class="logOutButton" type="button">log out</button></div>
+      <div id="FunChatLabel" class="flexRow"><button  id="createChatToHomeButton" class="headerButton" type="button">Home</button><p style="width:67%;text-align: center;">FunChat</p><button  class="logOutButton headerButton" type="button">log out</button></div>
       <div class="screenTitle">Create Chat</div>
 
       <button class="createChatButtons" id="createChatToLobby" type="button">Return to Lobby</button><br><br>
@@ -162,7 +163,7 @@
 
     <!-----------View Friends and Friend Requests Page-------------->
     <div id="friends" class="flexCol">
-      <div id="FunChatLabel" class="flexRow"><button  id="friendsToHomeButton" type="button">Home</button><p style="width:67%;text-align: center;">FunChat</p><button  class="logOutButton" type="button">log out</button></div>
+      <div id="FunChatLabel" class="flexRow"><button  id="friendsToHomeButton" class="headerButton" type="button">Home</button><p style="width:67%;text-align: center;">FunChat</p><button  class="logOutButton headerButton" type="button">log out</button></div>
       <div class="screenTitle">My Friends</div>
       <div id="friendsSearch" class="flexRow">
         <input type="text" id="friendName" placeholder="Enter a display name to send friend request"><button class="friendButtons" id="submitFriend" style="display: inline;" type="button">Send Request</button>
@@ -176,5 +177,34 @@
          <p class="emptyFriends">You don't have any friends added yet. Enter a display name to send a request!</p>
       </div>
     </div>
+
+    <!---Edit Profile Module-->
+    <div id="editProfile">
+      <div id="FunChatLabel" class="flexRow"><button  id="editProfileToHomeButton" class="headerButton" type="button">Home</button><p style="width:67%;text-align: center;">FunChat</p><button  class="logOutButton headerButton" type="button">log out</button></div>
+      <div class="screenTitle">Edit Profile</div>
+      <label class="generalLabel" id="newNameLabel">New display name</label>
+      <input type="text" id="newDisplayNameField">
+      <button id="changeDisplayNameButton"  class="profileButtons" type="button">Change display name</button>
+      <button id="returnToProfileButton" class="profileButtons" type="button">Return to Profile</button>
+    </div>
+
+     <!---Profile Module-->
+     <div id="profile">
+      <div id="FunChatLabel" class="flexRow"><button  id="profileToHomeButton" class="headerButton" type="button">Home</button><p style="width:67%;text-align: center;">FunChat</p><button  class="logOutButton headerButton" type="button">log out</button></div>
+      <div class="screenTitle">Profile</div>
+      <!-- To do for back end: Replace displayname1 with the actual displayname of the user-->
+      <img src="person-icon.png" width="15%">
+      <div class="generalLabel profileText" id="dispName" >Display Name: displayname1</div>
+      <div class="generalLabel profileText" id="acctType" >Account Type: Mod/User</div> 
+      
+
+      <!---This button is only visible if the user is viewing their own profile-->
+      <button id="editProfileButton" class="profileButtons" type="button">Edit Profile</button>
+      <button id="profileToFriendsButton" class="profileButtons" type="button">Back to Friends</button>
+    </div>
+
+
+    
+
   </body>
 </html>
