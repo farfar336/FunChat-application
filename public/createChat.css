@@ -3,7 +3,16 @@
 /*chatCreate styling*/
 #chatCreate{
     display: none;
+    width: 100%;
+    max-width: 700px;
+    text-align: center;
+    justify-content: center;
 }
+
+#chatCreate form{
+    width: 100%;
+}
+
 #createChatToLobby
 {
     /*todo try to center*/
@@ -11,15 +20,48 @@
 
 #displayUsers {
     width: 100%;
-    border: 1px solid black;
+    
   
 }
 
 #displayUsers li{
     display: inline;
     float: left;
+    width: 45%;
+    margin: 10px;
 }
 
 .userSelects{
-    width: 200px;
+    width: 100%;
+    font-size: 16px;
+    padding-top: 5px;
+    padding-right: 5px;
+    padding-left: 5px;
+}
+
+#userListLabel{
+    font-size: 18px;
+    font-weight: bold;
+   
+}
+
+#ctrlWarning{
+    font-size: 16px;
+    color: rgb(15, 92, 235);
+    font-weight: bold;
+}
+
+#chatname, #chatnameLabel{
+    font-size: 16px;
+    margin-top: 5px;
+}
+
+.createChatButtons{
+    width: 18%;
+    min-height: 30px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    margin-top: 5px;
 }

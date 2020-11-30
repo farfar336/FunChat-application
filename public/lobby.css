@@ -3,5 +3,36 @@
 /*Lobby styling*/
 #lobby{
     display: none;
+    width: 100%;
+    max-width: 700px;
+    text-align: center;
+    justify-content: center;
 }
+
+.lobbyButtons{
+    width: 22%;
+    min-height: 30px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+}
+
+#chatsDisplayed{
+    width: 92vw;
+    max-width: 400px;
+    font-size: 16px;
+    padding-top: 5px;
+    padding-right: 5px;
+    padding-left: 5px;
+    margin: 15px;
+}
+
+#chatListLabel{
+    font-size: 18px;
+    font-weight: bold;
+    
+}
+
+
 

@@ -3,4 +3,15 @@
 /*Edit Profile styling*/
 #editProfile{
     display: none;
+    width: 100%;
+    max-width: 700px;
+    text-align: center;
+    justify-content: center;
+}
+
+
+#newNameLabel, #newDisplayNameField{
+    font-size: 18px;
+    margin-top: 25px;
+    margin-bottom: 25px;
 }

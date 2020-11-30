@@ -61,19 +61,34 @@ io.on('connection', function(socket){
       }
       
       else{
+
         //If there is no existing user with given email then proceed with registering new user
         if(document === false){
-          //Create new user object with submitted info
-          let newUser = new user({type: obj.type, approved: true, email:obj.em, password:obj.pass, displayName:obj.dn, friends:[], friendRequests:[]});
-          //Save user to the database
-          newUser.save(function (error, document) {
-            if (error){
-              console.error(error)
-              socket.emit("register error", "Error: unable to register");
+          user.exists({displayName:obj.dn}, function (error, doc) { 
+            if (error){ 
+                console.log(error)
+                socket.emit("register error", "Error: unable to register"); 
             }
-            else socket.emit("register success", "Registration Successful");
-          })
-        }
+            
+            else{
+              //If there is no existing user with given email then proceed with registering new user
+              if(doc === false){
+                //Create new user object with submitted info
+                let newUser = new user({type: obj.type, approved: true, email:obj.em, password:obj.pass, displayName:obj.dn, friends:[], friendRequests:[]});
+                //Save user to the database
+                newUser.save(function (error, document) {
+                  if (error){
+                    console.error(error)
+                    socket.emit("register error", "Error: unable to register");
+                  }
+                  else socket.emit("register success", "Registration Successful");
+                })
+              }
+              //If a user with the submitted email exists then return a registration error event
+              else socket.emit("register error", "This display name already exists!");
+            }
+        })
+      }
         //If a user with the submitted email exists then return a registration error event
         else socket.emit("register error", "This email already exists!");
       } 
@@ -213,10 +228,173 @@ io.on('connection', function(socket){
   socket.emit("updateChats",chats);
 
  }
+
+  //Friends page events
+
+  //Handle incoming friend request
+  socket.on("send friend request", function(reqObj){
+    user.findOne({displayName: reqObj.receiver}, function (err, doc) {
+      if(err) socket.emit("friends page error", "Error sending friend request");
+      else{
+        if(doc === null) socket.emit("friends page error", "This user does not exist");
+        else{
+          if(doc.friendRequests.includes(reqObj.senderID) === true || doc.friends.includes(reqObj.senderID) === true) socket.emit("friends page error", "This user is already a friend or has sent a friend request");
+          else{
+            doc.friendRequests.push(reqObj.senderID);
+
+            doc.save(function (err) {
+              if(err) socket.emit("friends page error", "Error sending friend request");
+              else{
+                socket.emit("friend request success", "Friend request sent successfully!");
+                io.emit("friend lists refresh", {friend:reqObj.senderID, user:doc._id});
+              }
+            
+            });
+          }
+        }
+      }
+    });
+  })
+
+  //Fetch and return friend requests for current user
+  socket.on("fetch friend requests", function(userID){
+    user.findById(userID, function (err, doc) {
+      if(err) socket.emit("friends page error", "Unable to load user's friend requests");
+      else{
+        if(doc === null) socket.emit("friends page error", "Unable to load user's friend requests");
+        else{
+          user.find({_id: { $in: doc.friendRequests}}, function(error, requests){
+            if(error) socket.emit("friends page error", "Unable to load user's friend requests");
+            else socket.emit("display friend requests successful", requests);
+          }); 
+        }
+      }
+    });
+  });
+
+  //Fetch and return added friends for current user
+  socket.on("fetch added friends", function(userID){
+    user.findById(userID, function (err, doc) {
+      if(err) socket.emit("friends page error", "Unable to load user's friends");
+      else{
+        if(doc === null) socket.emit("friends page error", "Unable to load user's friends");
+        else{
+          user.find({_id: { $in: doc.friends}}, function(error, requests){
+            if(error) socket.emit("friends page error", "Unable to load user's friends");
+            else socket.emit("display added friends successful", requests);
+          });
+          
+        }
+      }
+    });
+  });
+
+  //Handle friend request acceptance
+  socket.on("accept friend request", function(obj){
+    //Save information in database for sender of friend request
+    user.findById(obj.request, function (err, doc) {
+      if(err) socket.emit("friends page error", "Error accepting request");
+      else{
+        if(doc === null) socket.emit("friends page error", "Error accepting request");
+        else{
+          var filtered = doc.friendRequests.filter(function(value, index, arr){
+            return value !== obj.user;
+          });
+          doc.friendRequests = filtered;
+          doc.friends.push(obj.user);
+          
+          doc.save(function (err) {
+            if(err) socket.emit("friends page error", "Error accepting request");
+          });
+        }
+      }
+    })
+
+    //Save information in database for receiver of friend request
+    user.findById(obj.user, function (err, doc) {
+      if(err) socket.emit("friends page error", "Error accepting request");
+      else{
+        if(doc === null) socket.emit("friends page error", "Error accepting request");
+        else{
+          var filtered = doc.friendRequests.filter(function(value, index, arr){
+            return value !== obj.request;
+          });
+          doc.friendRequests = filtered;
+          doc.friends.push(obj.request);
+          
+          doc.save(function (err) {
+            if(err) socket.emit("friends page error", "Error accepting request");
+            else io.emit("friend lists refresh", {friend:obj.request, user:doc._id});
+          }); 
+        }
+      }
+    })
+  })
+
+  //Handle friend request rejection
+  socket.on("decline friend request", function(obj){
+    //Save information in database for user who received friend request and declined it
+     user.findById(obj.user, function (err, doc) {
+       if(err) console.log(err); 
+       else{
+         if(doc === null) socket.emit("friends page error", "Error declining request");
+         else{
+           var filtered = doc.friendRequests.filter(function(value, index, arr){
+             return value !== obj.request;
+           });
+           doc.friendRequests = filtered;
+           
+           doc.save(function (err) {
+             if(err) console.log(err);
+             else io.emit("friend lists refresh", {friend:obj.request, user:doc._id});
+           }); 
+         }
+       }
+     }) 
+   })
+  
+  //Handle unfriending action
+  socket.on("unfriend", function(obj){
+    //Save information in database for user being unfriended
+    user.findById(obj.friend, function (err, doc) {
+      if(err) socket.emit("friends page error", "Error unfriending");
+      else{
+        if(doc === null) socket.emit("friends page error", "Error unfriending");
+        else{
+          
+          var filtered = doc.friends.filter(function(value, index, arr){
+            return value !== obj.user;
+          });
+          doc.friends = filtered;
+          
+          doc.save(function (err) {
+            if(err) socket.emit("friends page error", "Error unfriending");
+          });
+        }
+      }
+    })
+
+    //Save information in database for user doing the unfriending
+    user.findById(obj.user, function (err, doc) {
+      if(err) socket.emit("friends page error", "Error unfriending");
+      else{
+        if(doc === null) socket.emit("friends page error", "Error unfriending");
+        else{
+          var filtered = doc.friends.filter(function(value, index, arr){
+            return value !== obj.friend;
+          });
+          doc.friends = filtered;
+          
+          doc.save(function (err) {
+            if(err) socket.emit("friends page error", "Error unfriending");
+            else io.emit("friend lists refresh", {friend:obj.friend, user:doc._id});
+          }); 
+        }
+      }
+    })
+  })
+
 });
-
-
-
 
 
 //Socket listening on port 
