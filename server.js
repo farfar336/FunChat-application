@@ -109,6 +109,7 @@ io.on('connection', function(socket){
     
   });
 
+  //Get IDs of all participants in the new chat 
   socket.on('get chat user ids', function(obj){
     user.find({displayName: { $in: obj.participants}}, function(error, requests){
       if(error) socket.emit("chat create failure", "Unable to create chat");

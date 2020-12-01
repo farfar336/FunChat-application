@@ -161,21 +161,26 @@ $(function () {
   $('#submitChat').click(function(){
     //Check if user has selected themselves or not. We cannot allow a user to create a chat in which they are not participating
     if($('#modDisplay').val().includes(displayName) || $('#usersDisplay').val().includes(displayName)){
+      //Combine users and mods into one array for database query
       let combinedArray = $('#usersDisplay').val().concat($('#modDisplay').val());
+      //Get documents for all users and mods
       socket.emit('get chat user ids', {participants: combinedArray, chatname: $('#chatname').val()});
-      //socket.emit('create chat', {users: $('#usersDisplay').val(), mods: $('#modDisplay').val(), chatname: $('#chatname').val()});
       $('#chatname').val('');    //clear the chat name text box
     }
     else alert("Please include yourself as a participant in this chat");
   })
 
+  //Event handler for successful retrieval of users and mods of a new chat
   socket.on('participant retrieval successful', function(obj){
     let userIDs = [];
     let modIDs = [];
+
+    //For each participant check whether they are a user or mod and place in the correct array
     obj.participants.forEach(function(value){
       if(value.type == "User") userIDs.push(value._id);
       else modIDs.push(value._id);
     });
+    //Store new chat in the database
     socket.emit('create chat', {users: userIDs, mods: modIDs, chatname: obj.chatname});
 
   })
