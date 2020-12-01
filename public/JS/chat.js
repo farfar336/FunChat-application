@@ -1,3 +1,5 @@
+//socket, userID, displayName, userType, viewedUserID are global variables that are initialized in index.html, near the top of the file
+
 $(function () {
 /*--------------------------------------------------- Click events ---------------------------------------------------*/
     // Sends the message entered to the chat
