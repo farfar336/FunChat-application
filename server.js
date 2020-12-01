@@ -1,6 +1,7 @@
 //Server code that handles all database queries from client
 //Uses node/express, MongoDB/Mongoose and Socket.io
 
+/*--------------------------------------------------- Server Initialization ---------------------------------------------------*/
 //Initialize packages and socket connection
 const express = require('express');
 const app = express();
@@ -28,6 +29,12 @@ db.on('error', err => {
   console.error('connection error:', err)
 })
 
+//Socket listening on port 
+http.listen(port, function(){
+  console.log('listening on *:' + port);
+});
+
+/*--------------------------------------------------- Login  ---------------------------------------------------*/
 //User events upon connection to application
 io.on('connection', function(socket){
   console.log("connected to server through socket!");
@@ -51,6 +58,7 @@ io.on('connection', function(socket){
     })
   })
   
+/*--------------------------------------------------- Registration  ---------------------------------------------------*/
   //Register event received from client - create and save new user object in database - send back register success or error event
   socket.on('register', function(obj){
     //Check if a user already exists with the submitted email
@@ -95,7 +103,7 @@ io.on('connection', function(socket){
     }); 
   });
 
-
+/*--------------------------------------------------- Create Chat  ---------------------------------------------------*/
   //Get User list
   socket.on('get users for create chat', function(obj){
     //Fetch list of all users in database
@@ -171,8 +179,36 @@ io.on('connection', function(socket){
       });
     }
   });
-  
 
+  //Converts array of IDs to an array of displayNames
+  async function convertDisplayNamesToIDs(displayNames){
+    let IDs = [];
+    await user.find({displayName: { $in: displayNames}}, function(error, requests){
+      if(error) socket.emit("chat page error", "Unable to find users id");
+      else {
+        for (i = 0; i < requests.length; i++){
+          IDs.push(requests[i]._id)
+        }
+      }
+    }); 
+    return IDs;
+  }
+
+  //Converts array of displayNames to an array of IDs
+  async function convertIDsToDisplayNames(IDs){
+    let displaynames = [];
+    await user.find({_id: { $in: IDs}}, function(error, requests){
+      if(error) socket.emit("chat page error", "Unable to find users id");
+      else {
+        for (i = 0; i < requests.length; i++){
+          displaynames.push(requests[i].displayName)
+        }
+      }
+    }); 
+    return displaynames;
+  }
+  
+/*--------------------------------------------------- Lobby  ---------------------------------------------------*/
   //if a chat is rejected, this chat will be romove from the database
   socket.on("rejectChat", function(name){
     //find the rejected chat room
@@ -206,7 +242,6 @@ io.on('connection', function(socket){
     })
   })
 
-  
   socket.on("refreshChatList", function(userID){
     updatechat(userID);
   })
@@ -225,11 +260,9 @@ io.on('connection', function(socket){
   });
   //send the chats to client side
   socket.emit("updateChats",chats);
-
  }
 
-  //Friends page events
-
+/*--------------------------------------------------- Friend List  ---------------------------------------------------*/
   //Handle incoming friend request
   socket.on("send friend request", function(reqObj){
     user.findOne({displayName: reqObj.receiver}, function (err, doc) {
@@ -393,38 +426,3 @@ io.on('connection', function(socket){
     })
   })
 });
-
-//Converts array of IDs to an array of displayNames
-async function convertDisplayNamesToIDs(displayNames){
-  let IDs = [];
-  await user.find({displayName: { $in: displayNames}}, function(error, requests){
-    if(error) socket.emit("chat page error", "Unable to find users id");
-    else {
-      for (i = 0; i < requests.length; i++){
-        IDs.push(requests[i]._id)
-      }
-    }
-  }); 
-  return IDs;
-}
-
-//Converts array of displayNames to an array of IDs
-async function convertIDsToDisplayNames(IDs){
-  let displaynames = [];
-  await user.find({_id: { $in: IDs}}, function(error, requests){
-    if(error) socket.emit("chat page error", "Unable to find users id");
-    else {
-      for (i = 0; i < requests.length; i++){
-        displaynames.push(requests[i].displayName)
-      }
-    }
-  }); 
-  return displaynames;
-}
-
-//Socket listening on port 
-http.listen(port, function(){
-  console.log('listening on *:' + port);
-});
-
-
