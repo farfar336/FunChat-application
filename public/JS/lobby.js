@@ -1,4 +1,6 @@
- $(function () {
+//socket, userID, displayName, userType, viewedUserID are global variables that are initialized in index.html, near the top of the file
+
+$(function () {
 /*--------------------------------------------------- Click events ---------------------------------------------------*/
 
   //Button that directs user from lobby to home screen
