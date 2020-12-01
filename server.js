@@ -119,7 +119,7 @@ io.on('connection', function(socket){
 
     if(chatNameCheck || userSelectCheck || modSelectCheck)
     {
-      console.log("fail");
+      console.log("Chat creation failed");
       let chatInputFail = "";
       if(chatNameCheck)
       {
@@ -156,7 +156,7 @@ io.on('connection', function(socket){
               }
               else 
               {
-                console.log("added");
+                console.log("Chat created");
                 socket.emit("chat create success", "Creation of Chat: " + obj.chatname + " Successful");
               }
             })
@@ -169,9 +169,6 @@ io.on('connection', function(socket){
         } 
       });
     }
-    console.log(obj);
-
-    
   });
   
 
@@ -196,7 +193,6 @@ io.on('connection', function(socket){
     chat.findOne({name:name}, function(error, document){
       if (error)console.error(error);
       else{ 
-          console.log(name)  
           //if there is no error update the approved to true at database
           document.update({approved:true}, function (err, result) { 
             if (err){ 
@@ -221,13 +217,11 @@ io.on('connection', function(socket){
   await chat.find({}, function(err, result) {
    result.forEach(function(userChat) {
      if(userChat.participants.includes(userName) || userChat.mods.includes(userName)){
-      console.log(userChat.name);
       chats.push(userChat.name);
      }
     
     }); 
   });
-  console.log(chats)
   //send the chats to client side
   socket.emit("updateChats",chats);
 
