@@ -42,7 +42,7 @@ $(function () {
   })
 
 /*--------------------------------------------------- Socket.on events ---------------------------------------------------*/
-  // TODO: I don't know what this does. Needs more comments
+  // Removes the current list of users and mods displayed, and then displays their updated version
   socket.on('user list for create chat', function(userObj){
     //clear all previous information
     $('#usersDisplay').empty();
