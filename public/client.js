@@ -161,10 +161,23 @@ $(function () {
   $('#submitChat').click(function(){
     //Check if user has selected themselves or not. We cannot allow a user to create a chat in which they are not participating
     if($('#modDisplay').val().includes(displayName) || $('#usersDisplay').val().includes(displayName)){
-      socket.emit('create chat', {users: $('#usersDisplay').val(), mods: $('#modDisplay').val(), chatname: $('#chatname').val()});
+      let combinedArray = $('#usersDisplay').val().concat($('#modDisplay').val());
+      socket.emit('get chat user ids', {participants: combinedArray, chatname: $('#chatname').val()});
+      //socket.emit('create chat', {users: $('#usersDisplay').val(), mods: $('#modDisplay').val(), chatname: $('#chatname').val()});
       $('#chatname').val('');    //clear the chat name text box
     }
     else alert("Please include yourself as a participant in this chat");
+  })
+
+  socket.on('participant retrieval successful', function(obj){
+    let userIDs = [];
+    let modIDs = [];
+    obj.participants.forEach(function(value){
+      if(value.type == "User") userIDs.push(value._id);
+      else modIDs.push(value._id);
+    });
+    socket.emit('create chat', {users: userIDs, mods: modIDs, chatname: obj.chatname});
+
   })
 
   socket.on('chat create success', function(userObj){
@@ -207,7 +220,7 @@ $(function () {
   // this function will upload the chatname at displayed chat
   function updateChats(){
     //Emit an event to server to pull the latest chat list
-    socket.emit("refreshChatList", displayName);
+    socket.emit("refreshChatList", userID);
 
     //read a  array from server, this array called chats will include all the chat room name
     socket.on('updateChats', function(chats){
