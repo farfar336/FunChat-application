@@ -17,7 +17,6 @@ app.use(express.static('public'));
 mongoose.connect(url, { useUnifiedTopology: true, useNewUrlParser: true });
 const user = require('./models/user');
 const chat = require('./models/chat');
-const { waitForDebugger } = require('inspector');
 
 //Connect to database and print message to console
 const db = mongoose.connection;
