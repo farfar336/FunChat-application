@@ -1,12 +1,11 @@
 $(function () {
-
-  //a button in home page take user to login page
+  //Button that directs user from home to login screen
   $('.logOutButton').click(function(){
     $('#authentication').siblings().hide();
     $('#authentication').show();
   })
   
-  //a button in home,take user to lobby,
+  //Button that directs user from home to lobby screen, updates the list of chat to display, and displays button depending on the user type
   $('#lobbyButton').click(function(){
     $('#home').hide();
     $('#lobby').show();
@@ -21,9 +20,7 @@ $(function () {
     }
   })  
 
-  //Friends page logic
-
-//Home to friends page button
+  //Button that directs user from home to friends screen and refreshes their friends list so its up to date
   $('#friendsButton').click(function(){
     $('#home').hide();
     $('#friends').show();
@@ -31,6 +28,7 @@ $(function () {
     refreshFriends();
   });
 
+  //Button that directs user from home to another users profile screen 
   $('#profileButton').click(function(){
     $('#home').hide();
     $('#profile').show();

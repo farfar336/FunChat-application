@@ -1,6 +1,6 @@
 $(function () {
-
-  //Event handler for register as user or moderator button
+/*--------------------------------------------------- Click events ---------------------------------------------------*/
+  // Button that submits entered info to register
   $('.regButton').click(function(){
       let userType = $(this).attr("id");
       let email = $('#regEmail').val();
@@ -17,7 +17,7 @@ $(function () {
       else alert("Please fill all required fields");
   });
 
-  //Event handler for return to login link in registration form
+  // Button that clears entered info for registration and directs user from registration to login screen
   $('#returnToLoginLink').click(function(){
     $('#registerForm').hide();
     $('#loginForm').show();
@@ -28,15 +28,18 @@ $(function () {
     $('#regDispName').val('');
   })
 
-  //Server returns registration error
+/*--------------------------------------------------- Socket.on events ---------------------------------------------------*/
+  // If registration was unsuccesful, then notify the user
   socket.on('register error', function(msg){
     alert(msg);
   })
 
-  //Server returns registration success
+  // If registration was succesful, then notify the user and direct them from registration to login screen
   socket.on('register success', function(msg){
     alert("Registration successful!");
     $('#registerForm').hide();
     $('#loginForm').show();
   })
+
+/*--------------------------------------------------- Functions ---------------------------------------------------*/
 });

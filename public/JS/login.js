@@ -1,5 +1,7 @@
 $(function () {
-  //Event handler for login button
+/*--------------------------------------------------- Click events ---------------------------------------------------*/
+
+  //Button that directs user from profile to edit profile screen
   $('#loginButton').click(function(){
       let email = $('#logEmail').val();
       let password = $('#logPassword').val();
@@ -10,18 +12,19 @@ $(function () {
       $('#logPassword').val('');
   });
 
-  //Event handler for registration form button
+  //Button that directs user from login to registration screen
   $('#registerButton').click(function(){
     $('#loginForm').hide();
     $('#registerForm').show();
   });
 
-  //Server returns login error
+/*--------------------------------------------------- Socket.on events ---------------------------------------------------*/
+  // If login was unsuccesful, then notify the user
   socket.on('login error', function(msg){
     alert(msg);
   })
 
-  // Note:  May need to store other variables as well such a displayname to reduce the amount of socket events
+  // If login was succesful, then direct user from login to home screen and store their info for future queries
   socket.on('login success', function(userObj){
     $('#authentication').hide();
     $('#home').show();
@@ -30,4 +33,6 @@ $(function () {
     displayName = userObj.displayName;
     userType = userObj.type;
   })
+
+/*--------------------------------------------------- Functions ---------------------------------------------------*/
 });
