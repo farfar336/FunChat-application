@@ -110,7 +110,7 @@ io.on('connection', function(socket){
   });
 
   //Create Chat
-  socket.on('create chat', function(obj){
+  socket.on('create chat',  function(obj){
     //Check if a chat already exists with the chatname
     let chatNameCheck = (obj.chatname === "");
     let userSelectCheck = (obj.users.length === 0);
@@ -118,7 +118,7 @@ io.on('connection', function(socket){
 
     if(chatNameCheck || userSelectCheck || modSelectCheck)
     {
-      console.log("fail");
+      console.log("Chat creation failed");
       let chatInputFail = "";
       if(chatNameCheck)
       {
@@ -135,7 +135,7 @@ io.on('connection', function(socket){
       socket.emit("chat create failure", chatInputFail);
     }
     else{
-      chat.exists({name: obj.chatname}, function (error, document) { 
+      chat.exists({name: obj.chatname}, async function (error, document) { 
         if (error){ 
             console.log(error)
             //socket.emit("register error", "Error: unable to register"); 
@@ -143,8 +143,11 @@ io.on('connection', function(socket){
         else{
           //If there is no existing chat with given name then proceed with registering new user
           if(document === false){
+            //Convert displayNames of mods and users to IDs and store it in the array
+            let modsID = await convertDisplayNamesToIDs(obj.mods);
+            let usersID = await convertDisplayNamesToIDs(obj.users);
             //Create new user object with submitted info
-            let newChat = new chat({approved: false, name: obj.chatname, participants: obj.users, mods: obj.mods});
+            let newChat = new chat({approved: false, name: obj.chatname, participants: usersID, mods: modsID});
             //Save user to the database
             newChat.save(function (error, document) {
               if (error){
@@ -152,7 +155,7 @@ io.on('connection', function(socket){
               }
               else 
               {
-                console.log("added");
+                console.log("Chat created");
                 socket.emit("chat create success", "Creation of Chat: " + obj.chatname + " Successful");
               }
             })
@@ -165,9 +168,6 @@ io.on('connection', function(socket){
         } 
       });
     }
-    console.log(obj);
-
-    
   });
   
 
@@ -192,7 +192,6 @@ io.on('connection', function(socket){
     chat.findOne({name:name}, function(error, document){
       if (error)console.error(error);
       else{ 
-          console.log(name)  
           //if there is no error update the approved to true at database
           document.update({approved:true}, function (err, result) { 
             if (err){ 
@@ -206,24 +205,22 @@ io.on('connection', function(socket){
   })
 
   
-  socket.on("refreshChatList", function(userName){
-    updatechat(userName);
+  socket.on("refreshChatList", function(userID){
+    updatechat(userID);
   })
 
   //read the chat rooms from database, send them to client side
- async function updatechat(userName){
+ async function updatechat(userID){
   var chats = []
   //read all the chat rooms in chat and put them into a array called chats
   await chat.find({}, function(err, result) {
    result.forEach(function(userChat) {
-     if(userChat.participants.includes(userName) || userChat.mods.includes(userName)){
-      console.log(userChat.name);
+     if(userChat.participants.includes(userID) || userChat.mods.includes(userID)){
       chats.push(userChat.name);
      }
     
     }); 
   });
-  console.log(chats)
   //send the chats to client side
   socket.emit("updateChats",chats);
 
@@ -393,9 +390,21 @@ io.on('connection', function(socket){
       }
     })
   })
-
 });
 
+//Converts displayNames to the corresponding IDs and stores it in an array
+async function convertDisplayNamesToIDs(displayNames){
+  let IDs = [];
+  await user.find({displayName: { $in: displayNames}}, function(error, requests){
+    if(error) socket.emit("chat page error", "Unable to find users id");
+    else {
+      for (i = 0; i < requests.length; i++){
+        IDs.push(requests[i]._id)
+      }
+    }
+  }); 
+  return IDs;
+}
 
 //Socket listening on port 
 http.listen(port, function(){
