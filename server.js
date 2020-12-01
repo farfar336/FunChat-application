@@ -146,7 +146,7 @@ io.on('connection', function(socket){
             //Convert displayNames of mods and users to IDs and store it in the array
             let modsID = await convertDisplayNamesToIDs(obj.mods);
             let usersID = await convertDisplayNamesToIDs(obj.users);
-            // let userDisplayNames = await convertIDstoDisplayNames(usersID); this is an example of how to convert an array of IDs to an array of DisplayNames
+            // let userDisplayNames = await convertIDsToDisplayNames(usersID); this is an example of how to convert an array of IDs to an array of DisplayNames
 
             //Create new user object with submitted info
             let newChat = new chat({approved: false, name: obj.chatname, participants: usersID, mods: modsID});
@@ -409,7 +409,7 @@ async function convertDisplayNamesToIDs(displayNames){
 }
 
 //Converts array of displayNames to an array of IDs
-async function convertIDstoDisplayNames(IDs){
+async function convertIDsToDisplayNames(IDs){
   let displaynames = [];
   await user.find({_id: { $in: IDs}}, function(error, requests){
     if(error) socket.emit("chat page error", "Unable to find users id");
