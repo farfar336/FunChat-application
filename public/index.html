@@ -20,10 +20,41 @@
     <link rel="stylesheet" type="text/css" href="/CSS/profile.css">
 
     <!-- Script references -->
+    <link rel="stylesheet" type="text/css" href="general.css">
+    <link rel="stylesheet" type="text/css" href="login.css">
+    <link rel="stylesheet" type="text/css" href="registration.css">
+    <link rel="stylesheet" type="text/css" href="home.css">
+    <link rel="stylesheet" type="text/css" href="lobby.css">
+    <link rel="stylesheet" type="text/css" href="chat.css">
+    <link rel="stylesheet" type="text/css" href="createChat.css">
+    <link rel="stylesheet" type="text/css" href="friends.css">
+    <link rel="stylesheet" type="text/css" href="editProfile.css">
+    <link rel="stylesheet" type="text/css" href="profile.css">
+
+    <!-- script references from websites-->
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://kit.fontawesome.com/86d78876c2.js" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="client.js"></script>
+
+    <!-- Global variable initliziation -->
+    <script type='text/javascript' > 
+      let socket = io();
+      let userID = "";
+      let displayName = "";
+      let userType = "";
+      let viewedUserID ="";
+    </script>
+
+    <!-- script references from files-->
+    <script type="text/javascript" src="/JS/login.js"></script>
+    <script type="text/javascript" src="/JS/home.js"></script>
+    <script type="text/javascript" src="/JS/lobby.js"></script>
+    <script type="text/javascript" src="/JS/chat.js"></script>
+    <script type="text/javascript" src="/JS/createChat.js"></script>
+    <script type="text/javascript" src="/JS/friendlist.js"></script>
+    <script type="text/javascript" src="/JS/profile.js"></script>
+    <script type="text/javascript" src="/JS/editProfile.js"></script>
+    
     <title>Chat Application</title>
   </head>
   <body class="flexCol">
