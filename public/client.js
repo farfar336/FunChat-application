@@ -207,7 +207,7 @@ $(function () {
   // this function will upload the chatname at displayed chat
   function updateChats(){
     //Emit an event to server to pull the latest chat list
-    socket.emit("refreshChatList", displayName);
+    socket.emit("refreshChatList", userID);
 
     //read a  array from server, this array called chats will include all the chat room name
     socket.on('updateChats', function(chats){

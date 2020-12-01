@@ -206,17 +206,17 @@ io.on('connection', function(socket){
   })
 
   
-  socket.on("refreshChatList", function(userName){
-    updatechat(userName);
+  socket.on("refreshChatList", function(userID){
+    updatechat(userID);
   })
 
   //read the chat rooms from database, send them to client side
- async function updatechat(userName){
+ async function updatechat(userID){
   var chats = []
   //read all the chat rooms in chat and put them into a array called chats
   await chat.find({}, function(err, result) {
    result.forEach(function(userChat) {
-     if(userChat.participants.includes(userName) || userChat.mods.includes(userName)){
+     if(userChat.participants.includes(userID) || userChat.mods.includes(userID)){
       chats.push(userChat.name);
      }
     
