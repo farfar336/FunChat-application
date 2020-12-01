@@ -14,12 +14,6 @@
     socket.emit('get users for create chat', {});
   })
 
-  //TODO: Why is there two of these click functions?
-  $('#createChatButton').click(function(){
-    $('#lobby').hide();
-    $('#chatCreate').show();
-  })
-
   //Button that directs user from lobby to chat screen
   $('#enterChatButton').click(function(){
     $('#lobby').hide();
