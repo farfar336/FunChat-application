@@ -38,10 +38,10 @@ $(function () {
 
     //Buttons displayed based on user type
     if (userType == "User"){
-      $('#restrictButton').hide();
+      $('#wordButton').hide();
     }
     else if(userType == "Moderator"){
-      $('#restrictButton').show();
+      $('#wordButton').show();
     }
     
   })
