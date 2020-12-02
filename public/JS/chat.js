@@ -1,7 +1,7 @@
 //socket, userID, displayName, userType, viewedUserID are global variables that are initialized in index.html, near the top of the file
-
+/*--------------------------------------------------- Chat ---------------------------------------------------*/
 $(function () {
-/*--------------------------------------------------- Click events ---------------------------------------------------*/
+/*---------------- Click events ----------------*/
     // Sends the message entered to the chat
     $('#messageForm').submit(function(e){
         e.preventDefault(); // prevents page reloading
@@ -10,7 +10,6 @@ $(function () {
         $('#m').val('');
         return false;
     });
-/*--------------------------------------------------- Socket.on events ---------------------------------------------------*/
-/*--------------------------------------------------- Functions ---------------------------------------------------*/
-
+/*---------------- Socket.on events ----------------*/
+/*---------------- Functions ----------------*/
 });
