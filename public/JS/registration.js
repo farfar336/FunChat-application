@@ -1,7 +1,7 @@
 //socket, userID, displayName, userType, viewedUserID are global variables that are initialized in index.html, near the top of the file
-
+/*--------------------------------------------------- Registration ---------------------------------------------------*/
 $(function () {
-/*--------------------------------------------------- Click events ---------------------------------------------------*/
+/*---------------- Click events ----------------*/
   // Button that submits entered info to register
   $('.regButton').click(function(){
       let userType = $(this).attr("id");
@@ -30,7 +30,7 @@ $(function () {
     $('#regDispName').val('');
   })
 
-/*--------------------------------------------------- Socket.on events ---------------------------------------------------*/
+/*---------------- Socket.on events ----------------*/
   // If registration was unsuccesful, then notify the user
   socket.on('register error', function(msg){
     alert(msg);
@@ -43,5 +43,5 @@ $(function () {
     $('#loginForm').show();
   })
 
-/*--------------------------------------------------- Functions ---------------------------------------------------*/
+/*---------------- Functions ----------------*/
 });

@@ -1,6 +1,7 @@
 //socket, userID, displayName, userType, viewedUserID are global variables that are initialized in index.html, near the top of the file
-
+/*--------------------------------------------------- Home ---------------------------------------------------*/
 $(function () {
+/*---------------- Click events ----------------*/
   //Button that directs user from home to login screen
   $('.logOutButton').click(function(){
     $('#authentication').siblings().hide();
@@ -47,4 +48,7 @@ $(function () {
       $('#profileToFriendsButton').hide();
     }
   })
+
+/*---------------- Socket.on events ----------------*/
+/*---------------- Functions ----------------*/
 });

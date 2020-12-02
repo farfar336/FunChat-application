@@ -1,7 +1,7 @@
 //socket, userID, displayName, userType, viewedUserID are global variables that are initialized in index.html, near the top of the file
-
+/*--------------------------------------------------- createChat ---------------------------------------------------*/
 $(function () {
-/*--------------------------------------------------- Click events ---------------------------------------------------*/
+/*---------------- Click events ----------------*/
   // Button that directs user from chat create to lobby screen and show updated list of chats
   $('#createChatToLobby').click(function(){
     $('#lobby').show();
@@ -43,7 +43,7 @@ $(function () {
     alert(name + " has been approved");
   })
 
-/*--------------------------------------------------- Socket.on events ---------------------------------------------------*/
+/*---------------- Socket.on events ----------------*/
   // Removes the current list of users and mods displayed, and then displays their updated version
   socket.on('user list for create chat', function(userObj){
     //clear all previous information
@@ -81,7 +81,7 @@ $(function () {
     alert(userObj);
   })
  
-/*--------------------------------------------------- Functions ---------------------------------------------------*/
+/*---------------- Functions ----------------*/
   // Updates the list of chats
   function updateChats(){
     //Emit an event to server to pull the latest chat list

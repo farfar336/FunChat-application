@@ -1,7 +1,7 @@
 @import "general.css"; 
 @import "authentication.css"; 
 
-/*Styling for registration form*/
+/*--------------------------------------------------- Registration ---------------------------------------------------*/
 #registerForm{
     display: none;
 }

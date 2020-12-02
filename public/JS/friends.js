@@ -1,22 +1,30 @@
 //socket, userID, displayName, userType, viewedUserID are global variables that are initialized in index.html, near the top of the file
-
+/*--------------------------------------------------- Friends ---------------------------------------------------*/
 $(function () {
+/*---------------- Click events ----------------*/
+  //Button that directs user from friends to home screen
   $('#friendsToHomeButton').click(function(){
     $('#friends').hide();
     $('#home').show();
   });
 
-  //Function to refresh the friends page after changes
-  function refreshFriends(){
-      //Get friend requests and added friends from the database
-      socket.emit('fetch friend requests', userID);
-      socket.emit('fetch added friends', userID);
-  }
+  //Button that sends a friend request to the user entered and notifies the user if it was succesful or not
+  $('#submitFriend').click(function(){
+    if($('#friendName').val() === displayName) alert("You cannot send a friend request to yourself!")
+    else socket.emit('send friend request', {senderID:userID, senderName:displayName, receiver:$('#friendName').val(), senderType:userType});
+    $('#friendName').val('')
+  });
 
-  //Displays any error messages
+/*---------------- Socket.on events ----------------*/
+  //Notifies the user that the friend request was unsuccesful
   socket.on('friends page error', function(msg){
     alert(msg);
   });
+
+  //Notifies the user that the friend request was succesful
+  socket.on('friend request success', function(msg){
+    alert(msg);
+  })  
 
   //Update the 'Friend Requests' section 
   socket.on('display friend requests successful', function(requests){
@@ -40,19 +48,6 @@ $(function () {
     }
     else $('#approvedFriends').append("<p class=\"emptyFriends\">You don't have any friends added yet. Enter a display name to send a request!</p>");
   });
-  
-  //Enter a display name in the search box and click the send button
-  $('#submitFriend').click(function(){
-    if($('#friendName').val() === displayName) alert("You cannot send a friend request to yourself!")
-    else socket.emit('send friend request', {senderID:userID, senderName:displayName, receiver:$('#friendName').val(), senderType:userType});
-    $('#friendName').val('')
-  });
-
-
-  //Give user message when friend request sent successfully
-  socket.on('friend request success', function(msg){
-    alert(msg);
-  })
 
   //Refresh the friends page when a new request arrives, request is accepted/decline or a user is unfriended
   socket.on('friend lists refresh', function(obj){
@@ -61,8 +56,16 @@ $(function () {
     }
   })
 
+/*---------------- Functions ----------------*/
+  //Function to refresh the friends page after changes
+  function refreshFriends(){
+    //Get friend requests and added friends from the database
+    socket.emit('fetch friend requests', userID);
+    socket.emit('fetch added friends', userID);
+  }
 
-  //Event handler for user accepting a friend request
+/*---------------- Event Handler ----------------*/  
+  //For user accepting a friend request
   $("#friendRequests").on( "click", ".accept", function() {
     //Get the id of the friend requesting to be added. 
     let pid = $(this).parent().attr("id");
@@ -72,7 +75,7 @@ $(function () {
     socket.emit('accept friend request', {user:userID, request:pid});
   });
 
-  //Event handler for user rejecting a friend request
+  //For user rejecting a friend request
   $("#friendRequests").on( "click", ".decline", function() {
     //Get the id of the friend requesting to be added. 
     let pid = $(this).parent().attr("id");
@@ -81,7 +84,7 @@ $(function () {
     socket.emit('decline friend request', {user:userID, request:pid});
   });
 
-  //Event handler for user unfriending another user
+  //For user unfriending another user
   $("#approvedFriends").on( "click", ".unFriend", function() {
     //Get the id of the friend to be removed. 
     let pid = $(this).parent().attr("id");
@@ -90,7 +93,7 @@ $(function () {
     socket.emit('unfriend', {user:userID, friend:pid});
   });
 
-  //Event handler for viewing friend's profile
+  //For viewing friend's profile
   $(".tileContainers").on( "click", ".dispName", function() {
     //Get the id of the friend. 
     let pid = $(this).parent().attr("id");

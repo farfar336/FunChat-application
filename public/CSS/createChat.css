@@ -1,6 +1,5 @@
 @import "general.css"; 
-
-/*chatCreate styling*/
+/*--------------------------------------------------- Create Chat ---------------------------------------------------*/
 #chatCreate{
     display: none;
     width: 100%;
