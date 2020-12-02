@@ -57,12 +57,7 @@ $(function () {
   })
 
 /*---------------- Functions ----------------*/
-  //Function to refresh the friends page after changes
-  function refreshFriends(){
-    //Get friend requests and added friends from the database
-    socket.emit('fetch friend requests', userID);
-    socket.emit('fetch added friends', userID);
-  }
+
 
 /*---------------- Event Handler ----------------*/  
   //For user accepting a friend request
