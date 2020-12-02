@@ -30,3 +30,7 @@
 * If a function has more than 10 lines of code, then split the code among multiple functions
 * If one team member would like to make a change to a code written by someone else, they can notify that person about the change and it will be up to them if they want to change it or not.
 * Make one css file for each UI screen. When the project is complete, we will combine them all in one css file to optimize performance
+
+  # End of project checklist
+  * Merge JS files into one
+  * Merge CSS files into one
