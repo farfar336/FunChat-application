@@ -32,5 +32,5 @@
 * Make one css file for each UI screen. When the project is complete, we will combine them all in one css file to optimize performance
 
 # End of project checklist
-* Merge JS files into one
-* Merge CSS files into one
+* Merge JS files into one file
+* Merge CSS files into one file
