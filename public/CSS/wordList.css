@@ -1,0 +1,65 @@
+@import "general.css"; 
+/*--------------------------------------------------- Create Chat ---------------------------------------------------*/
+#wordList{
+    display: none;
+    width: 100%;
+    max-width: 700px;
+    text-align: center;
+    justify-content: center;
+}
+
+#wordList form{
+    width: 100%;
+}
+
+
+#displayWords {
+    width: 100%; 
+}
+
+#displayWords li{
+    display: inline;
+    float: left;
+    width: 100%;
+    margin: 10px;
+}
+.wordSelects{
+    width: 100%;
+    font-size: 16px;
+    padding-top: 5px;
+    padding-right: 5px;
+    padding-left: 5px;
+}
+
+#wordListLabel{
+    font-size: 18px;
+    font-weight: bold;
+   
+}
+
+#restrictedWord, #addLabel, #deleteLabel{
+    font-size: 16px;
+    margin-top: 5px;
+}
+
+#wordListOptions {
+    margin: 0; padding: 0;
+    width: 100%; 
+}
+
+#wordListOptions li{
+    float: right;
+    list-style: none;
+    width: 100%;
+    margin: 10px;
+}
+
+.wordListButtons{
+    width: 18%;
+    min-height: 30px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    margin-top: 5px;
+}
