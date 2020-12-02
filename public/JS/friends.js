@@ -31,7 +31,7 @@ $(function () {
     $('#friendRequests').html("");
     if(requests.length > 0){
       $.each(requests, function(index, value) {
-        $('#friendRequests').append("<div id=\"" + "req-" + value._id + "\" class=\"userTile flexCol\"><img src=\"person-icon.png\" width=\"30%\"><p class=\"dispName\">" + value.displayName + "</p><p class=\"acctType\">" + value.type + "</p><div id=\"" + "dec-" + value._id + "\" class=\"reqDecision flexRow\"><img class=\"accept\" src=\"accept.png\" width=\"20%\"><img class=\"decline\" src=\"decline.jpg\" width=\"20%\"></div></div>");
+        $('#friendRequests').append("<div id=\"" + "req-" + value._id + "\" class=\"userTile flexCol\"><img src=\"/Images/person-icon.png\" width=\"30%\"><p class=\"dispName\">" + value.displayName + "</p><p class=\"acctType\">" + value.type + "</p><div id=\"" + "dec-" + value._id + "\" class=\"reqDecision flexRow\"><img class=\"accept\" src=\"/Images/accept.png\" width=\"20%\"><img class=\"decline\" src=\"/Images/decline.jpg\" width=\"20%\"></div></div>");
       });
     }
     else $('#friendRequests').append("<p class=\"emptyFriends\">There are no friend requests.</p>");
@@ -43,7 +43,7 @@ $(function () {
     $('#approvedFriends').html("");
     if(requests.length > 0){
       $.each(requests, function(index, value) {
-        $('#approvedFriends').append("<div id=\"" + "req-" + value._id + "\" class=\"userTile flexCol\"><img src=\"person-icon.png\" width=\"30%\"><p class=\"dispName\">" + value.displayName + "</p><p class=\"acctType\">" + value.type + "</p><div class=\"unFriend\">Unfriend</div></div>");
+        $('#approvedFriends').append("<div id=\"" + "req-" + value._id + "\" class=\"userTile flexCol\"><img src=\"/Images/person-icon.png\" width=\"30%\"><p class=\"dispName\">" + value.displayName + "</p><p class=\"acctType\">" + value.type + "</p><div class=\"unFriend\">Unfriend</div></div>");
       });
     }
     else $('#approvedFriends').append("<p class=\"emptyFriends\">You don't have any friends added yet. Enter a display name to send a request!</p>");
