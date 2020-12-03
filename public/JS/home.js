@@ -49,6 +49,14 @@ $(function () {
     }
   })
 
+  //Button that directs user from home to another users profile screen 
+  $('#wordButton').click(function(){
+    $('#home').hide();
+    $('#wordList').show();
+    socket.emit('get words for word List', {});
+
+  })
+
 /*---------------- Socket.on events ----------------*/
 /*---------------- Functions ----------------*/
 });

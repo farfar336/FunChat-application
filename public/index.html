@@ -18,6 +18,7 @@
     <link rel="stylesheet" type="text/css" href="/CSS/friends.css">
     <link rel="stylesheet" type="text/css" href="/CSS/editProfile.css">
     <link rel="stylesheet" type="text/css" href="/CSS/profile.css">
+    <link rel="stylesheet" type="text/css" href="/CSS/badWords.css">
 
     <!-- script references from websites-->
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
@@ -44,6 +45,7 @@
     <script type="text/javascript" src="/JS/friends.js"></script>
     <script type="text/javascript" src="/JS/profile.js"></script>
     <script type="text/javascript" src="/JS/editProfile.js"></script>
+    <script type="text/javascript" src="/JS/wordList.js"></script>
     
     <title>Chat Application</title>
   </head>
@@ -88,6 +90,7 @@
       <button  class="homeButtons" id="profileButton" type="button">Profile</button>
       <button  class="homeButtons" id="lobbyButton"  type="button">Lobby</button>
       <button  class="homeButtons" id="friendsButton" type="button">Friends</button>
+      <button  class="homeButtons" id="wordButton" type="button">Bad Words</button>
     </div>
 
     
@@ -228,6 +231,44 @@
       <button id="profileToFriendsButton" class="profileButtons" type="button">Back to Friends</button>
     </div>
 
+    <!---Word List Module-->
+    <div id="wordList">
+      <div id="FunChatLabel" class="flexRow">
+        <button  id="wordListToHomeButton" class="headerButton" type="button">Home</button>
+        <p style="width:67%;text-align: center;">FunChat</p>
+        <button  class="logOutButton headerButton" type="button">Log Out</button></div>
+      <div class="screenTitle">Bad Words</div>
+
+      <!---Word List-->
+      <form>
+        <ul id="displayWords">
+          <li>
+            <label id="wordListLabel" class="generalLabel">Bad Words List</label><br>
+            <select id="wordDisplay" class="wordSelects" name="wordDisplay" size="10" multiple>
+              <option>Temp</option>
+              <option>Word</option>
+            </select>
+          </li>
+        </ul>
+        <ul id="wordListOptions">
+          <li>
+            <!---Add Word-->
+            <label id="addLabel" class="generalLabel">Add Word</label>
+            <input type="text" id="restrictedWord" >
+            <button class="wordListButtons" id="addWord" style="display: inline;" type="button">Add</button> 
+          </li>
+          <li>
+            <!---Delete Word-->
+            <label id="deleteLabel" class="generalLabel">Select Word then Press Delete</label>
+            <button class="wordListButtons" id="deleteWord" style="display: inline;" type="button">Delete</button>
+          </li>
+        </ul>
+      </form>
+      
+      
+      
+      
+    </div>
 
     
 

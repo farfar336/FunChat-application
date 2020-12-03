@@ -103,6 +103,25 @@ io.on('connection', function(socket){
     }); 
   });
 
+/*--------------------------------------------------- Word List  ---------------------------------------------------*/
+
+
+  //Get Word list
+  socket.on('get words for word List', function(obj){
+    //Fetch list of all word in database
+
+    //TODO Fill in
+    /** 
+    .find({}, {}, function(err, users){
+      if(err){
+        console.log(err);
+      } else{
+        socket.emit('word list for create chat' ,users);
+      }
+    })
+    */
+  });
+
 /*--------------------------------------------------- Create Chat  ---------------------------------------------------*/
   //Get User list
   socket.on('get users for create chat', function(obj){

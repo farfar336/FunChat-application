@@ -17,6 +17,7 @@ $(function () {
   $('#registerButton').click(function(){
     $('#loginForm').hide();
     $('#registerForm').show();
+
   });
 
 /*---------------- Socket.on events ----------------*/
@@ -33,6 +34,16 @@ $(function () {
     userID = userObj._id;     //store user's id for future database queries
     displayName = userObj.displayName;
     userType = userObj.type;
+
+
+    //Buttons displayed based on user type
+    if (userType == "User"){
+      $('#wordButton').hide();
+    }
+    else if(userType == "Moderator"){
+      $('#wordButton').show();
+    }
+    
   })
 
 /*---------------- Functions ----------------*/
