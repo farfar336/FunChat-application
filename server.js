@@ -139,7 +139,9 @@ io.on('connection', function(socket){
           user.findOne({_id:ID},function(err,friend){
             if(err)console.error(err)
             else{
-              users.push(friend)
+              if(friend.type!="Moderator"){
+                users.push(friend)
+              }
             }
           })
         })
