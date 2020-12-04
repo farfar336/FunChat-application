@@ -272,7 +272,7 @@ io.on('connection', function(socket){
   await chat.find({}, function(err, result) {
    result.forEach(function(userChat) {
      if(userChat.participants.includes(userID) || userChat.mods.includes(userID)){
-      chats.push(userChat.name);
+      chats.push([userChat.name,userChat.approved]);
      }
     
     }); 

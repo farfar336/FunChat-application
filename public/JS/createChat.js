@@ -38,6 +38,7 @@ $(function () {
   $('#approveChatButton').click(function(){
     var chatsDisplayed = document.getElementById("chatsDisplayed")
     var chat = chatsDisplayed.selectedIndex;
+    chatsDisplayed.children[chat].style.fontWeight="bold"
     var name=chatsDisplayed.children[chat].innerHTML
     socket.emit("approveChat",name)
     alert(name + " has been approved");
