@@ -13,7 +13,7 @@
 # Running the application
 1. Open a new terminal, but make sure to not close the terminal in 'Setting up MongoDB' step 4. So, 2 terminals should be open at this moment.
 1. Pull the files from the main branch
-2. run the command 'node index.js'
+2. run the command 'node server.js'
 3. Go to this link: http://localhost:3000/. It should display the login screen
 
 # Running MongoDB compass for seeing the entries in the database
@@ -25,11 +25,10 @@
 
 # Team coding tips
 * Use constants instead of numbers. For example, const MAX_USERS = 100;
-* Use self-explanatory variable and function names.
-* For each function, give a short comment of what it does.
+* Use self-explanatory variable and function names
+* For each function, give a short comment of what it does
 * If a function has more than 10 lines of code, then split the code among multiple functions
-* If one team member would like to make a change to a code written by someone else, they can notify that person about the change and it will be up to them if they want to change it or not.
-* Make one css file for each UI screen. When the project is complete, we will combine them all in one css file to optimize performance
+* Make one css file and js file for each screen
 
 # End of project checklist
 * Merge JS files into one file
