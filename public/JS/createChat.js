@@ -52,7 +52,7 @@ $(function () {
     $('#modDisplay').empty();
 
     for(let i = 0; i < userObj.length; i++)
-    {
+    { 
       if(userObj[i].type === "Moderator")
       {
         $('#modDisplay').append($('<option>', {

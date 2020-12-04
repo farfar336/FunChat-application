@@ -13,15 +13,28 @@ $(function () {
   $('#createChatButton').click(function(){
     $('#lobby').hide();
     $('#chatCreate').show();
-    socket.emit('get users for create chat', {});
+    socket.emit('get users for create chat', userID);
   })
 
   //Button that directs user from lobby to chat screen
   $('#enterChatButton').click(function(){
-    $('#lobby').hide();
-    $('#chat').css('display', 'contents');
+    var chatsDisplayed = document.getElementById("chatsDisplayed")
+    var chat = chatsDisplayed.selectedIndex;
+    var chatname=chatsDisplayed.children[chat].innerHTML
+    socket.emit("chatApprovedOrNot",chatname)
+    
   })
 
 /*---------------- Socket.on events ----------------*/
+socket.on("chatApproved",function(){
+  $('#lobby').hide();
+  $('#chat').css('display', 'contents');
+})
+
+socket.on("chatNotApproved",function(){
+  alert("this chat is not approved, please wait")
+})
+
+
 /*---------------- Functions ----------------*/
 });

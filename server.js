@@ -124,13 +124,32 @@ io.on('connection', function(socket){
 
 /*--------------------------------------------------- Create Chat  ---------------------------------------------------*/
   //Get User list
-  socket.on('get users for create chat', function(obj){
-    //Fetch list of all users in database
-    user.find({}, {}, function(err, users){
+  socket.on('get users for create chat', function(userID){
+    //Find this user and send friend list to client
+    user.findOne({_id:userID}, function(err, thisuser){
       if(err){
         console.log(err);
-      } else{
-        socket.emit('user list for create chat' ,users);
+      } else{  
+        var users=[]
+        users.push(thisuser)
+        thisuser.friends.forEach(displayname=>{
+          user.findOne({displayName:displayname},function(err,friend){
+            if(err)console.error(err)
+            else{
+              users.push(friend)
+            }
+          })
+        })
+        user.find({type:"Moderator"},function(err, allmoderator){
+          if(err)console.log(err);
+          else{
+            allmoderator.forEach(moderator => {
+              users.push(moderator)
+            })
+            socket.emit('user list for create chat' ,users);
+          }
+        })
+        
       }
     })
     
@@ -280,6 +299,21 @@ io.on('connection', function(socket){
   //send the chats to client side
   socket.emit("updateChats",chats);
  }
+
+ socket.on("chatApprovedOrNot",function(chatname){
+   chat.findOne({name:chatname},function(err,chat){
+     if(err)console.error(err)
+     else{
+       if(chat.approved){
+         socket.emit("chatApproved")
+       }else{
+         socket.emit("chatNotApproved")
+       }
+     }
+   })
+ })
+
+
 
 /*--------------------------------------------------- Friend List  ---------------------------------------------------*/
   //Handle incoming friend request
@@ -445,3 +479,7 @@ io.on('connection', function(socket){
     })
   })
 });
+
+
+
+
