@@ -19,7 +19,6 @@ $(function () {
   //Button that directs user from lobby to chat screen
   $('#enterChatButton').click(function(){
     $('#lobby').hide();
-    $('#chat').css('display', 'contents');
   })
 
 /*---------------- Socket.on events ----------------*/
