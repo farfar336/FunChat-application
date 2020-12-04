@@ -315,8 +315,8 @@ io.on('connection', function(socket){
   
 /*--------------------------------------------------- Lobby  ---------------------------------------------------*/
   //if a chat is rejected, this chat will be romove from the database
-  socket.on("rejectChat", function(name){
-    //find the rejected chat room
+  socket.on("removeChat", function(name){
+    //find the removed chat room
     chat.findOne({name:name}, function(error, document){
       if (error)console.error(error);
       else{

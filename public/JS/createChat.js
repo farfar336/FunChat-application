@@ -25,12 +25,12 @@ $(function () {
     else alert("Please include yourself as a participant in this chat");
   })
 
-   //Button that rejects chat creation request
-   $('#rejectChatButton').click(function(){
+   //Button that removes a chat
+   $('#removeChatButton').click(function(){
     var chatsDisplayed = document.getElementById("chatsDisplayed")
     var chat = chatsDisplayed.selectedIndex;
     var name=chatsDisplayed.children[chat].innerHTML
-    socket.emit("rejectChat",name)
+    socket.emit("removeChat",name)
     chatsDisplayed.options.remove(chat);
   })  
 
