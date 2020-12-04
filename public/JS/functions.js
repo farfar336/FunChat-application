@@ -20,7 +20,13 @@ function updateChats(){
             console.log(chats)
             chats.forEach(element => {
             var chat=document.createElement("option");
-            chat.innerHTML=element;
+            chat.innerHTML=element[0];
+            if(element[1]==true){
+                chat.style.fontWeight="bold";
+            }
+           
+            
+            
             chatsDisplayed.appendChild(chat)
         });
     })
