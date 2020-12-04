@@ -18,6 +18,7 @@ app.use(express.static('public'));
 mongoose.connect(url, { useUnifiedTopology: true, useNewUrlParser: true });
 const user = require('./models/user');
 const chat = require('./models/chat');
+const message = require('./models/message');
 
 //Connect to database and print message to console
 const db = mongoose.connection;
@@ -51,6 +52,11 @@ io.on('connection', function(socket){
         else{
           if(document.password != obj.pass) socket.emit("login error", "Wrong password!");
           else{
+            socket.user = {
+              id: document._id,
+              displayName: document.displayName,
+              type: document.type,
+            };
             socket.emit("login success", document);
           }
         }
@@ -226,6 +232,86 @@ io.on('connection', function(socket){
     }); 
     return displaynames;
   }
+
+/*-------------------------------------------------- Use Chat  -------------------------------------------------*/
+  socket.on("join chat", async (req) => {
+    let chatInst = await chat.findOne({name: req.name}).exec();
+
+    if(chatInst == null) {
+      socket.emit("chat join failure", "The chat room was not found or does not exist");
+      return;
+    }
+
+    // Set user's active chat
+    socket.chat = chatInst.name;
+    socket.join(socket.chat);
+    socket.emit("chat join success", {
+      name: chatInst.name,
+    });
+
+    // Send user list
+    let userIds = chatInst.mods.concat(chatInst.participants);
+    let users = await user.find({_id: { $in: userIds }});
+
+    users.forEach((chatUser) => {
+      socket.emit("chat user added", {
+        name: chatUser.displayName,
+        type: chatUser.type,
+      });
+    });
+
+    // Send message backlog
+    let messages = await message.find({chat: chatInst._id}).sort({time: -1}).limit(200).exec(); // Grab max 200 latest messages from the backlog
+    messages.sort((a, b) => { // Sort messages with the latest message last
+      return a.time - b.time;
+    });
+
+    let messageDTO = await Promise.all(messages.map(async (msg) => {
+      let sender = await user.findOne({_id: msg.sender}).exec();
+      return {
+        content: msg.content,
+        sender: sender.displayName,
+        time: msg.time,
+        type: sender.type,
+      }
+    }));
+
+    socket.emit("chat message", {
+      messages: messageDTO,
+    });
+  });
+
+  socket.on("leave chat", (req) => {
+    if(socket.chat == null)
+      return;
+
+    socket.leave(socket.chat);
+    socket.chat = null;
+  });
+
+  socket.on("chat message", async (req) => {
+    let content = req.content;
+    let date = new Date();
+
+    // TODO: Validate content (e.g. bad words list)
+
+    // Send message to users in channel
+    io.to(socket.chat).emit("chat message", {
+      content: content,
+      sender: socket.user.displayName,
+      time: date,
+      type: socket.user.type,
+    });
+
+    // Store message to database
+    let chatInst = await chat.findOne({name: socket.chat}).exec();
+    message.create({
+      chat: chatInst._id,
+      sender: socket.user.id,
+      time: date,
+      content: content,
+    });
+  });
   
 /*--------------------------------------------------- Lobby  ---------------------------------------------------*/
   //if a chat is rejected, this chat will be romove from the database
