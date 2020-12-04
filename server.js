@@ -447,16 +447,20 @@ io.on('connection', function(socket){
 
   /* -------------------------------------edit profile screen ----------------------------------------------------------------------*/ 
   
+
+  //user  change the display name
   socket.on("changeDisplayname", function(data){
+    //check if this name already exist in database
     user.findOne({displayName:data.displayname}, function(error, document){
     if (error)console.error(error);
     else{
       if(document==null){
-        
+        //if this name is not in databse, find this user by it's id
         user.findOne({_id:data.id}, function(error, thisuser){
           if (error)console.error(error);
           else{
             console.log(thisuser)
+            //upload display name
             thisuser.update({displayName:data.displayname}, function (err, result) { 
               if (err){ 
                   console.log(err) 

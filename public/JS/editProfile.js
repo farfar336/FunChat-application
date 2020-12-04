@@ -14,18 +14,23 @@ $(function () {
     $('#home').show();
   })
 
+  //ask to change the display name
+  $('#changeDisplayNameButton').click(function(){
+    var displayname=document.getElementById("newDisplayNameField").value;
+    socket.emit("changeDisplayname",{displayname:displayname, id:userID})
+  
+  })
+
 /*---------------- Socket.on events ----------------*/
 
-$('#changeDisplayNameButton').click(function(){
-  var displayname=document.getElementById("newDisplayNameField").value;
-  socket.emit("changeDisplayname",{displayname:displayname, id:userID})
-
-})
+//if user's chhanged display name
 socket.on("changeDisplaynameSuccessful",function(){
   alert("change displayname successfully")
 })
+
+//if this name exist in database
 socket.on("invalidDisplayname",function(){
-  alert("this display name is invalid")
+  alert("The display name already exists. Choose a different one")
 })
 
 
