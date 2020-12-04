@@ -26,13 +26,16 @@ $(function () {
   })
 
 /*---------------- Socket.on events ----------------*/
+
+//if user enter a approved chat
 socket.on("chatApproved",function(){
   $('#lobby').hide();
   $('#chat').css('display', 'contents');
 })
 
+//if user try to enter a not approved chat
 socket.on("chatNotApproved",function(){
-  alert("this chat is not approved, please wait")
+  alert("You can't enter this chat as it is not approved yet")
 })
 
 

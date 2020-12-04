@@ -125,21 +125,25 @@ io.on('connection', function(socket){
 /*--------------------------------------------------- Create Chat  ---------------------------------------------------*/
   //Get User list
   socket.on('get users for create chat', function(userID){
-    //Find this user and send friend list to client
+    //Find this user 
     user.findOne({_id:userID}, function(err, thisuser){
       if(err){
         console.log(err);
       } else{  
         var users=[]
-        users.push(thisuser)
-        thisuser.friends.forEach(displayname=>{
-          user.findOne({displayName:displayname},function(err,friend){
+        if(thisuser.type!="Moderator"){
+          users.push(thisuser)
+        }
+        //get id of this user, and push into users
+        thisuser.friends.forEach(ID=>{
+          user.findOne({_id:ID},function(err,friend){
             if(err)console.error(err)
             else{
               users.push(friend)
             }
           })
         })
+        //push all moderator
         user.find({type:"Moderator"},function(err, allmoderator){
           if(err)console.log(err);
           else{
