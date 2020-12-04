@@ -19,6 +19,12 @@ $(function () {
   //Button that directs user from lobby to chat screen
   $('#enterChatButton').click(function(){
     $('#lobby').hide();
+
+    // If person is a regular user, hide moderator buttons in chat
+    if (userType == "User"){
+      $('#chatModeratorButtons').hide();
+   }
+
   })
 
 /*---------------- Socket.on events ----------------*/
