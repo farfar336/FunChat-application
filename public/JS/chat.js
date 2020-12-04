@@ -38,6 +38,17 @@ $(function () {
       name: selectedChat,
     });
   });
+
+  //Button that selects a user from user list
+  $("#chatUsers").click(() => {
+    $('#chatUsers').selectable();
+  });
+
+  //Button that selects a chat message
+  $("#chatMessages").click(() => {
+    $('#chatMessages').selectable();
+  });
+
 /*---------------- Socket.on events ----------------*/
 
 socket.on('chat join failure', (res) => {

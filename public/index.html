@@ -24,6 +24,8 @@
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://kit.fontawesome.com/86d78876c2.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>  <!-- This one is for selecting messages and users -->
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> <!-- This one is for selecting messages and users -->
 
     <!-- Global variable initliziation -->
     <script type='text/javascript' > 
@@ -126,7 +128,7 @@
           FunChat
           <div id="centering"></div>
         </div>
-  
+
         <!--Chat Body-->
         <div id="chatPage">
           <div id="chatWindow" class="windows">
@@ -156,7 +158,21 @@
           </div>
           <button type="submit" form="messageForm" id="send" class="windows chatButtons"><i class="fas fa-arrow-circle-right"></i> Send</button>
         </div>
-        <button id="addUser" class="chatButtons">Add User</button>
+      </div>
+
+      <!--Add user to chat UI -->
+      <div id="addUserToChat" class="flexRow">
+        <input type="text" id="chatDisplayNameField" placeholder="Enter a display name"><button class="Button" id="addUserToChatButton" style="display: inline;" type="button">Add User</button>
+      </div>
+
+      <!--Other Chat Buttons -->
+      <div id="chatOtherButtons" class="flexRow">
+        <button class="button" id="chatViewProfileButton" style="display: inline;" type="button">View Profile</button>
+        <!---Display buttons only if user is a Mod-->
+        <div id ="chatModeratorButtons">
+          <button class="button" id="chatRemoveUserButton" style="display: inline;" type="button">Remove User</button>
+          <button class="button" id="chatRemoveMessageButton" style="display: inline;" type="button">Remove Message</button>
+        </div>
       </div>
     </div>    
 
