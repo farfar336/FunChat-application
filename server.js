@@ -442,6 +442,38 @@ io.on('connection', function(socket){
           }); 
         }
       }
+    })  
+  })
+
+  /* -------------------------------------edit profile screen ----------------------------------------------------------------------*/ 
+  
+  socket.on("changeDisplayname", function(data){
+    user.findOne({displayName:data.displayname}, function(error, document){
+    if (error)console.error(error);
+    else{
+      if(document==null){
+        
+        user.findOne({_id:data.id}, function(error, thisuser){
+          if (error)console.error(error);
+          else{
+            console.log(thisuser)
+            thisuser.update({displayName:data.displayname}, function (err, result) { 
+              if (err){ 
+                  console.log(err) 
+              }else{ 
+                  console.log("Result :", result)  
+              } 
+          }); 
+          }
+        })
+        socket.emit("changeDisplaynameSuccessful")
+      }
+      else{
+        socket.emit("invalidDisplayname")
+      }
+    }
     })
   })
+
+
 });

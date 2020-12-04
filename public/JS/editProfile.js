@@ -16,4 +16,18 @@ $(function () {
 
 /*---------------- Socket.on events ----------------*/
 /*---------------- Functions ----------------*/
+$('#changeDisplayNameButton').click(function(){
+  var displayname=document.getElementById("newDisplayNameField").value;
+  socket.emit("changeDisplayname",{displayname:displayname, id:userID})
+
+})
+socket.on("changeDisplaynameSuccessful",function(){
+  alert("change displayname successfully")
+})
+socket.on("invalidDisplayname",function(){
+  alert("this display name is invalid")
+})
+
+
+
 });
