@@ -6,10 +6,20 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
-const url = 'mongodb://127.0.0.1:27017/funchat';
 let http = require('http').Server(app);
 let io = require('socket.io')(http);
+
+// Load configurable data from environment
+require('dotenv').config();
+
 let port = process.env.PORT || 3000;
+let dbConn = {
+  host: process.env.DB_HOST || "127.0.0.1",
+  port: process.env.DB_PORT || "27017",
+  name: process.env.DB_NAME || "funchat",
+};
+
+const url = `mongodb://${dbConn.host}:${dbConn.port}/${dbConn.name}`;
 
 //Load static client-side files
 app.use(express.static('public'));
