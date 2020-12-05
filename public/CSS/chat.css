@@ -64,6 +64,7 @@
 
 .scrollable {
   overflow-y: auto;
+  overflow-x: auto;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
