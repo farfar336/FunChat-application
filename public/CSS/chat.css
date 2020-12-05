@@ -103,10 +103,15 @@ scrollbar-width: none;  /* Firefox */
 }
 
 #userWindow {
+  height: 85%;
   margin: 0 0 5px 5px;  
   width: auto;
   display: grid;
   grid-template-rows: 85% 15%;
+}
+
+#addUser{
+  margin-top: 100px;
 }
 
 #chatUsers {

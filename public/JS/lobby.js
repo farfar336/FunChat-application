@@ -20,10 +20,11 @@ $(function () {
   $('#enterChatButton').click(function(){
     $('#lobby').hide();
 
-    // If person is a regular user, hide moderator buttons in chat
+    // If person is a regular user, hide remove user and message buttons
     if (userType == "User"){
-      $('#chatModeratorButtons').hide();
-   }
+      $('#chatRemoveUserButton').hide();
+      $('#chatRemoveMessageButton').hide();
+    }
 
   })
 
