@@ -8,9 +8,9 @@ $(function () {
     socket.emit("leave chat");
 
     // Clear previous chat information
-    $('#chatMessages').empty();
-    $('#chatUsers').empty();
-    $('#chatTitle').html('');
+    // $('#chatMessages').empty();
+    // $('#chatUsers').empty();
+    // $('#chatTitle').html('');
 
     $('#chat').css('display', '');
     $('#home').show();

@@ -30,6 +30,10 @@ $(function () {
       $('#chatRemoveMessageButton').show();
     }
 
+    // Clear previous chat information
+    $('#chatMessages').empty();
+    $('#chatUsers').empty();
+    $('#chatTitle').html('');
 
   })
 
