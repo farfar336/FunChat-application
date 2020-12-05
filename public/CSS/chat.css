@@ -104,11 +104,11 @@ scrollbar-width: none;  /* Firefox */
 }
 
 #userWindow {
-  height: 85%;
+  height: 99%;
   margin: 0 0 5px 5px;  
   width: auto;
   display: grid;
-  grid-template-rows: 85% 15%;
+  grid-template-rows: 70% 30%;
 }
 
 #chatUsers {
@@ -132,8 +132,11 @@ scrollbar-width: none;  /* Firefox */
 }
 
 #buttonsUnderUserList{
-  margin-top: 100px;
   text-align: center;
+  padding-top: 5px;
+  background-color: #d1d1d1;
+  border-top: solid rgb(131, 131, 131);
+  
 }
 
 /* #inviteButton {
@@ -161,9 +164,7 @@ scrollbar-width: none;  /* Firefox */
 }
 
 #messageWindow {
-  margin: 5px 5px 0 0;
-  display: grid;
-  grid-template-rows: 50% 50%;
+  margin-right: 5px;
 }
 
 /* #imageAndSearch {

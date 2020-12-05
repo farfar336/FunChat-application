@@ -25,6 +25,11 @@ $(function () {
       $('#chatRemoveUserButton').hide();
       $('#chatRemoveMessageButton').hide();
     }
+    else{
+      $('#chatRemoveUserButton').show();
+      $('#chatRemoveMessageButton').show();
+    }
+
 
   })
 
