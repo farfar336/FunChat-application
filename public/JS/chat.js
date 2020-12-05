@@ -3,17 +3,17 @@
 $(function () {
 /*---------------- Click events ----------------*/
   //Button that directs user from lobby to home screen
-  $('#goHome').click(() => {
+  $('#chatToLobbyButton').click(() => {
     // Inform server
     socket.emit("leave chat");
 
     // Clear previous chat information
-    $('#chatMessages').empty();
-    $('#chatUsers').empty();
-    $('#chatTitle').html('');
+    // $('#chatMessages').empty();
+    // $('#chatUsers').empty();
+    // $('#chatTitle').html('');
 
     $('#chat').css('display', '');
-    $('#home').show();
+    $('#lobby').show();
   });
 
   // Sends the message entered to the chat
@@ -38,6 +38,17 @@ $(function () {
       name: selectedChat,
     });
   });
+
+  //Button that selects a user from user list
+  $("#chatUsers").click(() => {
+    $('#chatUsers').selectable();
+  });
+
+  //Button that selects a chat message
+  $("#chatMessages").click(() => {
+    $('#chatMessages').selectable();
+  });
+
 /*---------------- Socket.on events ----------------*/
 
 socket.on('chat join failure', (res) => {

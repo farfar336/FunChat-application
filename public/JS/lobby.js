@@ -19,6 +19,22 @@ $(function () {
   //Button that directs user from lobby to chat screen
   $('#enterChatButton').click(function(){
     $('#lobby').hide();
+
+    // If person is a regular user, hide remove user and message buttons
+    if (userType == "User"){
+      $('#chatRemoveUserButton').hide();
+      $('#chatRemoveMessageButton').hide();
+    }
+    else{
+      $('#chatRemoveUserButton').show();
+      $('#chatRemoveMessageButton').show();
+    }
+
+    // Clear previous chat information
+    $('#chatMessages').empty();
+    $('#chatUsers').empty();
+    $('#chatTitle').html('');
+
   })
 
 /*---------------- Socket.on events ----------------*/
