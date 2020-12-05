@@ -3,7 +3,7 @@
 $(function () {
 /*---------------- Click events ----------------*/
   //Button that directs user from lobby to home screen
-  $('#goHome').click(() => {
+  $('#chatToHomeButton').click(() => {
     // Inform server
     socket.emit("leave chat");
 

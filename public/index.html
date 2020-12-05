@@ -122,11 +122,12 @@
     <!--Chat Module-->
     <div id="chat">
       <div id="chatLayout">
-        <!--Chat Header-->
-        <div id="FunChatLabel" class="flexRow" style="width: 100%;justify-content: center;text-align: center;">
+        <div id="FunChatLabel" class="flexRow"><button  id="chatToHomeButton" class="headerButton" type="button">Home</button><p style="width:67%;text-align: center;">FunChat</p><button  class="logOutButton headerButton" type="button">Log Out</button></div>        <!--Chat Header-->
+        <!-- <div id="FunChatLabel" class="flexRow" style="width: 100%;justify-content: center;text-align: center;">
           FunChat
-          <div id="centering"></div>
-        </div>
+          <button id="goHome" class="chatButtons"><i class="fas fa-arrow-left"></i>Home</button>
+          <div id="centering"></div> -->
+        <!-- </div> -->
 
         <!--Chat Body-->
         <div id="chatPage">
@@ -141,11 +142,16 @@
           <div id="userWindow" class="windows">
             <ul id="chatUsers" class="scrollable"></ul>
 
-          <!--Add user to chat UI -->
-          <div id="addUser">
+          <!--Buttons Under User List-->
+          <div id="buttonsUnderUserList">
             <input type="text" id="chatDisplayNameField" placeholder="Enter a display name">
             <button class="Button" id="addUserToChatButton" type="button">Add User</button>
+            <button class="Button" id="chatViewUser" type="button">View User</button>
+            <!---Display buttons only if user is a Mod-->
+            <button class="button" id="chatRemoveUserButton" style="display: inline;" type="button">Remove User</button>
+            <button class="button" id="chatRemoveMessageButton" style="display: inline;" type="button">Remove Message</button>
           </div>
+
           </div>
           <div id="messageWindow" class="windows">
             <!-- <div id="imageAndSearch">
@@ -158,17 +164,6 @@
           </div>
           <button type="submit" form="messageForm" id="send" class="windows chatButtons"><i class="fas fa-arrow-circle-right"></i> Send</button>
         </div>
-      </div>
-
-
-
-      <!--Other Chat Buttons -->
-      <div id="chatOtherButtons" class="flexRow">
-        <button id="goHome" class="chatButtons"><i class="fas fa-arrow-left"></i>Home</button>
-        <button class="button" id="chatViewUser" style="display: inline;" type="button">View User</button>
-        <!---Display buttons only if user is a Mod-->
-        <button class="button" id="chatRemoveUserButton" style="display: inline;" type="button">Remove User</button>
-        <button class="button" id="chatRemoveMessageButton" style="display: inline;" type="button">Remove Message</button>
       </div>
     </div>    
 

@@ -4,14 +4,14 @@
   display: none;
 }
 
-#goHome {
+/* #goHome {
   width: 50px;
   height: 50px;
   border-radius: 50%;
   margin: auto 10px;
   font-size: 13px;
   font-weight: bold;
-}
+} */
 
 #FunChatLabel {
   margin: auto;
@@ -39,7 +39,7 @@
   padding: 10px;
   display: grid;
   grid-template-columns: 80% 20%;
-  grid-template-rows: 85% 15%;
+  grid-template-rows: 93% 7%; /*This determines the height of the window where messages are displayed and where the user enters their message  */
 }
 
 .windows {
@@ -104,16 +104,11 @@ scrollbar-width: none;  /* Firefox */
 }
 
 #userWindow {
-  height: 85%;
+  height: 90%;
   margin: 0 0 5px 5px;  
   width: auto;
   display: grid;
   grid-template-rows: 85% 15%;
-}
-
-#addUser{
-  margin-top: 100px;
-  text-align: center;
 }
 
 #chatUsers {
@@ -136,7 +131,12 @@ scrollbar-width: none;  /* Firefox */
   color: #ffffff;
 }
 
-#inviteButton {
+#buttonsUnderUserList{
+  margin-top: 110px;
+  text-align: center;
+}
+
+/* #inviteButton {
   width: 100%;
   margin: 0;
   padding: 0;
@@ -150,7 +150,7 @@ scrollbar-width: none;  /* Firefox */
 #inviteButton:hover {
   background-color: rgb(131, 131, 131);
   color: #ffffff;
-}
+} */
 
 .chatButtons {
   font-size: 18px;
@@ -166,17 +166,17 @@ scrollbar-width: none;  /* Firefox */
   grid-template-rows: 50% 50%;
 }
 
-#imageAndSearch {
+/* #imageAndSearch {
   padding: 5px;
   border-bottom: solid 1px rgb(131, 131, 131);
-}
+} */
 
-#imageAndSearch button{
+/* #imageAndSearch button{
   width: 5%;
   height: 100%;
   padding: 0;
   margin: 0;
-}
+} */
 
 #m {
   width: 100%;
