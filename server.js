@@ -6,10 +6,20 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
-const url = 'mongodb://127.0.0.1:27017/funchat';
 let http = require('http').Server(app);
 let io = require('socket.io')(http);
+
+// Load configurable data from environment
+require('dotenv').config();
+
 let port = process.env.PORT || 3000;
+let dbConn = {
+  host: process.env.DB_HOST || "127.0.0.1",
+  port: process.env.DB_PORT || "27017",
+  name: process.env.DB_NAME || "funchat",
+};
+
+const url = `mongodb://${dbConn.host}:${dbConn.port}/${dbConn.name}`;
 
 //Load static client-side files
 app.use(express.static('public'));
@@ -528,6 +538,42 @@ io.on('connection', function(socket){
           }); 
         }
       }
+    })  
+  })
+
+  /* -------------------------------------edit profile screen ----------------------------------------------------------------------*/ 
+  
+
+  //user  change the display name
+  socket.on("changeDisplayname", function(data){
+    //check if this name already exist in database
+    user.findOne({displayName:data.displayname}, function(error, document){
+    if (error)console.error(error);
+    else{
+      if(document==null){
+        //if this name is not in databse, find this user by it's id
+        user.findOne({_id:data.id}, function(error, thisuser){
+          if (error)console.error(error);
+          else{
+            console.log(thisuser)
+            //upload display name
+            thisuser.update({displayName:data.displayname}, function (err, result) { 
+              if (err){ 
+                  console.log(err) 
+              }else{ 
+                  console.log("Result :", result)  
+              } 
+          }); 
+          }
+        })
+        socket.emit("changeDisplaynameSuccessful")
+      }
+      else{
+        socket.emit("invalidDisplayname")
+      }
+    }
     })
   })
+
+
 });

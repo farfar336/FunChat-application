@@ -12,9 +12,10 @@
 
 # Running the application
 1. Open a new terminal, but make sure to not close the terminal in 'Setting up MongoDB' step 4. So, 2 terminals should be open at this moment.
-1. Pull the files from the main branch
-2. run the command 'node server.js'
-3. Go to this link: http://localhost:3000/. It should display the login screen
+2. Pull the files from the main branch
+3. run the command `npm ci`
+4. run the command 'node index.js'
+5. Go to this link: http://localhost:3000/. It should display the login screen
 
 # Running MongoDB compass for seeing the entries in the database
 1. Open 'MongoDBCompass.exe'
