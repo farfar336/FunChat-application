@@ -113,6 +113,7 @@ scrollbar-width: none;  /* Firefox */
 
 #addUser{
   margin-top: 100px;
+  text-align: center;
 }
 
 #chatUsers {
