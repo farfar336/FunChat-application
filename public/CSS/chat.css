@@ -81,7 +81,12 @@ scrollbar-width: none;  /* Firefox */
 #chatMessagesContainer {
   background-color: #ffffff;
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+#chatMessages {
+  background-color: #ffffff;
+  max-height: 100%;
 }
 
 #chatMessages li {
@@ -193,4 +198,8 @@ scrollbar-width: none;  /* Firefox */
 
 #send {
   margin: 5px 0 0 5px;
+}
+
+.user-type-Moderator{
+  color: #199e29;
 }

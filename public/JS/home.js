@@ -6,6 +6,7 @@ $(function () {
   $('.logOutButton').click(function(){
     $('#authentication').siblings().hide();
     $('#authentication').show();
+    socket.emit("leave chat");
   })
   
   //Button that directs user from home to lobby screen, updates the list of chat to display, and displays button depending on the user type
@@ -46,6 +47,7 @@ $(function () {
       $('#editProfileButton').show();
       $('#profileToHomeButton').show();
       $('#profileToFriendsButton').hide();
+      $('#profileToChatButton').hide();
     }
   })
 

@@ -100,6 +100,7 @@ $(function () {
     $('#profile').show();
 
     $('#editProfileButton').hide();
+    $('#profileToChatButton').hide();
     $('#profileToFriendsButton').show();
   });
 });

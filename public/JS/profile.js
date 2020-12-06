@@ -15,10 +15,18 @@ $(function () {
     refreshFriends();
   })
 
+  //Button that directs user from profile to chat screen
+  $('#profileToChatButton').click(function(){
+    $('#profile').hide();
+    $('#chat').show();
+    $("#chatMessages").scrollTop($("#chatMessages")[0].scrollHeight);
+  })
+
   //Button that directs user from profile to home screen
   $('#profileToHomeButton').click(function(){
     $('#profile').hide();
     $('#home').show();
+    socket.emit("leave chat");
   })
 
 /*---------------- Socket.on events ----------------*/
