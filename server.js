@@ -18,7 +18,6 @@ app.use(express.static('public'));
 mongoose.connect(url, { useUnifiedTopology: true, useNewUrlParser: true });
 const user = require('./models/user');
 const chat = require('./models/chat');
-
 //Connect to database and print message to console
 const db = mongoose.connection;
 db.once('open', _ => {
@@ -484,6 +483,50 @@ io.on('connection', function(socket){
       }
     })
   })
+
+
+
+
+  /*--------------------------------------------------restricted words-----------------------------------------------------*/ 
+  socket.on("refreshwords",function(){
+    db.collection("restrictedWords").findOne({}, function(err, result){
+      if(err) console.error(err)
+      else{
+        console.log(result)
+        socket.emit("updatewords",result.Words)
+      }
+    })
+  })
+
+  socket.on("addword",function(word){
+    db.collection("restrictedWords").findOne({}, function(err, result) {
+      if (err) throw err;
+      if(!result.Words.includes(word)){
+        db.collection("restrictedWords").findOneAndUpdate(
+          { name: "word" },
+          { $push: { Words: word } }
+        
+        );
+      }
+      else{
+        socket.emit("wordAlreadyInDatabase")
+      }
+      
+   
+
+    })
+  })
+
+
+  socket.on("deleteword",function(word){
+        db.collection("restrictedWords").findOneAndUpdate(
+          { name: "word" },
+          { $pull: { Words: word } }
+        
+        );
+  
+  })
+
 });
 
 

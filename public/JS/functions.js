@@ -31,3 +31,23 @@ function updateChats(){
         });
     })
 }
+
+
+
+function updateWords(){
+    //Emit an event to server to pull the latest chat list
+    
+    socket.emit("refreshwords")
+    //read a  array from server, this array called chats will include all the chat room name
+    socket.on('updatewords', function(words){
+            var wordsDisplayed = document.getElementById("wordDisplay");
+            //clear current chat displayed
+            wordsDisplayed.innerHTML="";
+            console.log(words)
+            words.forEach(element => {
+            var word=document.createElement("option");
+            word.innerHTML=element;
+            wordsDisplayed.appendChild(word)
+        });
+    })
+}
