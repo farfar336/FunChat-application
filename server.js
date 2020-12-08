@@ -34,6 +34,28 @@ const message = require('./models/message');
 const db = mongoose.connection;
 db.once('open', _ => {
   console.log('Database connected:', url)
+  mongoose.connection.db.listCollections({name: 'restrictedWords'})
+  .next(function(err, collinfo) {
+      if (collinfo) {
+          console.log("restrictedWords collection exists")
+      }
+      else{
+        db.createCollection("restrictedWords");
+      }
+  });
+
+  db.collection("restrictedWords").findOne({}, function(error, result) {
+    if (error) console.log(error);
+    else{
+      if(result === null){
+        db.collection("restrictedWords").insertOne({name:"word", Words: []}, function(err, res) {
+          if (err) console.log(err);
+          console.log("Restricted Words list created");
+        });
+      }
+    }
+  
+  });
 })
 
 db.on('error', err => {
@@ -140,13 +162,38 @@ io.on('connection', function(socket){
 
 /*--------------------------------------------------- Create Chat  ---------------------------------------------------*/
   //Get User list
-  socket.on('get users for create chat', function(obj){
-    //Fetch list of all users in database
-    user.find({}, {}, function(err, users){
+  socket.on('get users for create chat', function(userID){
+    //Find this user 
+    user.findOne({_id:userID}, function(err, thisuser){
       if(err){
         console.log(err);
-      } else{
-        socket.emit('user list for create chat' ,users);
+      } else{  
+        var users=[]
+        if(thisuser.type!="Moderator"){
+          users.push(thisuser)
+        }
+        //get id of this user, and push into users
+        thisuser.friends.forEach(ID=>{
+          user.findOne({_id:ID},function(err,friend){
+            if(err)console.error(err)
+            else{
+              if(friend.type!="Moderator"){
+                users.push(friend)
+              }
+            }
+          })
+        })
+        //push all moderator
+        user.find({type:"Moderator"},function(err, allmoderator){
+          if(err)console.log(err);
+          else{
+            allmoderator.forEach(moderator => {
+              users.push(moderator)
+            })
+            socket.emit('user list for create chat' ,users);
+          }
+        })
+        
       }
     })
     
@@ -377,6 +424,21 @@ io.on('connection', function(socket){
   socket.emit("updateChats",chats);
  }
 
+ socket.on("chatApprovedOrNot",function(chatname){
+   chat.findOne({name:chatname},function(err,chat){
+     if(err)console.error(err)
+     else{
+       if(chat.approved){
+         socket.emit("chatApproved")
+       }else{
+         socket.emit("chatNotApproved")
+       }
+     }
+   })
+ })
+
+
+
 /*--------------------------------------------------- Friend List  ---------------------------------------------------*/
   //Handle incoming friend request
   socket.on("send friend request", function(reqObj){
@@ -575,5 +637,52 @@ io.on('connection', function(socket){
     })
   })
 
+  /*--------------------------------------------------restricted words-----------------------------------------------------*/ 
+ 
+
+
+
+  socket.on("refreshwords",function(){
+    db.collection("restrictedWords").findOne({}, function(err, result){
+      if(err) console.error(err)
+      else{
+        console.log(result)
+        socket.emit("updatewords",result.Words)
+      }
+    })
+  })
+
+  socket.on("addword",function(word){
+    db.collection("restrictedWords").findOne({}, function(err, result) {
+      if (err) throw err;
+      if(!result.Words.includes(word)){
+        db.collection("restrictedWords").findOneAndUpdate(
+          { name: "word" },
+          { $push: { Words: word } }
+        
+        );
+      }
+      else{
+        socket.emit("wordAlreadyInDatabase")
+      }
+      
+   
+
+    })
+  })
+
+
+  socket.on("deleteword",function(word){
+        db.collection("restrictedWords").findOneAndUpdate(
+          { name: "word" },
+          { $pull: { Words: word } }
+        
+        );
+  
+  })
 
 });
+
+
+
+

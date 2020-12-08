@@ -11,14 +11,38 @@ $(function () {
 
     // Button that requests new Restricted Word
     $('#addWord').click(function(){
-       
+        var word=document.getElementById("restrictedWord").value;
+        console.log(word)
+        //if it is a word , add it to database and show it.
+        if(!word.includes(" ")&&word.length>1){
+            socket.emit("addword",word)
+            var wordsDisplayed = document.getElementById("wordDisplay");
+            var words=[]
+            wordsDisplayed.childNodes.forEach(node=>{
+                words.push(node.innerHTML)
+            })
+            if(!words.includes(word)){
+                var newword=document.createElement("option");
+                newword.innerHTML=word;
+                wordsDisplayed.appendChild(newword)
+            }
+        }
+        else{
+            alert("Please enter a word")
+        }
+        
         //socket.emit('create chat', {users: $('#usersDisplay').val(), mods: $('#modDisplay').val(), chatname: $('#chatname').val()});
         $('#restrictedWord').val('');    //clear the chat name text box
     })
 
     // Button that requests deletion of Restricted Word
     $('#deleteWord').click(function(){
-       
+        var wordDisplayed = document.getElementById("wordDisplay")
+        var index = wordDisplayed.selectedIndex;
+        var word=wordDisplayed.children[index].innerHTML
+        //ask database to delete this word
+        socket.emit("deleteword",word)
+        updateWords()
         //socket.emit('create chat', {users: $('#usersDisplay').val(), mods: $('#modDisplay').val(), chatname: $('#chatname').val()});
     })
     
@@ -39,6 +63,10 @@ $(function () {
             }));
           
         }
+      })
+
+      socket.on("wordAlreadyInDatabase",function(){
+          alert("The word is already in list")
       })
     
      

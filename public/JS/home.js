@@ -53,6 +53,7 @@ $(function () {
   $('#wordButton').click(function(){
     $('#home').hide();
     $('#wordList').show();
+    updateWords()
     socket.emit('get words for word List', {});
 
   })

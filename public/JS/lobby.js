@@ -13,7 +13,7 @@ $(function () {
   $('#createChatButton').click(function(){
     $('#lobby').hide();
     $('#chatCreate').show();
-    socket.emit('get users for create chat', {});
+    socket.emit('get users for create chat', userID);
   })
 
   //Button that directs user from lobby to chat screen
@@ -35,8 +35,26 @@ $(function () {
     $('#chatUsers').empty();
     $('#chatTitle').html('');
 
+    var chatsDisplayed = document.getElementById("chatsDisplayed")
+    var chat = chatsDisplayed.selectedIndex;
+    var chatname=chatsDisplayed.children[chat].innerHTML
+    socket.emit("chatApprovedOrNot",chatname)
+    
   })
 
 /*---------------- Socket.on events ----------------*/
+
+//if user enter a approved chat
+socket.on("chatApproved",function(){
+  $('#lobby').hide();
+  $('#chat').css('display', 'contents');
+})
+
+//if user try to enter a not approved chat
+socket.on("chatNotApproved",function(){
+  alert("You can't enter this chat as it is not approved yet")
+})
+
+
 /*---------------- Functions ----------------*/
 });
