@@ -488,6 +488,31 @@ io.on('connection', function(socket){
 
 
   /*--------------------------------------------------restricted words-----------------------------------------------------*/ 
+  mongoose.connection.db.listCollections({name: 'restrictedWords'})
+  .next(function(err, collinfo) {
+      if (collinfo) {
+          console.log("restrictedWords collection exists")
+      }
+      else{
+        db.createCollection("restrictedWords");
+      }
+  });
+
+db.collection("restrictedWords").findOne({}, function(error, result) {
+  if (error) console.log(error);
+  else{
+    if(result === null){
+      db.collection("restrictedWords").insertOne({name:"word", Words: []}, function(err, res) {
+        if (err) console.log(err);
+        console.log("Restricted Words list created");
+      });
+    }
+  }
+  
+});
+
+
+
   socket.on("refreshwords",function(){
     db.collection("restrictedWords").findOne({}, function(err, result){
       if(err) console.error(err)
