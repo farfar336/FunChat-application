@@ -13,12 +13,16 @@ $(function () {
     $('#addWord').click(function(){
         var word=document.getElementById("restrictedWord").value;
         console.log(word)
-        if(!word.includes(" ")){
+        //if it is a word , add it to database and show it.
+        if(!word.includes(" ")&&word.length>1){
             socket.emit("addword",word)
-            updateWords()
+            var wordsDisplayed = document.getElementById("wordDisplay");
+            var newword=document.createElement("option");
+            newword.innerHTML=word;
+            wordsDisplayed.appendChild(newword)
         }
         else{
-            alert("word can not contain a space")
+            alert("Please enter a word")
         }
         
         //socket.emit('create chat', {users: $('#usersDisplay').val(), mods: $('#modDisplay').val(), chatname: $('#chatname').val()});
@@ -30,6 +34,7 @@ $(function () {
         var wordDisplayed = document.getElementById("wordDisplay")
         var index = wordDisplayed.selectedIndex;
         var word=wordDisplayed.children[index].innerHTML
+        //ask database to delete this word
         socket.emit("deleteword",word)
         updateWords()
         //socket.emit('create chat', {users: $('#usersDisplay').val(), mods: $('#modDisplay').val(), chatname: $('#chatname').val()});
@@ -55,7 +60,7 @@ $(function () {
       })
 
       socket.on("wordAlreadyInDatabase",function(){
-          alert("word already in database")
+          alert("The word is already in list")
       })
     
      
