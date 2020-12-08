@@ -17,9 +17,15 @@ $(function () {
         if(!word.includes(" ")&&word.length>1){
             socket.emit("addword",word)
             var wordsDisplayed = document.getElementById("wordDisplay");
-            var newword=document.createElement("option");
-            newword.innerHTML=word;
-            wordsDisplayed.appendChild(newword)
+            var words=[]
+            wordsDisplayed.childNodes.forEach(node=>{
+                words.push(node.innerHTML)
+            })
+            if(!words.includes(word)){
+                var newword=document.createElement("option");
+                newword.innerHTML=word;
+                wordsDisplayed.appendChild(newword)
+            }
         }
         else{
             alert("Please enter a word")
