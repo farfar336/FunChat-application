@@ -17,8 +17,29 @@ $(function () {
   })
 
   //Button that directs user from lobby to chat screen
-  $('#enterChatButton').click(function(){
-    $('#lobby').hide();
+  $('#enterChatButton').click(() => {
+    let chatname = $('#chatsDisplayed option:selected').text();
+    socket.emit("chatApprovedOrNot",chatname)
+    
+    
+  });
+
+/*---------------- Socket.on events ----------------*/
+
+//if user enter a approved chat
+socket.on("chatApproved",function(chatname){
+  socket.emit('join chat', {
+    name: chatname
+  });
+
+  //Make chat users selectable - additional code disables multiple selections
+  $('#chatUsers').selectable({selected: function(event, ui){
+    $(ui.selected).addClass('ui-selected').siblings().removeClass('ui-selected');
+   }
+  });
+  
+  //Make chat messages selectable - currently multiple selections allowed
+  $('#chatMessages').selectable();
 
     // If person is a regular user, hide remove user and message buttons
     if (userType == "User"){
@@ -34,20 +55,10 @@ $(function () {
     $('#chatMessages').empty();
     $('#chatUsers').empty();
     $('#chatTitle').html('');
+    $('#lobby').hide();
+    $('#chat').css('display', 'contents');
 
-    var chatsDisplayed = document.getElementById("chatsDisplayed")
-    var chat = chatsDisplayed.selectedIndex;
-    var chatname=chatsDisplayed.children[chat].innerHTML
-    socket.emit("chatApprovedOrNot",chatname)
     
-  })
-
-/*---------------- Socket.on events ----------------*/
-
-//if user enter a approved chat
-socket.on("chatApproved",function(){
-  $('#lobby').hide();
-  $('#chat').css('display', 'contents');
 })
 
 //if user try to enter a not approved chat

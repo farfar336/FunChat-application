@@ -169,9 +169,7 @@ io.on('connection', function(socket){
         console.log(err);
       } else{  
         var users=[]
-        if(thisuser.type!="Moderator"){
-          users.push(thisuser)
-        }
+        
         //get id of this user, and push into users
         thisuser.friends.forEach(ID=>{
           user.findOne({_id:ID},function(err,friend){
@@ -188,9 +186,9 @@ io.on('connection', function(socket){
           if(err)console.log(err);
           else{
             allmoderator.forEach(moderator => {
-              users.push(moderator)
+              if(thisuser.friends.includes(moderator._id)) users.push(moderator)
             })
-            socket.emit('user list for create chat' ,users);
+            socket.emit('user list for create chat', users);
           }
         })
         
@@ -203,10 +201,9 @@ io.on('connection', function(socket){
   socket.on('create chat',  function(obj){
     //Check if a chat already exists with the chatname
     let chatNameCheck = (obj.chatname === "");
-    let userSelectCheck = (obj.users.length === 0);
     let modSelectCheck = (obj.mods.length === 0);
 
-    if(chatNameCheck || userSelectCheck || modSelectCheck)
+    if(chatNameCheck || modSelectCheck)
     {
       console.log("Chat creation failed");
       let chatInputFail = "";
@@ -214,11 +211,8 @@ io.on('connection', function(socket){
       {
         chatInputFail = chatInputFail + "Input Error: Need to Fill in Chat Name\n";
       }
-      if(userSelectCheck)
-      {
-        chatInputFail = chatInputFail + "Input Error: Select at Least One User\n";
-      }
-      if(modSelectCheck)
+      
+      if(obj.userType === "User" && modSelectCheck)
       {
         chatInputFail = chatInputFail + "Input Error: Select at Least One Moderator\n";
       }
@@ -370,6 +364,25 @@ io.on('connection', function(socket){
     });
   });
 
+  socket.on("filter message", function(mess){
+    db.collection("restrictedWords").findOne({}, function(err, result){
+      if(err) console.error(err)
+      else{
+        let lowerCaseList = result.Words.map(badWord => badWord.toLowerCase());
+        let lowerCaseMessage = mess.toLowerCase();
+        let wordFlag = false;
+        for(let i = 0; i < lowerCaseList.length; i++){
+          if(lowerCaseMessage.includes(lowerCaseList[i])){
+            wordFlag = true;
+            socket.emit("message contains bad word");
+            break;
+          }
+        }
+        if(wordFlag === false) socket.emit("message approved", mess);
+      }
+    })
+  })
+
   socket.on("get user ID", function(name){
     user.findOne({displayName:name}, function(error, document){
       if (error)console.error(error);
@@ -438,7 +451,7 @@ io.on('connection', function(socket){
      if(err)console.error(err)
      else{
        if(chat.approved){
-         socket.emit("chatApproved")
+         socket.emit("chatApproved", chatname)
        }else{
          socket.emit("chatNotApproved")
        }
@@ -651,12 +664,12 @@ io.on('connection', function(socket){
 
 
 
-  socket.on("refreshwords",function(){
+  socket.on("fetch words list",function(){
     db.collection("restrictedWords").findOne({}, function(err, result){
       if(err) console.error(err)
       else{
-        console.log(result)
         socket.emit("updatewords",result.Words)
+        
       }
     })
   })

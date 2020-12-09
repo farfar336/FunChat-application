@@ -22,43 +22,34 @@ $(function () {
     let content = $('#m').val().trim();
     if(content === "")
       return;
+    
+    socket.emit('filter message', content);    
+    
+  });
+
+  socket.on("message contains bad word", function(){
+    alert("Message contains a restricted word!")
+  })
+
+  socket.on("message approved", function(mess){
     //Check for emojis  
-    content = content.replaceAll(":)", "&#128513;").replaceAll(":(", "&#128577;").replaceAll(":o", "&#128562;");
-    socket.emit('chat message', {
-      content: content,
-    });
-    console.log("emitted message");
+    let content = mess.replaceAll(":)", "&#128513;").replaceAll(":(", "&#128577;").replaceAll(":o", "&#128562;");
+    socket.emit('chat message', {content: content});
     $('#m').val('');
-  });
+  })
 
-  //Button that directs user from lobby to chat screen
-  $('#enterChatButton').click(() => {
-    let selectedChat = $('#chatsDisplayed option:selected').text();
-    console.log(selectedChat);
-    socket.emit('join chat', {
-      name: selectedChat,
-    });
-
-    //Make chat users selectable - additional code disables multiple selections
-    $('#chatUsers').selectable({selected: function(event, ui){
-      $(ui.selected).addClass('ui-selected').siblings().removeClass('ui-selected');
-     }
-    });
-    
-    //Make chat messages selectable - currently multiple selections allowed
-    $('#chatMessages').selectable();
-    
-  });
+  
 
   $('#chatViewUser').click(() => {
     let getClass = $("#chatUsers .ui-selected").attr("class");
-    getClass = getClass.split(" ");
-    let userName = getClass[0];
-    userName = userName.substring(10);
-    userName = userName.replaceAll("-", " ");
+    if(getClass !== undefined){
+      getClass = getClass.split(" ");
+      let userName = getClass[0];
+      userName = userName.substring(10);
+      userName = userName.replaceAll("-", " ");
     
-    socket.emit('get user ID', userName);
-
+      socket.emit('get user ID', userName);
+    }
     socket.on('return user ID', function(userID){
       //TODO: use viewedUserID to display the right content on profile page
       viewedUserID = userID;
@@ -87,12 +78,8 @@ socket.on('chat join success', (res) => {
 });
 
 socket.on('chat message', (res) => {
-  console.log(res);
-
   let messages = [];
   if('messages' in res) {
-    console.log("Messages:")
-    console.log(messages);
     messages = res.messages;
   } else {
     messages = [res];
@@ -114,8 +101,6 @@ socket.on('chat message', (res) => {
 });
 
 socket.on('chat user added', (res) => {
-  console.log("Chat user added");
-  console.log(res);
   let userObj = $(`<li class="user-name-${cssSafeName(res.name)} user-type-${res.type}"}>`);
   if(res.name == displayName) userObj.append($('<span class="userName">').html(res.name + " (You)"));
   else userObj.append($('<span class="userName">').html(res.name));
