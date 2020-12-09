@@ -28,7 +28,7 @@ $(function () {
   });
 
   socket.on("message contains bad word", function(){
-    alert("Message contains a restricted word!")
+    alert("This message contains a bad word and was not sent");
   })
 
   socket.on("message approved", function(mess){
