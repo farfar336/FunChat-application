@@ -22,9 +22,9 @@ $(function () {
     
   });
 
-  //Message contains a bad word or link
-  socket.on("message rejected", function(){
-    alert("This message contains a bad word or bad link and was not sent");
+  //Message contains a bad word and/or link
+  socket.on("message rejected", function(msg){
+    alert(msg);
   })
 
   //Message does not contain any bad words or links

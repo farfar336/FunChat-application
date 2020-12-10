@@ -351,23 +351,33 @@ io.on('connection', function(socket){
     db.collection("badWordsAndLinks").findOne({}, function(err, result){
       if(err) console.error(err)
       else{
-        //Combine bad words and links into one list
-        let combinedList = result.Words.concat(result.Links);
         //Convert everything to lowercase to ensure bad words/links are caught regardless of how they are typed
-        let lowerCaseList = combinedList.map(element => element.toLowerCase());
+        let lowerCaseWords = result.Words.map(word => word.toLowerCase());
+        let lowerCaseLinks = result.Links.map(link => link.toLowerCase());
         let lowerCaseMessage = mess.toLowerCase();
-        let badFlag = false;
-        //Validate message with each item in bad words/links list
-        for(let i = 0; i < lowerCaseList.length; i++){
-          //Bad word/link found - emit rejection event and break out of loop
-          if(lowerCaseMessage.includes(lowerCaseList[i])){
-            badFlag = true;
-            socket.emit("message rejected");
+        let wordFlag = false;
+        let linkFlag = false;
+        //Validate message with each item in bad words list
+        for(let i = 0; i < lowerCaseWords.length; i++){
+          //Bad word found, set flag and break loop
+          if(lowerCaseMessage.includes(lowerCaseWords[i])){
+            wordFlag = true;
             break;
           }
         }
-        //If no bad words/links found then emit approval event
-        if(badFlag === false) socket.emit("message approved", mess);
+         //Validate message with each item in bad links list
+        for(let i = 0; i < lowerCaseLinks.length; i++){
+          //Bad link found, set flag and break loop
+          if(lowerCaseMessage.includes(lowerCaseLinks[i])){
+            linkFlag = true;
+            break;
+          }
+        }
+        //Send rejection if message contains bad words/links, else approve message
+        if(wordFlag && linkFlag) socket.emit("message rejected", "This message was not sent as it contains bad words and bad links");
+        else if(wordFlag) socket.emit("message rejected", "This message contains a bad word and was not sent");
+        else if(linkFlag) socket.emit("message rejected", "This message contains a bad link and was not sent");
+        else socket.emit("message approved", mess);
       }
     })
   })
