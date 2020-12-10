@@ -14,11 +14,10 @@
     font-size: 25px;
     margin-top: 25px;
     margin-bottom: 30px;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
     text-align: center;
-    position: relative;
-    top: 0;
+    
 }
 
 .profileButtons{

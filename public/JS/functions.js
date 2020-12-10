@@ -37,7 +37,7 @@ function updateChats(){
 function updateWords(){
     //Emit an event to server to pull the latest chat list
     
-    socket.emit("refreshwords")
+    socket.emit("fetch words list")
     //read a  array from server, this array called chats will include all the chat room name
     socket.on('updatewords', function(words){
             var wordsDisplayed = document.getElementById("wordDisplay");

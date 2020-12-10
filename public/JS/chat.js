@@ -22,32 +22,48 @@ $(function () {
     let content = $('#m').val().trim();
     if(content === "")
       return;
+    
+    socket.emit('filter message', content);    
+    
+  });
 
-    socket.emit('chat message', {
-      content: content,
-    });
-    console.log("emitted message");
+  socket.on("message contains bad word", function(){
+    alert("This message contains a bad word and was not sent");
+  })
+
+  socket.on("message approved", function(mess){
+    //Check for emojis  
+    let content = mess.replaceAll(":)", "&#128513;").replaceAll(":(", "&#128577;").replaceAll(":o", "&#128562;");
+    socket.emit('chat message', {content: content});
     $('#m').val('');
-  });
+  })
 
-  //Button that directs user from lobby to chat screen
-  $('#enterChatButton').click(() => {
-    let selectedChat = $('#chatsDisplayed option:selected').text();
-    console.log(selectedChat);
-    socket.emit('join chat', {
-      name: selectedChat,
-    });
-  });
+  
 
-  //Button that selects a user from user list
-  $("#chatUsers").click(() => {
-    $('#chatUsers').selectable();
-  });
+  $('#chatViewUser').click(() => {
+    let getClass = $("#chatUsers .ui-selected").attr("class");
+    if(getClass !== undefined){
+      getClass = getClass.split(" ");
+      let userName = getClass[0];
+      userName = userName.substring(10);
+      userName = userName.replaceAll("-", " ");
+    
+      socket.emit('get user ID', userName);
+    }
+    socket.on('return user ID', function(userID){
+      //TODO: use viewedUserID to display the right content on profile page
+      viewedUserID = userID;
+      $('#chat').hide();
+      $('#profile').show();
 
-  //Button that selects a chat message
-  $("#chatMessages").click(() => {
-    $('#chatMessages').selectable();
-  });
+     $('#editProfileButton').hide();
+     $('#profileToFriendsButton').hide();
+     $('#profileToChatButton').show();
+     
+    })
+
+  })
+
 
 /*---------------- Socket.on events ----------------*/
 
@@ -62,12 +78,8 @@ socket.on('chat join success', (res) => {
 });
 
 socket.on('chat message', (res) => {
-  console.log(res);
-
   let messages = [];
   if('messages' in res) {
-    console.log("Messages:")
-    console.log(messages);
     messages = res.messages;
   } else {
     messages = [res];
@@ -84,14 +96,14 @@ socket.on('chat message', (res) => {
 
     $('#chatMessages').append(chatObj);
   });
+  //automatically scroll to the bottom any time a new message arrives
+  $("#chatMessages").scrollTop($("#chatMessages")[0].scrollHeight);
 });
 
 socket.on('chat user added', (res) => {
-  console.log("Chat user added");
-  console.log(res);
   let userObj = $(`<li class="user-name-${cssSafeName(res.name)} user-type-${res.type}"}>`);
-
-  userObj.append($('<span class="userName">').html(res.name));
+  if(res.name == displayName) userObj.append($('<span class="userName">').html(res.name + " (You)"));
+  else userObj.append($('<span class="userName">').html(res.name));
 
   $('#chatUsers').append(userObj);
 });

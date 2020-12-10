@@ -133,8 +133,7 @@
         <div id="chatPage">
           <div id="chatWindow" class="windows">
             <div id="chatTitle"></div>
-            <ul id="chatMessages" class="scrollable"></ul>
-            <div id="chatMessagesContainer">
+            <div id="chatMessagesContainer" class="scrollable">
               <ul id="chatMessages" class="scrollable">
               </ul>
             </div>
@@ -173,7 +172,7 @@
       <div class="screenTitle">Create Chat</div>
 
       <button class="createChatButtons" id="createChatToLobby" type="button">Return to Lobby</button><br><br>
-      <label id="ctrlWarning" class="generalLabel">Hold ctrl while clicking users to select multiple users</label><br>
+      <label id="ctrlWarning" class="generalLabel">Hold ctrl while clicking users to select multiple users or to deselect a user</label><br>
 
       <form>
         <ul id=displayUsers>
@@ -229,13 +228,14 @@
       <div class="screenTitle">Profile</div>
       <!-- To do for back end: Replace displayname1 with the actual displayname of the user-->
       <img src="/Images/person-icon.png" width="15%">
-      <div class="generalLabel profileText" id="dispName" >Display Name: displayname1</div>
-      <div class="generalLabel profileText" id="acctType" >Account Type: Mod/User</div> 
+      <div class="profileText" id="dispName" >Display Name: displayname1</div>
+      <div class="profileText" id="acctType" >Account Type: Mod/User</div> 
       
 
       <!---This button is only visible if the user is viewing their own profile-->
       <button id="editProfileButton" class="profileButtons" type="button">Edit Profile</button>
       <button id="profileToFriendsButton" class="profileButtons" type="button">Back to Friends</button>
+      <button id="profileToChatButton" class="profileButtons" type="button">Back to Chat</button>
     </div>
 
     <!---Word List Module-->
