@@ -6,6 +6,7 @@ $(function () {
   $('.regButton').click(function(){
       let userType = $(this).attr("id");
       let email = $('#regEmail').val();
+      email = email.toLowerCase();
       let password = $('#regPassword').val();
       let displayName = $('#regDispName').val();
 

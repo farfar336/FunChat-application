@@ -1,0 +1,69 @@
+@import "general.css"; 
+/*--------------------------------------------------- Create Chat ---------------------------------------------------*/
+#linksList{
+    display: none;
+    width: 100%;
+    max-width: 700px;
+    text-align: center;
+    justify-content: center;
+}
+
+#linksList form{
+    width: 100%;
+}
+
+
+#displayLinks {
+    width: 100%; 
+}
+
+#displayLinks li{
+    display: inline;
+    float: left;
+    width: 100%;
+    margin: 10px;
+}
+.linkSelects{
+    width: 92vw;
+    max-width: 400px;
+    font-size: 16px;
+    padding-top: 5px;
+    padding-right: 5px;
+    padding-left: 5px;
+    margin: 15px;
+    overflow: auto;
+}
+
+
+#linksListLabel{
+    font-size: 18px;
+    font-weight: bold;
+   
+}
+
+#restrictedLink, #addLabel, #deleteLabel{
+    font-size: 16px;
+    margin-top: 5px;
+}
+
+#linksListOptions {
+    margin: 0; padding: 0;
+    width: 100%; 
+}
+
+#linksListOptions li{
+    float: right;
+    list-style: none;
+    width: 100%;
+    margin: 10px;
+}
+
+.linksListButtons{
+    width: 18%;
+    min-height: 30px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    margin-top: 5px;
+}
