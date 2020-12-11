@@ -19,7 +19,7 @@ $(function () {
   //Button that directs user from lobby to chat screen
   $('#enterChatButton').click(() => {
     let chatname = $('#chatsDisplayed option:selected').text();
-    socket.emit("chatApprovedOrNot",chatname)
+    if(chatname != null) socket.emit("chatApprovedOrNot",chatname)
     
     
   });
@@ -66,6 +66,9 @@ socket.on("chatNotApproved",function(){
   alert("You can't enter this chat as it is not approved yet")
 })
 
+socket.on("update chats for all",function(){
+  updateChats();
+})
 
 /*---------------- Functions ----------------*/
 });

@@ -78,6 +78,7 @@ $(function () {
     socket.emit("add user to chat", {
       name: $('#chatDisplayNameField').val(),
     });
+    $("#chatDisplayNameField").val('');
   });
 
   $('#chatRemoveUserButton').click(() => {

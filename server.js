@@ -226,6 +226,7 @@ io.on('connection', function(socket){
               {
                 console.log("Chat created");
                 socket.emit("chat create success", "Creation of Chat: " + obj.chatname + " Successful");
+                io.emit('update chats for all');
               }
             })
           }
@@ -437,7 +438,7 @@ io.on('connection', function(socket){
 
     chatObj.participants.push(userObj._id);
     await chatObj.save();
-
+    io.emit('update chats for all');
     io.to(socket.chat).emit("chat user added", {
       id: userObj._id,
       name: userObj.displayName,
@@ -474,7 +475,7 @@ io.on('connection', function(socket){
     }
 
     await chatObj.save();
-
+    io.emit('update chats for all');
     // Remove user from chat if actively participating in chat
     io.of('/').in(chatObj.name).clients((err, clients) => {
       clients.forEach((id) => {
@@ -512,7 +513,11 @@ io.on('connection', function(socket){
         //if there is no error, delete the chat room
         chat.deleteOne({ name: name }, function (err) {
           if(err) console.log(err);
-          console.log("Successful deletion");
+          
+          else{ 
+            console.log("Successful deletion");
+            io.emit('update chats for all');  
+          } 
         });
       }
     })
@@ -529,7 +534,8 @@ io.on('connection', function(socket){
             if (err){ 
                 console.log(err) 
             }else{ 
-                console.log("Result :", result)  
+                console.log("Result :", result)
+                io.emit('update chats for all');  
             } 
         });   
       }
