@@ -74,6 +74,12 @@ $(function () {
     });
   });
 
+  $('#addUserToChatButton').click(() => {
+    socket.emit("add user to chat", {
+      name: $('#chatDisplayNameField').val(),
+    });
+  });
+
   $('#chatRemoveUserButton').click(() => {
     let userObj = $('#chatUsers .ui-selected');
     if(!(userObj.length)) {
@@ -147,6 +153,10 @@ socket.on('remove message', (res) => {
 });
 
 socket.on('remove message error', (res) => {
+  alert(res);
+});
+
+socket.on('add user to chat error', (res) => {
   alert(res);
 });
 

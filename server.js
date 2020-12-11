@@ -409,6 +409,42 @@ io.on('connection', function(socket){
     });
   });
 
+  socket.on("add user to chat", async (req) => {
+    let userObj = await user.findOne({displayName: req.name}).exec();
+    if(userObj == null) {
+      socket.emit("add user to chat error", "User not found or does not exist!");
+      return;
+    }
+
+    console.log(userObj.friends);
+    console.log(socket.user.id);
+    if(!userObj.friends.includes(socket.user.id)) {
+      socket.emit("add user to chat error", "You cannot add a user who is not your friend!");
+      return;
+    }
+
+    let chatObj = await chat.findOne({name: socket.chat}).exec();
+    if(chatObj == null) {
+      socket.emit("add user to chat error", "An error occurred while getting the chat");
+      return;
+    }
+
+    let userIds = chatObj.mods.concat(chatObj.participants);
+    if(userIds.includes(userObj._id)) {
+      socket.emit("add user to chat error", "That user is already in this chat!");
+      return;
+    }
+
+    chatObj.participants.push(userObj._id);
+    await chatObj.save();
+
+    io.to(socket.chat).emit("chat user added", {
+      id: userObj._id,
+      name: userObj.displayName,
+      type: userObj.type,
+    });
+  });
+
   socket.on("remove user from chat", async (req) => {
     if(socket.user.type != "Moderator") {
       socket.emit("remove user from chat error", "You do not have permission to kick a user!");
