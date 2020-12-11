@@ -34,23 +34,23 @@ const message = require('./models/message');
 const db = mongoose.connection;
 db.once('open', _ => {
   console.log('Database connected:', url)
-  mongoose.connection.db.listCollections({name: 'restrictedWords'})
+  mongoose.connection.db.listCollections({name: 'badWordsAndLinks'})
   .next(function(err, collinfo) {
       if (collinfo) {
-          console.log("restrictedWords collection exists")
+          console.log("badWordsAndLinks collection exists")
       }
       else{
-        db.createCollection("restrictedWords");
+        db.createCollection("badWordsAndLinks");
       }
   });
 
-  db.collection("restrictedWords").findOne({}, function(error, result) {
+  db.collection("badWordsAndLinks").findOne({}, function(error, result) {
     if (error) console.log(error);
     else{
       if(result === null){
-        db.collection("restrictedWords").insertOne({name:"word", Words: []}, function(err, res) {
+        db.collection("badWordsAndLinks").insertOne({name:"wordsAndLinks", Words: [], Links: []}, function(err, res) {
           if (err) console.log(err);
-          console.log("Restricted Words list created");
+          console.log("Bad Words and Bad Links arrays created");
         });
       }
     }
@@ -83,6 +83,7 @@ io.on('connection', function(socket){
         if(document == null) socket.emit("login error", "This email does not exist!");
         else{
           if(document.password != obj.pass) socket.emit("login error", "Wrong password!");
+          else if(document.approved != true) socket.emit("login error", "Access Denied: This account has been suspended");
           else{
             socket.user = {
               id: document._id,
@@ -141,24 +142,6 @@ io.on('connection', function(socket){
     }); 
   });
 
-/*--------------------------------------------------- Word List  ---------------------------------------------------*/
-
-
-  //Get Word list
-  socket.on('get words for word List', function(obj){
-    //Fetch list of all word in database
-
-    //TODO Fill in
-    /** 
-    .find({}, {}, function(err, users){
-      if(err){
-        console.log(err);
-      } else{
-        socket.emit('word list for create chat' ,users);
-      }
-    })
-    */
-  });
 
 /*--------------------------------------------------- Create Chat  ---------------------------------------------------*/
   //Get User list
@@ -344,8 +327,6 @@ io.on('connection', function(socket){
     let content = req.content;
     let date = new Date();
 
-    // TODO: Validate content (e.g. bad words list)
-
     // Send message to users in channel
     io.to(socket.chat).emit("chat message", {
       content: content,
@@ -364,21 +345,39 @@ io.on('connection', function(socket){
     });
   });
 
+  //Check message for any bad words or bad links
   socket.on("filter message", function(mess){
-    db.collection("restrictedWords").findOne({}, function(err, result){
+    //get bad words and links lists
+    db.collection("badWordsAndLinks").findOne({}, function(err, result){
       if(err) console.error(err)
       else{
-        let lowerCaseList = result.Words.map(badWord => badWord.toLowerCase());
+        //Convert everything to lowercase to ensure bad words/links are caught regardless of how they are typed
+        let lowerCaseWords = result.Words.map(word => word.toLowerCase());
+        let lowerCaseLinks = result.Links.map(link => link.toLowerCase());
         let lowerCaseMessage = mess.toLowerCase();
         let wordFlag = false;
-        for(let i = 0; i < lowerCaseList.length; i++){
-          if(lowerCaseMessage.includes(lowerCaseList[i])){
+        let linkFlag = false;
+        //Validate message with each item in bad words list
+        for(let i = 0; i < lowerCaseWords.length; i++){
+          //Bad word found, set flag and break loop
+          if(lowerCaseMessage.includes(lowerCaseWords[i])){
             wordFlag = true;
-            socket.emit("message contains bad word");
             break;
           }
         }
-        if(wordFlag === false) socket.emit("message approved", mess);
+         //Validate message with each item in bad links list
+        for(let i = 0; i < lowerCaseLinks.length; i++){
+          //Bad link found, set flag and break loop
+          if(lowerCaseMessage.includes(lowerCaseLinks[i])){
+            linkFlag = true;
+            break;
+          }
+        }
+        //Send rejection if message contains bad words/links, else approve message
+        if(wordFlag && linkFlag) socket.emit("message rejected", "This message was not sent as it contains bad words and bad links");
+        else if(wordFlag) socket.emit("message rejected", "This message contains a bad word and was not sent");
+        else if(linkFlag) socket.emit("message rejected", "This message contains a bad link and was not sent");
+        else socket.emit("message approved", mess);
       }
     })
   })
@@ -665,7 +664,7 @@ io.on('connection', function(socket){
 
 
   socket.on("fetch words list",function(){
-    db.collection("restrictedWords").findOne({}, function(err, result){
+    db.collection("badWordsAndLinks").findOne({}, function(err, result){
       if(err) console.error(err)
       else{
         socket.emit("updatewords",result.Words)
@@ -675,11 +674,11 @@ io.on('connection', function(socket){
   })
 
   socket.on("addword",function(word){
-    db.collection("restrictedWords").findOne({}, function(err, result) {
+    db.collection("badWordsAndLinks").findOne({}, function(err, result) {
       if (err) throw err;
       if(!result.Words.includes(word)){
-        db.collection("restrictedWords").findOneAndUpdate(
-          { name: "word" },
+        db.collection("badWordsAndLinks").findOneAndUpdate(
+          { name: "wordsAndLinks" },
           { $push: { Words: word } }
         
         );
@@ -695,13 +694,58 @@ io.on('connection', function(socket){
 
 
   socket.on("deleteword",function(word){
-        db.collection("restrictedWords").findOneAndUpdate(
-          { name: "word" },
+        db.collection("badWordsAndLinks").findOneAndUpdate(
+          { name: "wordsAndLinks" },
           { $pull: { Words: word } }
         
         );
   
   })
+
+
+    /*--------------------------------------------------restricted links-----------------------------------------------------*/ 
+ 
+
+
+
+    socket.on("fetch links list",function(){
+      db.collection("badWordsAndLinks").findOne({}, function(err, result){
+        if(err) console.error(err)
+        else{
+          socket.emit("updatelinks",result.Links)
+          
+        }
+      })
+    })
+  
+    socket.on("addlink",function(link){
+      db.collection("badWordsAndLinks").findOne({}, function(err, result) {
+        if (err) throw err;
+        if(!result.Links.includes(link)){
+          db.collection("badWordsAndLinks").findOneAndUpdate(
+            { name: "wordsAndLinks" },
+            { $push: { Links: link } }
+          
+          );
+        }
+        else{
+          socket.emit("linkAlreadyInDatabase")
+        }
+        
+     
+  
+      })
+    })
+  
+  
+    socket.on("deletelink",function(link){
+          db.collection("badWordsAndLinks").findOneAndUpdate(
+            { name: "wordsAndLinks" },
+            { $pull: { Links: link } }
+          
+          );
+    
+    })
 
 });
 

@@ -51,12 +51,21 @@ $(function () {
     }
   })
 
-  //Button that directs user from home to another users profile screen 
+  //Button that directs user from home to bad words screen 
   $('#wordButton').click(function(){
     $('#home').hide();
     $('#wordList').show();
     updateWords()
     socket.emit('get words for word List', {});
+
+  })
+
+  //Button that directs user from home to bad links screen 
+  $('#linksButton').click(function(){
+    $('#home').hide();
+    $('#linksList').show();
+    updateLinks()
+    socket.emit('get links for links list', {});
 
   })
 

@@ -1,5 +1,5 @@
 //socket, userID, displayName, userType, viewedUserID are global variables that are initialized in index.html, near the top of the file
-/*--------------------------------------------------- createChat ---------------------------------------------------*/
+/*--------------------------------------------------- Bad Words ---------------------------------------------------*/
 $(function () {
     /*---------------- Click events ----------------*/
 
@@ -31,8 +31,7 @@ $(function () {
             alert("Please enter a word")
         }
         
-        //socket.emit('create chat', {users: $('#usersDisplay').val(), mods: $('#modDisplay').val(), chatname: $('#chatname').val()});
-        $('#restrictedWord').val('');    //clear the chat name text box
+        $('#restrictedWord').val('');    
     })
 
     // Button that requests deletion of Restricted Word
@@ -43,28 +42,13 @@ $(function () {
         //ask database to delete this word
         socket.emit("deleteword",word)
         updateWords()
-        //socket.emit('create chat', {users: $('#usersDisplay').val(), mods: $('#modDisplay').val(), chatname: $('#chatname').val()});
     })
     
 
     
     
     /*---------------- Socket.on events ----------------*/
-      // Removes the current list of words displayed, and then displays their updated version
-      //TODO AM
-      socket.on('word list for create chat', function(userObj){
-        //clear all previous information
-        $('#wordDisplay').empty();
-    
-        for(let i = 0; i < userObj.length; i++)
-        {
-            $('#wordDisplay').append($('<option>', {
-                value: userObj[i].displayName
-            }));
-          
-        }
-      })
-
+      
       socket.on("wordAlreadyInDatabase",function(){
           alert("The word is already in list")
       })

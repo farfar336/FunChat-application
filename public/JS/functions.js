@@ -35,19 +35,33 @@ function updateChats(){
 
 
 function updateWords(){
-    //Emit an event to server to pull the latest chat list
+    //Emit an event to server to pull the latest restricted words list
+    socket.emit("fetch words list");
     
-    socket.emit("fetch words list")
-    //read a  array from server, this array called chats will include all the chat room name
     socket.on('updatewords', function(words){
             var wordsDisplayed = document.getElementById("wordDisplay");
-            //clear current chat displayed
             wordsDisplayed.innerHTML="";
-            console.log(words)
+            console.log(words);
             words.forEach(element => {
             var word=document.createElement("option");
             word.innerHTML=element;
-            wordsDisplayed.appendChild(word)
+            wordsDisplayed.appendChild(word);
+        });
+    })
+}
+
+function updateLinks(){
+    //Emit an event to server to pull the latest restricted links list
+    socket.emit("fetch links list");
+    
+    socket.on('updatelinks', function(links){
+            var linksDisplayed = document.getElementById("linksDisplay");
+            linksDisplayed.innerHTML="";
+            console.log(links);
+            links.forEach(element => {
+            var link=document.createElement("option");
+            link.innerHTML=element;
+            linksDisplayed.appendChild(link);
         });
     })
 }

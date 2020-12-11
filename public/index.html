@@ -19,6 +19,7 @@
     <link rel="stylesheet" type="text/css" href="/CSS/editProfile.css">
     <link rel="stylesheet" type="text/css" href="/CSS/profile.css">
     <link rel="stylesheet" type="text/css" href="/CSS/badWords.css">
+    <link rel="stylesheet" type="text/css" href="/CSS/badLinks.css">
 
     <!-- script references from websites-->
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
@@ -48,6 +49,7 @@
     <script type="text/javascript" src="/JS/profile.js"></script>
     <script type="text/javascript" src="/JS/editProfile.js"></script>
     <script type="text/javascript" src="/JS/wordList.js"></script>
+    <script type="text/javascript" src="/JS/linksList.js"></script>
     
     <title>Chat Application</title>
   </head>
@@ -91,8 +93,9 @@
       <div class = "generalLabel" id="displayName" >Home page content here</div>
       <button  class="homeButtons" id="profileButton" type="button">Profile</button>
       <button  class="homeButtons" id="lobbyButton"  type="button">Lobby</button>
-      <button  class="homeButtons" id="friendsButton" type="button">Friends</button>
+      <button  class="homeButtons" id="friendsButton" type="button">Friends</button><br><br>
       <button  class="homeButtons" id="wordButton" type="button">Bad Words</button>
+      <button  class="homeButtons" id="linksButton" type="button">Bad Links</button>
     </div>
 
     
@@ -270,14 +273,43 @@
             <button class="wordListButtons" id="deleteWord" style="display: inline;" type="button">Delete</button>
           </li>
         </ul>
-      </form>
-      
-      
-      
-      
+      </form>  
     </div>
 
-    
+    <!---Bad Links List Module-->
+    <div id="linksList">
+      <div id="FunChatLabel" class="flexRow">
+        <button  id="linksListToHomeButton" class="headerButton" type="button">Home</button>
+        <p style="width:67%;text-align: center;">FunChat</p>
+        <button  class="logOutButton headerButton" type="button">Log Out</button></div>
+      <div class="screenTitle">Bad Links</div>
+
+      <!---Links List-->
+      <form>
+        <ul id="displayLinks">
+          <li>
+            <label id="linksListLabel" class="generalLabel">Bad Links List</label><br>
+            <select id="linksDisplay" class="linkSelects" name="linksDisplay" size="10" multiple>
+              <option>Temp</option>
+              <option>Link</option>
+            </select>
+          </li>
+        </ul>
+        <ul id="linksListOptions">
+          <li>
+            <!---Add Link-->
+            <label id="addLabel" class="generalLabel">Add Link</label>
+            <input type="text" id="restrictedLink" >
+            <button class="linksListButtons" id="addLink" style="display: inline;" type="button">Add</button> 
+          </li>
+          <li>
+            <!---Delete Link-->
+            <label id="deleteLabel" class="generalLabel">Select Link then Press Delete</label>
+            <button class="linksListButtons" id="deleteLink" style="display: inline;" type="button">Delete</button>
+          </li>
+        </ul>
+      </form>  
+    </div>
 
   </body>
 </html>

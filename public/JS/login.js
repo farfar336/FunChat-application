@@ -5,6 +5,7 @@ $(function () {
   //Button that directs user from profile to edit profile screen
   $('#loginButton').click(function(){
       let email = $('#logEmail').val();
+      email = email.toLowerCase();
       let password = $('#logPassword').val();
 
       socket.emit('login', {em:email, pass:password});
@@ -39,9 +40,11 @@ $(function () {
     //Buttons displayed based on user type
     if (userType == "User"){
       $('#wordButton').hide();
+      $('#linksButton').hide();
     }
     else if(userType == "Moderator"){
       $('#wordButton').show();
+      $('#linksButton').show();
     }
     
   })

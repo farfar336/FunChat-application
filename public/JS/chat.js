@@ -7,11 +7,6 @@ $(function () {
     // Inform server
     socket.emit("leave chat");
 
-    // Clear previous chat information
-    // $('#chatMessages').empty();
-    // $('#chatUsers').empty();
-    // $('#chatTitle').html('');
-
     $('#chat').css('display', '');
     $('#lobby').show();
   });
@@ -22,15 +17,17 @@ $(function () {
     let content = $('#m').val().trim();
     if(content === "")
       return;
-    
+    //Check message for bad words or links
     socket.emit('filter message', content);    
     
   });
 
-  socket.on("message contains bad word", function(){
-    alert("This message contains a bad word and was not sent");
+  //Message contains a bad word and/or link
+  socket.on("message rejected", function(msg){
+    alert(msg);
   })
 
+  //Message does not contain any bad words or links
   socket.on("message approved", function(mess){
     //Check for emojis  
     let content = mess.replaceAll(":)", "&#128513;").replaceAll(":(", "&#128577;").replaceAll(":o", "&#128562;");
@@ -39,7 +36,6 @@ $(function () {
   })
 
   
-
   $('#chatViewUser').click(() => {
     let getClass = $("#chatUsers .ui-selected").attr("class");
     if(getClass !== undefined){
