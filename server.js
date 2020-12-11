@@ -304,6 +304,7 @@ io.on('connection', function(socket){
       let sender = await user.findOne({_id: msg.sender}).exec();
       return {
         content: msg.content,
+        id: msg._id,
         sender: sender.displayName,
         time: msg.time,
         type: sender.type,
@@ -327,21 +328,22 @@ io.on('connection', function(socket){
     let content = req.content;
     let date = new Date();
 
-    // Send message to users in channel
-    io.to(socket.chat).emit("chat message", {
-      content: content,
-      sender: socket.user.displayName,
-      time: date,
-      type: socket.user.type,
-    });
-
     // Store message to database
     let chatInst = await chat.findOne({name: socket.chat}).exec();
-    message.create({
+    let msgInst = await message.create({
       chat: chatInst._id,
       sender: socket.user.id,
       time: date,
       content: content,
+    });
+
+    // Send message to users in channel
+    io.to(socket.chat).emit("chat message", {
+      content: content,
+      id: msgInst._id,
+      sender: socket.user.displayName,
+      time: date,
+      type: socket.user.type,
     });
   });
 
@@ -381,6 +383,30 @@ io.on('connection', function(socket){
       }
     })
   })
+
+  socket.on("remove message", async (req) => {
+    if(socket.user.type != "Moderator") {
+      socket.emit("remove message error", "You do not have permission to remove a message!");
+      return;
+    }
+
+    let msgObj = await message.findOne({_id: req.id}).exec();
+    if(msgObj == null) {
+      socket.emit("remove message error", "Message not found or does not exist!");
+      return;
+    }
+
+    message.deleteOne({_id: req.id}, (err) => {
+      if(err) {
+        socket.emit("remove message error", "Failed to delete message");
+        return;
+      }
+
+      io.to(socket.chat).emit("remove message", {
+        id: req.id,
+      });
+    });
+  });
 
   socket.on("get user ID", function(name){
     user.findOne({displayName:name}, function(error, document){

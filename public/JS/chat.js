@@ -60,6 +60,19 @@ $(function () {
 
   })
 
+  $('#chatRemoveMessageButton').click(() => {
+    let msgObj = $('#chatMessages .ui-selected');
+    if(!(msgObj.length)) {
+      alert("No message selected");
+      return;
+    }
+
+    let msgId = /msg-id-(\w+)/.exec(msgObj.attr('class'))[1];
+
+    socket.emit("remove message", {
+      id: msgId,
+    });
+  });
 
 /*---------------- Socket.on events ----------------*/
 
@@ -82,7 +95,7 @@ socket.on('chat message', (res) => {
   }
 
   messages.forEach((msg) => {
-    let chatObj = $(`<li class="user-name-${cssSafeName(msg.sender)} user-type-${msg.type}">`);
+    let chatObj = $(`<li class="msg-id-${msg.id} user-name-${cssSafeName(msg.sender)} user-type-${msg.type}">`);
 
     chatObj.append($('<span class="messageTime">').html(new Date(msg.time).toLocaleTimeString()));
     chatObj.append(' ');
@@ -106,6 +119,14 @@ socket.on('chat user added', (res) => {
 
 socket.on('chat user removed', (res) => {
   $('#chatUsers').find(`.user-${cssSafeName(res.sender)}`).remove();
+});
+
+socket.on('remove message', (res) => {
+  $(`.msg-id-${res.id}`).remove();
+});
+
+socket.on('remove message error', (res) => {
+  alert(res);
 });
 
 /*---------------- Functions ----------------*/
