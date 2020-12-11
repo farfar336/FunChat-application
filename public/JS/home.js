@@ -34,21 +34,8 @@ $(function () {
 
   //Button that directs user from home to another users profile screen 
   $('#profileButton').click(function(){
+    socket.emit("show profile");
     $('#home').hide();
-    $('#profile').show();
-
-    //To-do Backend: Use id stored in 'viewedUserID' to fetch profile details
-    //Clicking this button will show current user's profile
-    //Clicking a display name in the friends page will store friend's id in 'viewedUserID'
-    viewedUserID = userID;
-    
-    //If user is viewing their own profile
-    if (userID == viewedUserID){
-      $('#editProfileButton').show();
-      $('#profileToHomeButton').show();
-      $('#profileToFriendsButton').hide();
-      $('#profileToChatButton').hide();
-    }
   })
 
   //Button that directs user from home to another users profile screen 
