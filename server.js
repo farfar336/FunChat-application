@@ -86,7 +86,7 @@ io.on('connection', function(socket){
           else if(document.approved != true) socket.emit("login error", "Access Denied: This account has been suspended");
           else{
             socket.user = {
-              id: document._id,
+              id: document._id.toString(),
               displayName: document.displayName,
               type: document.type,
             };
@@ -289,6 +289,7 @@ io.on('connection', function(socket){
 
     users.forEach((chatUser) => {
       socket.emit("chat user added", {
+        id: chatUser._id,
         name: chatUser.displayName,
         type: chatUser.type,
       });
@@ -405,6 +406,54 @@ io.on('connection', function(socket){
       io.to(socket.chat).emit("remove message", {
         id: req.id,
       });
+    });
+  });
+
+  socket.on("remove user from chat", async (req) => {
+    if(socket.user.type != "Moderator") {
+      socket.emit("remove user from chat error", "You do not have permission to kick a user!");
+      return;
+    }
+
+    let userObj = await user.findOne({_id: req.id}).exec();
+    if(userObj == null) {
+      socket.emit("remove user from chat error", "User not found or does not exist!");
+      return;
+    }
+
+    let chatObj = await chat.findOne({name: socket.chat}).exec();
+    if(chatObj == null) {
+      socket.emit("remove user from chat error", "Chat not found. Was it deleted?");
+      return;
+    }
+
+    // Remove user from chat list in database
+    if(chatObj.participants.includes(userObj._id)) {
+      chatObj.participants = chatObj.participants.filter((id) => { id !== userObj._id });
+    } else if(chatObj.mods.includes(userObj._id)) {
+      chatObj.mods = chatObj.mods.filter((id) => { id !== userObj._id });
+    } else {
+      socket.emit("remove user from chat error", "That user is not in this chat!");
+      return;
+    }
+
+    await chatObj.save();
+
+    // Remove user from chat if actively participating in chat
+    io.of('/').in(chatObj.name).clients((err, clients) => {
+      clients.forEach((id) => {
+        let client = io.sockets.connected[id];
+        if(client.user.id == userObj._id) {
+          client.leave(chatObj.name);
+          client.chat = null;
+          client.emit("removed from chat");
+        }
+      });
+    });
+
+    // Remove user from chat list
+    io.to(chatObj.name).emit("chat user removed", {
+      id: userObj._id,
     });
   });
 
