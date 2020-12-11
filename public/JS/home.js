@@ -36,6 +36,11 @@ $(function () {
   $('#profileButton').click(function(){
     socket.emit("show profile");
     $('#home').hide();
+    $('#profile').show();
+
+    $('#editProfileButton').show();
+    $('#profileToFriendsButton').hide();
+    $('#profileToChatButton').hide();
   })
 
   //Button that directs user from home to bad words screen 

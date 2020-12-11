@@ -49,6 +49,7 @@ $(function () {
     socket.on('return user ID', function(userID){
       //TODO: use viewedUserID to display the right content on profile page
       viewedUserID = userID;
+      socket.emit("show profile", {uid:userID});
       $('#chat').hide();
       $('#profile').show();
 

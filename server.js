@@ -628,20 +628,24 @@ io.on('connection', function(socket){
   socket.on("show profile", async (req) => {
 
     // Default to sender
-    let user = socket.user;
+    let viewUser = socket.user;
+    let userID = viewUser.id;
     // Lookup requested user
-    if(req != null && req.hasOwnProperty('name')) {
-      user = await User.findOne({displayName: req.name}).exec();
-      if(user == null) {
+    if(req != null && req.hasOwnProperty('uid')) {
+      viewUser = await user.findOne({_id: req.uid}).exec();
+      if(viewUser == null) {
         socket.emit("show profile error", "User not found or does not exist");
         return;
+      }
+      else{
+        userID = req.uid;
       }
     }
 
     socket.emit("show profile success", {
-      id: user.id,
-      name: user.displayName,
-      type: user.type,
+      id: userID,
+      name: viewUser.displayName,
+      type: viewUser.type,
     });
   });
 

@@ -96,6 +96,7 @@ $(function () {
 
     //store id of friend to use in fetching profile info from database
     viewedUserID = pid;
+    socket.emit("show profile", {uid:pid});
     $('#friends').hide();
     $('#profile').show();
 
