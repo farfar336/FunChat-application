@@ -26,6 +26,11 @@ $(function () {
 //if user's chhanged display name
 socket.on("changeDisplaynameSuccessful",function(){
   alert("change displayname successfully")
+
+  displayName = $("#newDisplayNameField").val();
+
+  // Update profile display name
+  $('#dispName').html(`Display Name: ${displayName}`);
 })
 
 //if this name exist in database

@@ -623,6 +623,27 @@ io.on('connection', function(socket){
       }
     })  
   })
+  
+  /* -------------------------------------show profile screen ----------------------------------------------------------------------*/
+  socket.on("show profile", async (req) => {
+
+    // Default to sender
+    let user = socket.user;
+    // Lookup requested user
+    if(req != null && req.hasOwnProperty('name')) {
+      user = await User.findOne({displayName: req.name}).exec();
+      if(user == null) {
+        socket.emit("show profile error", "User not found or does not exist");
+        return;
+      }
+    }
+
+    socket.emit("show profile success", {
+      id: user.id,
+      name: user.displayName,
+      type: user.type,
+    });
+  });
 
   /* -------------------------------------edit profile screen ----------------------------------------------------------------------*/ 
   
@@ -650,6 +671,7 @@ io.on('connection', function(socket){
           }
         })
         socket.emit("changeDisplaynameSuccessful")
+        socket.user.displayName = data.displayname
       }
       else{
         socket.emit("invalidDisplayname")
