@@ -37,18 +37,18 @@ socket.on('show profile success', (res) => {
   $('#acctType').html(`Account Type: ${res.type}`);
 
   //If user is viewing their own profile
+  /*
   if (userID == viewedUserID){
     $('#editProfileButton').show();
     $('#profileToHomeButton').show();
     $('#profileToFriendsButton').hide();
     $('#profileToChatButton').hide();
-  }
+  }*/
 
-  $('#profile').show();
+  //$('#profile').show();
 });
 
 socket.on('show profile error', (res) => {
-  $('#home').show();
   alert(res);
 });
 
