@@ -684,6 +684,54 @@ io.on('connection', function(socket){
     })
   })
 
+  //update user email
+  socket.on("changeEmail", function(data){
+    //check if this email already exist in database
+    user.findOne({email:data.newEmail}, function(error, document){
+      if (error) socket.emit("change email error", "Error: could not update email");
+      else{
+        if(document==null){
+          //if this email is not in databse, find this user by it's id
+          user.findOne({_id:data.id}, function(error, thisuser){
+            if (error) socket.emit("change email error", "Error: could not update email");
+            else{
+              //upload email
+              thisuser.update({email:data.newEmail}, function (err, result) { 
+                if (err){ 
+                  socket.emit("change email error", "Error: could not update email"); 
+                }else{ 
+                  socket.emit("email change successful") 
+                } 
+            }); 
+            }
+          })
+          
+          
+        }
+        else{
+          socket.emit("change email error", "Error: This email already exists");
+        }
+      }
+    })
+  })
+
+  //update user password
+  socket.on("changePassword", function(data){
+    user.findOne({_id:data.id}, function(error, thisuser){
+      if (error) socket.emit("change pass error", "Error: could not update password");
+      else{
+        //upload password
+        thisuser.update({password:data.newPass}, function (err, result) { 
+          if (err){ 
+            socket.emit("change pass error", "Error: could not update password"); 
+          }else{ 
+            socket.emit("password change successful")  
+          } 
+      }); 
+      }
+    })      
+  })
+
   /*--------------------------------------------------restricted words-----------------------------------------------------*/ 
  
 
