@@ -61,6 +61,39 @@ $(function () {
 
   })
 
+  $('#chatRemoveMessageButton').click(() => {
+    let msgObj = $('#chatMessages .ui-selected');
+    if(!(msgObj.length)) {
+      alert("No message selected");
+      return;
+    }
+
+    let msgId = /msg-id-(\w+)/.exec(msgObj.attr('class'))[1];
+
+    socket.emit("remove message", {
+      id: msgId,
+    });
+  });
+
+  $('#addUserToChatButton').click(() => {
+    socket.emit("add user to chat", {
+      name: $('#chatDisplayNameField').val(),
+    });
+    $("#chatDisplayNameField").val('');
+  });
+
+  $('#chatRemoveUserButton').click(() => {
+    let userObj = $('#chatUsers .ui-selected');
+    if(!(userObj.length)) {
+      alert("No user selected");
+      return;
+    }
+
+    let userId = /user-id-(\w+)/.exec(userObj.attr('class'))[1];
+    socket.emit("remove user from chat", {
+      id: userId,
+    });
+  });
 
 /*---------------- Socket.on events ----------------*/
 
@@ -83,7 +116,7 @@ socket.on('chat message', (res) => {
   }
 
   messages.forEach((msg) => {
-    let chatObj = $(`<li class="user-name-${cssSafeName(msg.sender)} user-type-${msg.type}">`);
+    let chatObj = $(`<li class="msg-id-${msg.id} user-name-${cssSafeName(msg.sender)} user-type-${msg.type}">`);
 
     chatObj.append($('<span class="messageTime">').html(new Date(msg.time).toLocaleTimeString()));
     chatObj.append(' ');
@@ -98,7 +131,7 @@ socket.on('chat message', (res) => {
 });
 
 socket.on('chat user added', (res) => {
-  let userObj = $(`<li class="user-name-${cssSafeName(res.name)} user-type-${res.type}"}>`);
+  let userObj = $(`<li class="user-id-${res.id} user-name-${cssSafeName(res.name)} user-type-${res.type}"}>`);
   if(res.name == displayName) userObj.append($('<span class="userName">').html(res.name + " (You)"));
   else userObj.append($('<span class="userName">').html(res.name));
 
@@ -106,7 +139,31 @@ socket.on('chat user added', (res) => {
 });
 
 socket.on('chat user removed', (res) => {
-  $('#chatUsers').find(`.user-${cssSafeName(res.sender)}`).remove();
+  $('#chatUsers').find(`.user-id-${res.id}`).remove();
+});
+
+socket.on('removed from chat', () => {
+  $('#chat').css('display', '');
+  updateChats();
+  $('#lobby').show();
+
+  alert("You were removed from this chat");
+});
+
+socket.on('remove message', (res) => {
+  $(`.msg-id-${res.id}`).remove();
+});
+
+socket.on('remove message error', (res) => {
+  alert(res);
+});
+
+socket.on('add user to chat error', (res) => {
+  alert(res);
+});
+
+socket.on('remove user from chat error', (res) => {
+  alert(res);
 });
 
 /*---------------- Functions ----------------*/

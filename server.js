@@ -86,7 +86,7 @@ io.on('connection', function(socket){
           else if(document.approved != true) socket.emit("login error", "Access Denied: This account has been suspended");
           else{
             socket.user = {
-              id: document._id,
+              id: document._id.toString(),
               displayName: document.displayName,
               type: document.type,
             };
@@ -226,6 +226,7 @@ io.on('connection', function(socket){
               {
                 console.log("Chat created");
                 socket.emit("chat create success", "Creation of Chat: " + obj.chatname + " Successful");
+                io.emit('update chats for all');
               }
             })
           }
@@ -289,6 +290,7 @@ io.on('connection', function(socket){
 
     users.forEach((chatUser) => {
       socket.emit("chat user added", {
+        id: chatUser._id,
         name: chatUser.displayName,
         type: chatUser.type,
       });
@@ -304,6 +306,7 @@ io.on('connection', function(socket){
       let sender = await user.findOne({_id: msg.sender}).exec();
       return {
         content: msg.content,
+        id: msg._id,
         sender: sender.displayName,
         time: msg.time,
         type: sender.type,
@@ -327,21 +330,22 @@ io.on('connection', function(socket){
     let content = req.content;
     let date = new Date();
 
-    // Send message to users in channel
-    io.to(socket.chat).emit("chat message", {
-      content: content,
-      sender: socket.user.displayName,
-      time: date,
-      type: socket.user.type,
-    });
-
     // Store message to database
     let chatInst = await chat.findOne({name: socket.chat}).exec();
-    message.create({
+    let msgInst = await message.create({
       chat: chatInst._id,
       sender: socket.user.id,
       time: date,
       content: content,
+    });
+
+    // Send message to users in channel
+    io.to(socket.chat).emit("chat message", {
+      content: content,
+      id: msgInst._id,
+      sender: socket.user.displayName,
+      time: date,
+      type: socket.user.type,
     });
   });
 
@@ -382,6 +386,114 @@ io.on('connection', function(socket){
     })
   })
 
+  socket.on("remove message", async (req) => {
+    if(socket.user.type != "Moderator") {
+      socket.emit("remove message error", "You do not have permission to remove a message!");
+      return;
+    }
+
+    let msgObj = await message.findOne({_id: req.id}).exec();
+    if(msgObj == null) {
+      socket.emit("remove message error", "Message not found or does not exist!");
+      return;
+    }
+
+    message.deleteOne({_id: req.id}, (err) => {
+      if(err) {
+        socket.emit("remove message error", "Failed to delete message");
+        return;
+      }
+
+      io.to(socket.chat).emit("remove message", {
+        id: req.id,
+      });
+    });
+  });
+
+  socket.on("add user to chat", async (req) => {
+    let userObj = await user.findOne({displayName: req.name}).exec();
+    if(userObj == null) {
+      socket.emit("add user to chat error", "User not found or does not exist!");
+      return;
+    }
+
+    console.log(userObj.friends);
+    console.log(socket.user.id);
+    if(!userObj.friends.includes(socket.user.id)) {
+      socket.emit("add user to chat error", "You cannot add a user who is not your friend!");
+      return;
+    }
+
+    let chatObj = await chat.findOne({name: socket.chat}).exec();
+    if(chatObj == null) {
+      socket.emit("add user to chat error", "An error occurred while getting the chat");
+      return;
+    }
+
+    let userIds = chatObj.mods.concat(chatObj.participants);
+    if(userIds.includes(userObj._id)) {
+      socket.emit("add user to chat error", "That user is already in this chat!");
+      return;
+    }
+
+    chatObj.participants.push(userObj._id);
+    await chatObj.save();
+    io.emit('update chats for all');
+    io.to(socket.chat).emit("chat user added", {
+      id: userObj._id,
+      name: userObj.displayName,
+      type: userObj.type,
+    });
+  });
+
+  socket.on("remove user from chat", async (req) => {
+    if(socket.user.type != "Moderator") {
+      socket.emit("remove user from chat error", "You do not have permission to kick a user!");
+      return;
+    }
+
+    let userObj = await user.findOne({_id: req.id}).exec();
+    if(userObj == null) {
+      socket.emit("remove user from chat error", "User not found or does not exist!");
+      return;
+    }
+
+    let chatObj = await chat.findOne({name: socket.chat}).exec();
+    if(chatObj == null) {
+      socket.emit("remove user from chat error", "Chat not found. Was it deleted?");
+      return;
+    }
+
+    // Remove user from chat list in database
+    if(chatObj.participants.includes(userObj._id)) {
+      chatObj.participants = chatObj.participants.filter((id) => { id !== userObj._id });
+    } else if(chatObj.mods.includes(userObj._id)) {
+      chatObj.mods = chatObj.mods.filter((id) => { id !== userObj._id });
+    } else {
+      socket.emit("remove user from chat error", "That user is not in this chat!");
+      return;
+    }
+
+    await chatObj.save();
+    io.emit('update chats for all');
+    // Remove user from chat if actively participating in chat
+    io.of('/').in(chatObj.name).clients((err, clients) => {
+      clients.forEach((id) => {
+        let client = io.sockets.connected[id];
+        if(client.user.id == userObj._id) {
+          client.leave(chatObj.name);
+          client.chat = null;
+          client.emit("removed from chat");
+        }
+      });
+    });
+
+    // Remove user from chat list
+    io.to(chatObj.name).emit("chat user removed", {
+      id: userObj._id,
+    });
+  });
+
   socket.on("get user ID", function(name){
     user.findOne({displayName:name}, function(error, document){
       if (error)console.error(error);
@@ -401,7 +513,11 @@ io.on('connection', function(socket){
         //if there is no error, delete the chat room
         chat.deleteOne({ name: name }, function (err) {
           if(err) console.log(err);
-          console.log("Successful deletion");
+          
+          else{ 
+            console.log("Successful deletion");
+            io.emit('update chats for all');  
+          } 
         });
       }
     })
@@ -418,7 +534,8 @@ io.on('connection', function(socket){
             if (err){ 
                 console.log(err) 
             }else{ 
-                console.log("Result :", result)  
+                console.log("Result :", result)
+                io.emit('update chats for all');  
             } 
         });   
       }
