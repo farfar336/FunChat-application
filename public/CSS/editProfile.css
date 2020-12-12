@@ -10,7 +10,13 @@
 }
 
 
-#newNameLabel, #newDisplayNameField{
+#newDisplayNameField, #newEmailField, #newPasswordField{
+    font-size: 18px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+#newNameLabel, #newEmailLabel, #newPasswordLabel{
     font-size: 18px;
     margin-top: 25px;
     margin-bottom: 25px;
