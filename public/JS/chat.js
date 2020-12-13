@@ -38,27 +38,17 @@ $(function () {
   
   $('#chatViewUser').click(() => {
     let getClass = $("#chatUsers .ui-selected").attr("class");
-    if(getClass !== undefined){
-      getClass = getClass.split(" ");
-      let userName = getClass[0];
-      userName = userName.substring(10);
-      userName = userName.replaceAll("-", " ");
+    getClass = getClass.split(" ");
+    let userid = getClass[0];
+    userid = userid.substring(8);
+    socket.emit("show profile", {uid:userid});
+    $('#chat').hide();
+    $('#profile').show();
+
+    $('#editProfileButton').hide();
+    $('#profileToFriendsButton').hide();
+    $('#profileToChatButton').show();
     
-      socket.emit('get user ID', userName);
-    }
-    socket.on('return user ID', function(userID){
-      //TODO: use viewedUserID to display the right content on profile page
-      viewedUserID = userID;
-      socket.emit("show profile", {uid:userID});
-      $('#chat').hide();
-      $('#profile').show();
-
-     $('#editProfileButton').hide();
-     $('#profileToFriendsButton').hide();
-     $('#profileToChatButton').show();
-     
-    })
-
   })
 
   $('#chatRemoveMessageButton').click(() => {
