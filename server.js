@@ -494,14 +494,6 @@ io.on('connection', function(socket){
     });
   });
 
-  socket.on("get user ID", function(name){
-    user.findOne({displayName:name}, function(error, document){
-      if (error)console.error(error);
-      else{
-        socket.emit("return user ID", document._id);
-      }
-    })
-  })
   
 /*--------------------------------------------------- Lobby  ---------------------------------------------------*/
   //if a chat is rejected, this chat will be romove from the database

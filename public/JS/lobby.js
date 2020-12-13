@@ -19,7 +19,8 @@ $(function () {
   //Button that directs user from lobby to chat screen
   $('#enterChatButton').click(() => {
     let chatname = $('#chatsDisplayed option:selected').text();
-    if(chatname != null) socket.emit("chatApprovedOrNot",chatname)
+    if(chatname !== "") socket.emit("chatApprovedOrNot",chatname)
+    else alert("Please select a chat to enter");
     
     
   });

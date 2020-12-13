@@ -17,21 +17,24 @@ $(function () {
   //ask to change the display name
   $('#changeDisplayNameButton').click(function(){
     var displayname=document.getElementById("newDisplayNameField").value;
-    socket.emit("changeDisplayname",{displayname:displayname, id:userID})
+    displayname = displayname.trim();
+    if(displayname !== "") socket.emit("changeDisplayname",{displayname:displayname, id:userID})
   
   })
 
   //ask to change the email
   $('#changeEmailButton').click(function(){
     var email=document.getElementById("newEmailField").value;
-    socket.emit("changeEmail",{id:userID, newEmail:email})
+    email = email.trim();
+    if(email !== "") socket.emit("changeEmail",{id:userID, newEmail:email})
   
   })
 
   //ask to change the password
   $('#changePasswordButton').click(function(){
     var pass=document.getElementById("newPasswordField").value;
-    socket.emit("changePassword",{id:userID, newPass:pass})
+    pass = pass.trim();
+    if(pass !== "") socket.emit("changePassword",{id:userID, newPass:pass})
   
   })
 
