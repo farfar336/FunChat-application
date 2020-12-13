@@ -24,13 +24,13 @@ $(function () {
     
   });
 
-/*---------------- Socket.on events ----------------*/
+  /*---------------- Socket.on events ----------------*/
 
-//if user enter a approved chat
-socket.on("chatApproved",function(chatname){
-  socket.emit('join chat', {
-    name: chatname
-  });
+  //if user enter a approved chat
+  socket.on("chatApproved",function(chatname){
+    socket.emit('join chat', {
+      name: chatname
+    });
 
   //Make chat users selectable - additional code disables multiple selections
   $('#chatUsers').selectable({selected: function(event, ui){
@@ -57,18 +57,14 @@ socket.on("chatApproved",function(chatname){
     $('#chatTitle').html('');
     $('#lobby').hide();
     $('#chat').css('display', 'contents');
+  })
 
-    
-})
+  //if user try to enter a not approved chat
+  socket.on("chatNotApproved",function(){
+    alert("You can't enter this chat as it is not approved yet")
+  })
 
-//if user try to enter a not approved chat
-socket.on("chatNotApproved",function(){
-  alert("You can't enter this chat as it is not approved yet")
-})
-
-socket.on("update chats for all",function(){
-  updateChats();
-})
-
-/*---------------- Functions ----------------*/
+  socket.on("update chats for all",function(){
+    updateChats();
+  })
 });

@@ -31,7 +31,7 @@ $(function () {
     $('#regDispName').val('');
   })
 
-/*---------------- Socket.on events ----------------*/
+  /*---------------- Socket.on events ----------------*/
   // If registration was unsuccesful, then notify the user
   socket.on('register error', function(msg){
     alert(msg);
@@ -43,6 +43,4 @@ $(function () {
     $('#registerForm').hide();
     $('#loginForm').show();
   })
-
-/*---------------- Functions ----------------*/
 });

@@ -48,8 +48,8 @@
     <script type="text/javascript" src="/JS/friends.js"></script>
     <script type="text/javascript" src="/JS/profile.js"></script>
     <script type="text/javascript" src="/JS/editProfile.js"></script>
-    <script type="text/javascript" src="/JS/wordList.js"></script>
-    <script type="text/javascript" src="/JS/linksList.js"></script>
+    <script type="text/javascript" src="/JS/badWords.js"></script>
+    <script type="text/javascript" src="/JS/badLinks.js"></script>
     
     <title>Chat Application</title>
   </head>
@@ -88,26 +88,33 @@
 
     <!---Home module-->
     <div id="home">
-      <div id="FunChatLabel" class="flexRow"><p style="width:67%;text-align: center;">FunChat</p><button class="logOutButton headerButton" type="button">Log Out</button></div>
+      <div id="FunChatLabel" class="flexRow">
+        <p style="width:67%;text-align: center;">FunChat</p>
+        <button class="logOutButton headerButton" type="button">Log Out</button>
+      </div>
       <div class="screenTitle">Home</div>
       <div class = "generalLabel" id="displayName" >Home page content here</div>
       <button  class="homeButtons" id="profileButton" type="button">Profile</button>
       <button  class="homeButtons" id="lobbyButton"  type="button">Lobby</button>
       <button  class="homeButtons" id="friendsButton" type="button">Friends</button><br><br>
-      <button  class="homeButtons" id="wordButton" type="button">Bad Words</button>
-      <button  class="homeButtons" id="linksButton" type="button">Bad Links</button>
+      <button  class="homeButtons" id="badWordsButton" type="button">Bad Words</button>
+      <button  class="homeButtons" id="badLinksButton" type="button">Bad Links</button>
     </div>
 
     
 
     <!---Lobby module-->
     <div id="lobby">
-      <div id="FunChatLabel" class="flexRow"><button  id="lobbyToHomeButton" class="headerButton" type="button">Home</button><p style="width:67%;text-align: center;">FunChat</p><button  class="logOutButton headerButton" type="button">Log Out</button></div>
+      <div id="FunChatLabel" class="flexRow"><button  id="lobbyToHomeButton" class="headerButton" type="button">Home</button>
+        <p style="width:67%;text-align: center;">FunChat</p>
+        <button  class="logOutButton headerButton" type="button">Log Out</button>
+      </div>
       <div class="screenTitle">Lobby</div>
       <button class="lobbyButtons" id="enterChatButton" type="button">Enter Chat</button>
       <button class="lobbyButtons" id="createChatButton"  type="button">Create Chat</button><br><br>
 
       <!---Chats list-->
+
       <label id="chatListLabel" class="generalLabel">Chats</label><br>
       <select id="chatsDisplayed" name="chatsDisplayed" size="10">
         <!-- Pulls info from database and only lists chat if current user is a member -->
@@ -125,12 +132,10 @@
     <!--Chat Module-->
     <div id="chat">
       <div id="chatLayout">
-        <div id="FunChatLabel" class="flexRow"><button  id="chatToLobbyButton" class="headerButton" type="button">Lobby</button><p style="width:67%;text-align: center;">FunChat</p><button  class="logOutButton headerButton" type="button">Log Out</button></div>        <!--Chat Header-->
-        <!-- <div id="FunChatLabel" class="flexRow" style="width: 100%;justify-content: center;text-align: center;">
-          FunChat
-          <button id="goHome" class="chatButtons"><i class="fas fa-arrow-left"></i>Home</button>
-          <div id="centering"></div> -->
-        <!-- </div> -->
+        <div id="FunChatLabel" class="flexRow">
+          <button  id="chatToLobbyButton" class="headerButton" type="button">Lobby</button>
+          <p style="width:67%;text-align: center;">FunChat</p>
+          <button  class="logOutButton headerButton" type="button">Log Out</button></div>
 
         <!--Chat Body-->
         <div id="chatPage">
@@ -155,10 +160,6 @@
             </div>
           </div>
           <div id="messageWindow" class="windows">
-            <!-- <div id="imageAndSearch">
-              <button class="chatButtons"><i class="fas fa-camera"></i></button>
-              <button class="chatButtons"><i class="fas fa-search"></i></button>
-            </div> -->
             <form id="messageForm" action="">
                 <input id="m" autocomplete="off" placeholder="Write a message..."/>                  
             </form>          
@@ -171,7 +172,10 @@
 
     <!---Create Chat Module-->
     <div id="chatCreate">
-      <div id="FunChatLabel" class="flexRow"><button  id="createChatToHomeButton" class="headerButton" type="button">Home</button><p style="width:67%;text-align: center;">FunChat</p><button  class="logOutButton headerButton" type="button">Log Out</button></div>
+      <div id="FunChatLabel" class="flexRow"><button  id="createChatToHomeButton" class="headerButton" type="button">Home</button>
+        <p style="width:67%;text-align: center;">FunChat</p>
+        <button  class="logOutButton headerButton" type="button">Log Out</button>
+      </div>
       <div class="screenTitle">Create Chat</div>
 
       <button class="createChatButtons" id="createChatToLobby" type="button">Return to Lobby</button><br><br>
@@ -200,10 +204,14 @@
 
     <!-----------View Friends and Friend Requests Page-------------->
     <div id="friends" class="flexCol">
-      <div id="FunChatLabel" class="flexRow"><button  id="friendsToHomeButton" class="headerButton" type="button">Home</button><p style="width:67%;text-align: center;">FunChat</p><button  class="logOutButton headerButton" type="button">Log Out</button></div>
+      <div id="FunChatLabel" class="flexRow"><button  id="friendsToHomeButton" class="headerButton" type="button">Home</button>
+        <p style="width:67%;text-align: center;">FunChat</p>
+        <button  class="logOutButton headerButton" type="button">Log Out</button>
+      </div>
       <div class="screenTitle">My Friends</div>
       <div id="friendsSearch" class="flexRow">
-        <input type="text" id="friendName" placeholder="Enter a display name to send friend request"><button class="friendButtons" id="submitFriend" style="display: inline;" type="button">Send Request</button>
+        <input type="text" id="friendName" placeholder="Enter a display name to send friend request">
+        <button class="friendButtons" id="submitFriend" style="display: inline;" type="button">Send Request</button>
       </div>
       <p class="friendsSubHeader">Friend Requests</p>
       <div id="friendRequests" class="tileContainers flexRow">
@@ -217,7 +225,10 @@
 
     <!---Edit Profile Module-->
     <div id="editProfile">
-      <div id="FunChatLabel" class="flexRow"><button  id="editProfileToHomeButton" class="headerButton" type="button">Home</button><p style="width:67%;text-align: center;">FunChat</p><button  class="logOutButton headerButton" type="button">Log Out</button></div>
+      <div id="FunChatLabel" class="flexRow"><button  id="editProfileToHomeButton" class="headerButton" type="button">Home</button>
+        <p style="width:67%;text-align: center;">FunChat</p>
+        <button  class="logOutButton headerButton" type="button">Log Out</button>
+      </div>
       <div class="screenTitle">Edit Profile</div>
       <label class="generalLabel" id="newNameLabel">New DisplayName</label>
       <input type="text" id="newDisplayNameField">
@@ -233,24 +244,25 @@
 
      <!---Profile Module-->
      <div id="profile">
-      <div id="FunChatLabel" class="flexRow"><button  id="profileToHomeButton" class="headerButton" type="button">Home</button><p style="width:67%;text-align: center;">FunChat</p><button  class="logOutButton headerButton" type="button">Log Out</button></div>
+      <div id="FunChatLabel" class="flexRow"><button  id="profileToHomeButton" class="headerButton" type="button">Home</button>
+        <p style="width:67%;text-align: center;">FunChat</p>
+        <button  class="logOutButton headerButton" type="button">Log Out</button>
+      </div>
       <div class="screenTitle">Profile</div>
-      <!-- To do for back end: Replace displayname1 with the actual displayname of the user-->
       <img src="/Images/person-icon.png" width="15%">
       <div class="profileText" id="dispName" >Display Name: displayname1</div>
       <div class="profileText" id="acctType" >Account Type: Mod/User</div> 
       
-
       <!---This button is only visible if the user is viewing their own profile-->
       <button id="editProfileButton" class="profileButtons" type="button">Edit Profile</button>
       <button id="profileToFriendsButton" class="profileButtons" type="button">Back to Friends</button>
       <button id="profileToChatButton" class="profileButtons" type="button">Back to Chat</button>
     </div>
 
-    <!---Word List Module-->
-    <div id="wordList">
+    <!---Bad words Module-->
+    <div id="badWords">
       <div id="FunChatLabel" class="flexRow">
-        <button  id="wordListToHomeButton" class="headerButton" type="button">Home</button>
+        <button  id="badWordsToHomeButton" class="headerButton" type="button">Home</button>
         <p style="width:67%;text-align: center;">FunChat</p>
         <button  class="logOutButton headerButton" type="button">Log Out</button></div>
       <div class="screenTitle">Bad Words</div>
@@ -259,33 +271,33 @@
       <form>
         <ul id="displayWords">
           <li>
-            <label id="wordListLabel" class="generalLabel">Bad Words List</label><br>
+            <label id="badWordsLabel" class="generalLabel">Bad Words List</label><br>
             <select id="wordDisplay" class="wordSelects" name="wordDisplay" size="10" multiple>
               <option>Temp</option>
               <option>Word</option>
             </select>
           </li>
         </ul>
-        <ul id="wordListOptions">
+        <ul id="badWordsOptions">
           <li>
             <!---Add Word-->
             <label id="addLabel" class="generalLabel">Add Word</label>
-            <input type="text" id="restrictedWord" >
-            <button class="wordListButtons" id="addWord" style="display: inline;" type="button">Add</button> 
+            <input type="text" id="badWord" >
+            <button class="badWordsButtons" id="addWord" style="display: inline;" type="button">Add</button> 
           </li>
           <li>
             <!---Delete Word-->
             <label id="deleteLabel" class="generalLabel">Select Word then Press Delete</label>
-            <button class="wordListButtons" id="deleteWord" style="display: inline;" type="button">Delete</button>
+            <button class="badWordsButtons" id="deleteWord" style="display: inline;" type="button">Delete</button>
           </li>
         </ul>
       </form>  
     </div>
 
     <!---Bad Links List Module-->
-    <div id="linksList">
+    <div id="badLinks">
       <div id="FunChatLabel" class="flexRow">
-        <button  id="linksListToHomeButton" class="headerButton" type="button">Home</button>
+        <button  id="badLinksToHomeButton" class="headerButton" type="button">Home</button>
         <p style="width:67%;text-align: center;">FunChat</p>
         <button  class="logOutButton headerButton" type="button">Log Out</button></div>
       <div class="screenTitle">Bad Links</div>
@@ -294,24 +306,24 @@
       <form>
         <ul id="displayLinks">
           <li>
-            <label id="linksListLabel" class="generalLabel">Bad Links List</label><br>
+            <label id="badLinksLabel" class="generalLabel">Bad Links List</label><br>
             <select id="linksDisplay" class="linkSelects" name="linksDisplay" size="10" multiple>
               <option>Temp</option>
               <option>Link</option>
             </select>
           </li>
         </ul>
-        <ul id="linksListOptions">
+        <ul id="badLinksOptions">
           <li>
             <!---Add Link-->
             <label id="addLabel" class="generalLabel">Add Link</label>
-            <input type="text" id="restrictedLink" >
-            <button class="linksListButtons" id="addLink" style="display: inline;" type="button">Add</button> 
+            <input type="text" id="badLink" >
+            <button class="badLinksButtons" id="addLink" style="display: inline;" type="button">Add</button> 
           </li>
           <li>
             <!---Delete Link-->
             <label id="deleteLabel" class="generalLabel">Select Link then Press Delete</label>
-            <button class="linksListButtons" id="deleteLink" style="display: inline;" type="button">Delete</button>
+            <button class="badLinksButtons" id="deleteLink" style="display: inline;" type="button">Delete</button>
           </li>
         </ul>
       </form>  

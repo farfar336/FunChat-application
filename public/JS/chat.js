@@ -95,79 +95,79 @@ $(function () {
     });
   });
 
-/*---------------- Socket.on events ----------------*/
+  /*---------------- Socket.on events ----------------*/
 
-socket.on('chat join failure', (res) => {
-  $('#lobby').show();
-  alert(res);
-});
-
-socket.on('chat join success', (res) => {
-  $('#chat').css('display', 'contents');
-  $('#chatTitle').html(res.name);
-});
-
-socket.on('chat message', (res) => {
-  let messages = [];
-  if('messages' in res) {
-    messages = res.messages;
-  } else {
-    messages = [res];
-  }
-
-  messages.forEach((msg) => {
-    let chatObj = $(`<li class="msg-id-${msg.id} user-name-${cssSafeName(msg.sender)} user-type-${msg.type}">`);
-
-    chatObj.append($('<span class="messageTime">').html(new Date(msg.time).toLocaleTimeString()));
-    chatObj.append(' ');
-    chatObj.append($('<span class="messageUser">').html(msg.sender));
-    chatObj.append(': ');
-    chatObj.append($('<span class="messageContent">').html(msg.content));
-
-    $('#chatMessages').append(chatObj);
+  socket.on('chat join failure', (res) => {
+    $('#lobby').show();
+    alert(res);
   });
-  //automatically scroll to the bottom any time a new message arrives
-  $("#chatMessages").scrollTop($("#chatMessages")[0].scrollHeight);
-});
 
-socket.on('chat user added', (res) => {
-  let userObj = $(`<li class="user-id-${res.id} user-name-${cssSafeName(res.name)} user-type-${res.type}"}>`);
-  if(res.name == displayName) userObj.append($('<span class="userName">').html(res.name + " (You)"));
-  else userObj.append($('<span class="userName">').html(res.name));
+  socket.on('chat join success', (res) => {
+    $('#chat').css('display', 'contents');
+    $('#chatTitle').html(res.name);
+  });
 
-  $('#chatUsers').append(userObj);
-});
+  socket.on('chat message', (res) => {
+    let messages = [];
+    if('messages' in res) {
+      messages = res.messages;
+    } else {
+      messages = [res];
+    }
 
-socket.on('chat user removed', (res) => {
-  $('#chatUsers').find(`.user-id-${res.id}`).remove();
-});
+    messages.forEach((msg) => {
+      let chatObj = $(`<li class="msg-id-${msg.id} user-name-${cssSafeName(msg.sender)} user-type-${msg.type}">`);
 
-socket.on('removed from chat', () => {
-  $('#chat').css('display', '');
-  updateChats();
-  $('#lobby').show();
+      chatObj.append($('<span class="messageTime">').html(new Date(msg.time).toLocaleTimeString()));
+      chatObj.append(' ');
+      chatObj.append($('<span class="messageUser">').html(msg.sender));
+      chatObj.append(': ');
+      chatObj.append($('<span class="messageContent">').html(msg.content));
 
-  alert("You were removed from this chat");
-});
+      $('#chatMessages').append(chatObj);
+    });
+    //automatically scroll to the bottom any time a new message arrives
+    $("#chatMessages").scrollTop($("#chatMessages")[0].scrollHeight);
+  });
 
-socket.on('remove message', (res) => {
-  $(`.msg-id-${res.id}`).remove();
-});
+  socket.on('chat user added', (res) => {
+    let userObj = $(`<li class="user-id-${res.id} user-name-${cssSafeName(res.name)} user-type-${res.type}"}>`);
+    if(res.name == displayName) userObj.append($('<span class="userName">').html(res.name + " (You)"));
+    else userObj.append($('<span class="userName">').html(res.name));
 
-socket.on('remove message error', (res) => {
-  alert(res);
-});
+    $('#chatUsers').append(userObj);
+  });
 
-socket.on('add user to chat error', (res) => {
-  alert(res);
-});
+  socket.on('chat user removed', (res) => {
+    $('#chatUsers').find(`.user-id-${res.id}`).remove();
+  });
 
-socket.on('remove user from chat error', (res) => {
-  alert(res);
-});
+  socket.on('removed from chat', () => {
+    $('#chat').css('display', '');
+    updateChats();
+    $('#lobby').show();
 
-/*---------------- Functions ----------------*/
-  function cssSafeName(name) {
-    return name.replaceAll(' ', '-');
-  }
+    alert("You were removed from this chat");
+  });
+
+  socket.on('remove message', (res) => {
+    $(`.msg-id-${res.id}`).remove();
+  });
+
+  socket.on('remove message error', (res) => {
+    alert(res);
+  });
+
+  socket.on('add user to chat error', (res) => {
+    alert(res);
+  });
+
+  socket.on('remove user from chat error', (res) => {
+    alert(res);
+  });
+
+  /*---------------- Functions ----------------*/
+    function cssSafeName(name) {
+      return name.replaceAll(' ', '-');
+    }
 });

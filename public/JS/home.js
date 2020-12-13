@@ -44,23 +44,22 @@ $(function () {
   })
 
   //Button that directs user from home to bad words screen 
-  $('#wordButton').click(function(){
+  $('#badWordsButton').click(function(){
     $('#home').hide();
-    $('#wordList').show();
+    $('#badWords').show();
     updateWords()
     socket.emit('get words for word List', {});
 
   })
 
   //Button that directs user from home to bad links screen 
-  $('#linksButton').click(function(){
+  $('#badLinksButton').click(function(){
     $('#home').hide();
-    $('#linksList').show();
+    $('#badLinks').show();
     updateLinks()
     socket.emit('get links for links list', {});
 
   })
 
-/*---------------- Socket.on events ----------------*/
-/*---------------- Functions ----------------*/
+  /*---------------- Socket.on events ----------------*/
 });

@@ -47,7 +47,7 @@ $(function () {
     alert(name + " has been approved");
   })
 
-/*---------------- Socket.on events ----------------*/
+  /*---------------- Socket.on events ----------------*/
   // Removes the current list of users and mods displayed, and then displays their updated version
   socket.on('user list for create chat', function(userObj){
     //clear all previous information
@@ -85,7 +85,4 @@ $(function () {
   socket.on('chat create failure', function(userObj){
     alert(userObj);
   })
- 
-/*---------------- Functions ----------------*/
-
 });

@@ -10,7 +10,6 @@
   margin: auto 10px;
 }
 
-/*Chat  styling*/
 #chatLayout {
   display: grid;
   grid-template-rows: 10% 90%;
@@ -89,7 +88,6 @@ scrollbar-width: none;  /* Firefox */
   background-color: rgb(95, 94, 94);
   color: #ffffff;
 }
-
 
 #chatMessages .ui-selected {
   background-color: rgb(95, 94, 94);

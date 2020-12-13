@@ -12,15 +12,8 @@
     width: 100%;
 }
 
-#createChatToLobby
-{
-    /*todo try to center*/
-}
-
 #displayUsers {
     width: 100%;
-    
-  
 }
 
 #displayUsers li{
@@ -43,7 +36,6 @@
 #userListLabel{
     font-size: 18px;
     font-weight: bold;
-   
 }
 
 #ctrlWarning{

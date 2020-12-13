@@ -1,6 +1,5 @@
 @import "general.css"; 
 /*--------------------------------------------------- Friends ---------------------------------------------------*/
-/*Friends page styling*/
 #friends{
     display: none;
     width: 100%;
@@ -105,5 +104,4 @@
 
 .unFriend:hover{
     text-decoration: underline;
-    
 }

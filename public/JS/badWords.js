@@ -2,16 +2,15 @@
 /*--------------------------------------------------- Bad Words ---------------------------------------------------*/
 $(function () {
     /*---------------- Click events ----------------*/
-
     // Button that directs user from Word List to home screen
-    $('#wordListToHomeButton').click(function(){
-        $('#wordList').hide();
+    $('#badWordsToHomeButton').click(function(){
+        $('#badWords').hide();
         $('#home').show();
     })
 
-    // Button that requests new Restricted Word
+    // Button that requests new bad Word
     $('#addWord').click(function(){
-        var word=document.getElementById("restrictedWord").value;
+        var word=document.getElementById("badWord").value;
         console.log(word)
         //if it is a word , add it to database and show it.
         if(!word.includes(" ")&&word.length>1){
@@ -31,10 +30,10 @@ $(function () {
             alert("Please enter a word")
         }
         
-        $('#restrictedWord').val('');    
+        $('#badWord').val('');    
     })
 
-    // Button that requests deletion of Restricted Word
+    // Button that requests deletion of bad Word
     $('#deleteWord').click(function(){
         var wordDisplayed = document.getElementById("wordDisplay")
         var index = wordDisplayed.selectedIndex;
@@ -44,17 +43,9 @@ $(function () {
         updateWords()
     })
     
-
-    
-    
     /*---------------- Socket.on events ----------------*/
-      
       socket.on("wordAlreadyInDatabase",function(){
           alert("The word is already in list")
       })
-    
-     
-    /*---------------- Functions ----------------*/
-    
-    });
+});
     

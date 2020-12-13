@@ -36,18 +36,14 @@ $(function () {
     displayName = userObj.displayName;
     userType = userObj.type;
 
-
     //Buttons displayed based on user type
     if (userType == "User"){
-      $('#wordButton').hide();
-      $('#linksButton').hide();
+      $('#badWordsButton').hide();
+      $('#badLinksButton').hide();
     }
     else if(userType == "Moderator"){
-      $('#wordButton').show();
-      $('#linksButton').show();
+      $('#badWordsButton').show();
+      $('#badLinksButton').show();
     }
-    
   })
-
-/*---------------- Functions ----------------*/
 });

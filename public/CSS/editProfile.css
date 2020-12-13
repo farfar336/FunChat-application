@@ -1,6 +1,5 @@
 @import "general.css"; 
 /*--------------------------------------------------- Edit Profile ---------------------------------------------------*/
-/*Edit Profile styling*/
 #editProfile{
     display: none;
     width: 100%;
@@ -8,7 +7,6 @@
     text-align: center;
     justify-content: center;
 }
-
 
 #newDisplayNameField, #newEmailField, #newPasswordField{
     font-size: 18px;
