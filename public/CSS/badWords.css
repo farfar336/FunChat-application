@@ -1,6 +1,6 @@
 @import "general.css"; 
 /*--------------------------------------------------- Create Chat ---------------------------------------------------*/
-#wordList{
+#badWords{
     display: none;
     width: 100%;
     max-width: 700px;
@@ -8,10 +8,9 @@
     justify-content: center;
 }
 
-#wordList form{
+#badWords form{
     width: 100%;
 }
-
 
 #displayWords {
     width: 100%; 
@@ -35,30 +34,30 @@
 }
 
 
-#wordListLabel{
+#badWordsLabel{
     font-size: 18px;
     font-weight: bold;
    
 }
 
-#restrictedWord, #addLabel, #deleteLabel{
+#badWord, #addLabel, #deleteLabel{
     font-size: 16px;
     margin-top: 5px;
 }
 
-#wordListOptions {
+#badWordsOptions {
     margin: 0; padding: 0;
     width: 100%; 
 }
 
-#wordListOptions li{
+#badWordsOptions li{
     float: right;
     list-style: none;
     width: 100%;
     margin: 10px;
 }
 
-.wordListButtons{
+.badWordsButtons{
     width: 18%;
     min-height: 30px;
     text-align: center;

@@ -11,8 +11,6 @@
     font-weight: bold;
     padding: 20px;
     width: 100%;
-    /*justify-content: center;
-    text-align: center;*/
     text-align: right;
     justify-content: flex-end;
     align-items: center;
@@ -84,4 +82,4 @@ button:hover{
 
 select:active, select:hover {
     outline-color: rgb(15, 92, 235);
-  }
+}

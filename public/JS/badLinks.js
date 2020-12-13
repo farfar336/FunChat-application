@@ -2,16 +2,15 @@
 /*--------------------------------------------------- Bad Links ---------------------------------------------------*/
 $(function () {
     /*---------------- Click events ----------------*/
-
     // Button that directs user from Links List to home screen
-    $('#linksListToHomeButton').click(function(){
-        $('#linksList').hide();
+    $('#badLinksToHomeButton').click(function(){
+        $('#badLinks').hide();
         $('#home').show();
     })
 
-    // Button that requests new Restricted Link
+    // Button that requests new bad Link
     $('#addLink').click(function(){
-        var link=document.getElementById("restrictedLink").value;
+        var link=document.getElementById("badLink").value;
         console.log(link)
         //if it is a link, add it to database and show it.
         if(!link.includes(" ")&&link.length>1){
@@ -31,10 +30,10 @@ $(function () {
             alert("Please enter a link")
         }
         
-        $('#restrictedLink').val('');    
+        $('#badLink').val('');    
     })
 
-    // Button that requests deletion of Restricted Link
+    // Button that requests deletion of bad Link
     $('#deleteLink').click(function(){
         var linksDisplayed = document.getElementById("linksDisplay")
         var index = linksDisplayed.selectedIndex;
@@ -44,19 +43,9 @@ $(function () {
         updateLinks();
         
     })
-    
-
-    
-    
     /*---------------- Socket.on events ----------------*/
-      
-
-      socket.on("linkAlreadyInDatabase",function(){
-          alert("This link is already in the list");
-      });
-    
-     
-    /*---------------- Functions ----------------*/
-    
-    });
+    socket.on("linkAlreadyInDatabase",function(){
+        alert("This link is already in the list");
+    }); 
+});
     

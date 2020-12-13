@@ -29,28 +29,15 @@ $(function () {
     socket.emit("leave chat");
   })
 
-/*---------------- Socket.on events ----------------*/
-socket.on('show profile success', (res) => {
-  viewedUserID = res.id;
+  /*---------------- Socket.on events ----------------*/
+  socket.on('show profile success', (res) => {
+    viewedUserID = res.id;
 
-  $('#dispName').html(`Display Name: ${res.name}`);
-  $('#acctType').html(`Account Type: ${res.type}`);
+    $('#dispName').html(`Display Name: ${res.name}`);
+    $('#acctType').html(`Account Type: ${res.type}`);
+  });
 
-  //If user is viewing their own profile
-  /*
-  if (userID == viewedUserID){
-    $('#editProfileButton').show();
-    $('#profileToHomeButton').show();
-    $('#profileToFriendsButton').hide();
-    $('#profileToChatButton').hide();
-  }*/
-
-  //$('#profile').show();
-});
-
-socket.on('show profile error', (res) => {
-  alert(res);
-});
-
-/*---------------- Functions ----------------*/ 
+  socket.on('show profile error', (res) => {
+    alert(res);
+  });
 });

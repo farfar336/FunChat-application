@@ -32,10 +32,8 @@ function updateChats(){
     })
 }
 
-
-
 function updateWords(){
-    //Emit an event to server to pull the latest restricted words list
+    //Emit an event to server to pull the latest bad words list
     socket.emit("fetch words list");
     
     socket.on('updatewords', function(words){
@@ -51,7 +49,7 @@ function updateWords(){
 }
 
 function updateLinks(){
-    //Emit an event to server to pull the latest restricted links list
+    //Emit an event to server to pull the latest bad links list
     socket.emit("fetch links list");
     
     socket.on('updatelinks', function(links){

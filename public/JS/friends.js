@@ -15,51 +15,6 @@ $(function () {
     $('#friendName').val('')
   });
 
-/*---------------- Socket.on events ----------------*/
-  //Notifies the user that the friend request was unsuccesful
-  socket.on('friends page error', function(msg){
-    alert(msg);
-  });
-
-  //Notifies the user that the friend request was succesful
-  socket.on('friend request success', function(msg){
-    alert(msg);
-  })  
-
-  //Update the 'Friend Requests' section 
-  socket.on('display friend requests successful', function(requests){
-    $('#friendRequests').html("");
-    if(requests.length > 0){
-      $.each(requests, function(index, value) {
-        $('#friendRequests').append("<div id=\"" + "req-" + value._id + "\" class=\"userTile flexCol\"><img src=\"/Images/person-icon.png\" width=\"30%\"><p class=\"dispName\">" + value.displayName + "</p><p class=\"acctType\">" + value.type + "</p><div id=\"" + "dec-" + value._id + "\" class=\"reqDecision flexRow\"><img class=\"accept\" src=\"/Images/accept.png\" width=\"20%\"><img class=\"decline\" src=\"/Images/decline.jpg\" width=\"20%\"></div></div>");
-      });
-    }
-    else $('#friendRequests').append("<p class=\"emptyFriends\">There are no friend requests.</p>");
-    
-  });
-
-  //Update the 'Added Friends' section
-  socket.on('display added friends successful', function(requests){
-    $('#approvedFriends').html("");
-    if(requests.length > 0){
-      $.each(requests, function(index, value) {
-        $('#approvedFriends').append("<div id=\"" + "req-" + value._id + "\" class=\"userTile flexCol\"><img src=\"/Images/person-icon.png\" width=\"30%\"><p class=\"dispName\">" + value.displayName + "</p><p class=\"acctType\">" + value.type + "</p><div class=\"unFriend\">Unfriend</div></div>");
-      });
-    }
-    else $('#approvedFriends').append("<p class=\"emptyFriends\">You don't have any friends added yet. Enter a display name to send a request!</p>");
-  });
-
-  //Refresh the friends page when a new request arrives, request is accepted/decline or a user is unfriended
-  socket.on('friend lists refresh', function(obj){
-    if(obj.user == userID || obj.friend == userID){
-      refreshFriends();
-    }
-  })
-
-/*---------------- Functions ----------------*/
-
-
-/*---------------- Event Handler ----------------*/  
   //For user accepting a friend request
   $("#friendRequests").on( "click", ".accept", function() {
     //Get the id of the friend requesting to be added. 
@@ -104,4 +59,45 @@ $(function () {
     $('#profileToChatButton').hide();
     $('#profileToFriendsButton').show();
   });
+  /*---------------- Socket.on events ----------------*/
+  //Notifies the user that the friend request was unsuccesful
+  socket.on('friends page error', function(msg){
+    alert(msg);
+  });
+
+  //Notifies the user that the friend request was succesful
+  socket.on('friend request success', function(msg){
+    alert(msg);
+  })  
+
+  //Update the 'Friend Requests' section 
+  socket.on('display friend requests successful', function(requests){
+    $('#friendRequests').html("");
+    if(requests.length > 0){
+      $.each(requests, function(index, value) {
+        $('#friendRequests').append("<div id=\"" + "req-" + value._id + "\" class=\"userTile flexCol\"><img src=\"/Images/person-icon.png\" width=\"30%\"><p class=\"dispName\">" + value.displayName + "</p><p class=\"acctType\">" + value.type + "</p><div id=\"" + "dec-" + value._id + "\" class=\"reqDecision flexRow\"><img class=\"accept\" src=\"/Images/accept.png\" width=\"20%\"><img class=\"decline\" src=\"/Images/decline.jpg\" width=\"20%\"></div></div>");
+      });
+    }
+    else $('#friendRequests').append("<p class=\"emptyFriends\">There are no friend requests.</p>");
+    
+  });
+
+  //Update the 'Added Friends' section
+  socket.on('display added friends successful', function(requests){
+    $('#approvedFriends').html("");
+    if(requests.length > 0){
+      $.each(requests, function(index, value) {
+        $('#approvedFriends').append("<div id=\"" + "req-" + value._id + "\" class=\"userTile flexCol\"><img src=\"/Images/person-icon.png\" width=\"30%\"><p class=\"dispName\">" + value.displayName + "</p><p class=\"acctType\">" + value.type + "</p><div class=\"unFriend\">Unfriend</div></div>");
+      });
+    }
+    else $('#approvedFriends').append("<p class=\"emptyFriends\">You don't have any friends added yet. Enter a display name to send a request!</p>");
+  });
+
+  //Refresh the friends page when a new request arrives, request is accepted/decline or a user is unfriended
+  socket.on('friend lists refresh', function(obj){
+    if(obj.user == userID || obj.friend == userID){
+      refreshFriends();
+    }
+  })
+
 });

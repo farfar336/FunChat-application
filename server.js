@@ -54,7 +54,6 @@ db.once('open', _ => {
         });
       }
     }
-  
   });
 })
 
@@ -106,9 +105,7 @@ io.on('connection', function(socket){
           console.log(error)
           socket.emit("register error", "Error: unable to register"); 
       }
-      
       else{
-
         //If there is no existing user with given email then proceed with registering new user
         if(document === false){
           user.exists({displayName:obj.dn}, function (error, doc) { 
@@ -116,7 +113,6 @@ io.on('connection', function(socket){
                 console.log(error)
                 socket.emit("register error", "Error: unable to register"); 
             }
-            
             else{
               //If there is no existing user with given email then proceed with registering new user
               if(doc === false){
@@ -152,7 +148,6 @@ io.on('connection', function(socket){
         console.log(err);
       } else{  
         var users=[]
-        
         //get id of this user, and push into users
         thisuser.friends.forEach(ID=>{
           user.findOne({_id:ID},function(err,friend){
@@ -177,7 +172,6 @@ io.on('connection', function(socket){
         
       }
     })
-    
   });
 
   //Create Chat
@@ -186,17 +180,13 @@ io.on('connection', function(socket){
     let chatNameCheck = (obj.chatname === "");
     let modSelectCheck = (obj.mods.length === 0);
 
-    if(chatNameCheck || modSelectCheck)
-    {
+    if(chatNameCheck || modSelectCheck){
       console.log("Chat creation failed");
       let chatInputFail = "";
-      if(chatNameCheck)
-      {
+      if(chatNameCheck){
         chatInputFail = chatInputFail + "Input Error: Need to Fill in Chat Name\n";
       }
-      
-      if(obj.userType === "User" && modSelectCheck)
-      {
+      if(obj.userType === "User" && modSelectCheck){
         chatInputFail = chatInputFail + "Input Error: Select at Least One Moderator\n";
       }
       socket.emit("chat create failure", chatInputFail);
@@ -205,7 +195,6 @@ io.on('connection', function(socket){
       chat.exists({name: obj.chatname}, async function (error, document) { 
         if (error){ 
             console.log(error)
-            //socket.emit("register error", "Error: unable to register"); 
         }
         else{
           //If there is no existing chat with given name then proceed with registering new user
@@ -213,8 +202,6 @@ io.on('connection', function(socket){
             //Convert displayNames of mods and users to IDs and store it in the array
             let modsID = await convertDisplayNamesToIDs(obj.mods);
             let usersID = await convertDisplayNamesToIDs(obj.users);
-            // let userDisplayNames = await convertIDsToDisplayNames(usersID); this is an example of how to convert an array of IDs to an array of DisplayNames
-
             //Create new user object with submitted info
             let newChat = new chat({approved: false, name: obj.chatname, participants: usersID, mods: modsID});
             //Save user to the database
@@ -222,8 +209,7 @@ io.on('connection', function(socket){
               if (error){
                 console.error(error)
               }
-              else 
-              {
+              else {
                 console.log("Chat created");
                 socket.emit("chat create success", "Creation of Chat: " + obj.chatname + " Successful");
                 io.emit('update chats for all');
@@ -231,8 +217,7 @@ io.on('connection', function(socket){
             })
           }
           //Display error message for failing to create a chat
-          else 
-          {
+          else {
             socket.emit("chat create failure", "This chat already exists!");
           }
         } 
@@ -254,36 +239,19 @@ io.on('connection', function(socket){
     return IDs;
   }
 
-  //Converts array of displayNames to an array of IDs
-  async function convertIDsToDisplayNames(IDs){
-    let displaynames = [];
-    await user.find({_id: { $in: IDs}}, function(error, requests){
-      if(error) socket.emit("chat page error", "Unable to find users id");
-      else {
-        for (i = 0; i < requests.length; i++){
-          displaynames.push(requests[i].displayName)
-        }
-      }
-    }); 
-    return displaynames;
-  }
-
-/*-------------------------------------------------- Use Chat  -------------------------------------------------*/
+/*-------------------------------------------------- Chat  -------------------------------------------------*/
   socket.on("join chat", async (req) => {
     let chatInst = await chat.findOne({name: req.name}).exec();
-
     if(chatInst == null) {
       socket.emit("chat join failure", "The chat room was not found or does not exist");
       return;
     }
-
     // Set user's active chat
     socket.chat = chatInst.name;
     socket.join(socket.chat);
     socket.emit("chat join success", {
       name: chatInst.name,
     });
-
     // Send user list
     let userIds = chatInst.mods.concat(chatInst.participants);
     let users = await user.find({_id: { $in: userIds }});
@@ -301,7 +269,6 @@ io.on('connection', function(socket){
     messages.sort((a, b) => { // Sort messages with the latest message last
       return a.time - b.time;
     });
-
     let messageDTO = await Promise.all(messages.map(async (msg) => {
       let sender = await user.findOne({_id: msg.sender}).exec();
       return {
@@ -312,7 +279,6 @@ io.on('connection', function(socket){
         type: sender.type,
       }
     }));
-
     socket.emit("chat message", {
       messages: messageDTO,
     });
@@ -321,7 +287,6 @@ io.on('connection', function(socket){
   socket.on("leave chat", (req) => {
     if(socket.chat == null)
       return;
-
     socket.leave(socket.chat);
     socket.chat = null;
   });
@@ -329,7 +294,6 @@ io.on('connection', function(socket){
   socket.on("chat message", async (req) => {
     let content = req.content;
     let date = new Date();
-
     // Store message to database
     let chatInst = await chat.findOne({name: socket.chat}).exec();
     let msgInst = await message.create({
@@ -338,7 +302,6 @@ io.on('connection', function(socket){
       time: date,
       content: content,
     });
-
     // Send message to users in channel
     io.to(socket.chat).emit("chat message", {
       content: content,
@@ -391,19 +354,16 @@ io.on('connection', function(socket){
       socket.emit("remove message error", "You do not have permission to remove a message!");
       return;
     }
-
     let msgObj = await message.findOne({_id: req.id}).exec();
     if(msgObj == null) {
       socket.emit("remove message error", "Message not found or does not exist!");
       return;
     }
-
     message.deleteOne({_id: req.id}, (err) => {
       if(err) {
         socket.emit("remove message error", "Failed to delete message");
         return;
       }
-
       io.to(socket.chat).emit("remove message", {
         id: req.id,
       });
@@ -416,26 +376,22 @@ io.on('connection', function(socket){
       socket.emit("add user to chat error", "User not found or does not exist!");
       return;
     }
-
     console.log(userObj.friends);
     console.log(socket.user.id);
     if(!userObj.friends.includes(socket.user.id)) {
       socket.emit("add user to chat error", "You cannot add a user who is not your friend!");
       return;
     }
-
     let chatObj = await chat.findOne({name: socket.chat}).exec();
     if(chatObj == null) {
       socket.emit("add user to chat error", "An error occurred while getting the chat");
       return;
     }
-
     let userIds = chatObj.mods.concat(chatObj.participants);
     if(userIds.includes(userObj._id)) {
       socket.emit("add user to chat error", "That user is already in this chat!");
       return;
     }
-
     chatObj.participants.push(userObj._id);
     await chatObj.save();
     io.emit('update chats for all');
@@ -451,19 +407,16 @@ io.on('connection', function(socket){
       socket.emit("remove user from chat error", "You do not have permission to kick a user!");
       return;
     }
-
     let userObj = await user.findOne({_id: req.id}).exec();
     if(userObj == null) {
       socket.emit("remove user from chat error", "User not found or does not exist!");
       return;
     }
-
     let chatObj = await chat.findOne({name: socket.chat}).exec();
     if(chatObj == null) {
       socket.emit("remove user from chat error", "Chat not found. Was it deleted?");
       return;
     }
-
     // Remove user from chat list in database
     if(chatObj.participants.includes(userObj._id)) {
       chatObj.participants = chatObj.participants.filter((id) => { id !== userObj._id });
@@ -473,7 +426,6 @@ io.on('connection', function(socket){
       socket.emit("remove user from chat error", "That user is not in this chat!");
       return;
     }
-
     await chatObj.save();
     io.emit('update chats for all');
     // Remove user from chat if actively participating in chat
@@ -487,7 +439,6 @@ io.on('connection', function(socket){
         }
       });
     });
-
     // Remove user from chat list
     io.to(chatObj.name).emit("chat user removed", {
       id: userObj._id,
@@ -595,7 +546,6 @@ io.on('connection', function(socket){
                 socket.emit("friend request success", "Friend request sent successfully!");
                 io.emit("friend lists refresh", {friend:reqObj.senderID, user:doc._id});
               }
-            
             });
           }
         }
@@ -630,7 +580,6 @@ io.on('connection', function(socket){
             if(error) socket.emit("friends page error", "Unable to load user's friends");
             else socket.emit("display added friends successful", requests);
           });
-          
         }
       }
     });
@@ -708,7 +657,6 @@ io.on('connection', function(socket){
       else{
         if(doc === null) socket.emit("friends page error", "Error unfriending");
         else{
-          
           var filtered = doc.friends.filter(function(value, index, arr){
             return value !== obj.user;
           });
@@ -741,9 +689,8 @@ io.on('connection', function(socket){
     })  
   })
   
-  /* -------------------------------------show profile screen ----------------------------------------------------------------------*/
+  /* ------------------------------------- Profile ----------------------------------------------------------------------*/
   socket.on("show profile", async (req) => {
-
     // Default to sender
     let viewUser = socket.user;
     let userID = viewUser.id;
@@ -758,7 +705,6 @@ io.on('connection', function(socket){
         userID = req.uid;
       }
     }
-
     socket.emit("show profile success", {
       id: userID,
       name: viewUser.displayName,
@@ -766,9 +712,7 @@ io.on('connection', function(socket){
     });
   });
 
-  /* -------------------------------------edit profile screen ----------------------------------------------------------------------*/ 
-  
-
+  /* ------------------------------------- Edit Profile ----------------------------------------------------------------------*/ 
   //user  change the display name
   socket.on("changeDisplayname", function(data){
     //check if this name already exist in database
@@ -822,8 +766,6 @@ io.on('connection', function(socket){
             }); 
             }
           })
-          
-          
         }
         else{
           socket.emit("change email error", "Error: This email already exists");
@@ -849,17 +791,12 @@ io.on('connection', function(socket){
     })      
   })
 
-  /*--------------------------------------------------restricted words-----------------------------------------------------*/ 
- 
-
-
-
+  /*--------------------------------------------------Bad Words-----------------------------------------------------*/ 
   socket.on("fetch words list",function(){
     db.collection("badWordsAndLinks").findOne({}, function(err, result){
       if(err) console.error(err)
       else{
         socket.emit("updatewords",result.Words)
-        
       }
     })
   })
@@ -877,12 +814,8 @@ io.on('connection', function(socket){
       else{
         socket.emit("wordAlreadyInDatabase")
       }
-      
-   
-
     })
   })
-
 
   socket.on("deleteword",function(word){
         db.collection("badWordsAndLinks").findOneAndUpdate(
@@ -890,15 +823,9 @@ io.on('connection', function(socket){
           { $pull: { Words: word } }
         
         );
-  
   })
 
-
-    /*--------------------------------------------------restricted links-----------------------------------------------------*/ 
- 
-
-
-
+/*--------------------------------------------------Bad Links-----------------------------------------------------*/ 
     socket.on("fetch links list",function(){
       db.collection("badWordsAndLinks").findOne({}, function(err, result){
         if(err) console.error(err)
@@ -908,7 +835,7 @@ io.on('connection', function(socket){
         }
       })
     })
-  
+
     socket.on("addlink",function(link){
       db.collection("badWordsAndLinks").findOne({}, function(err, result) {
         if (err) throw err;
@@ -916,30 +843,18 @@ io.on('connection', function(socket){
           db.collection("badWordsAndLinks").findOneAndUpdate(
             { name: "wordsAndLinks" },
             { $push: { Links: link } }
-          
           );
         }
         else{
           socket.emit("linkAlreadyInDatabase")
         }
-        
-     
-  
       })
     })
-  
   
     socket.on("deletelink",function(link){
           db.collection("badWordsAndLinks").findOneAndUpdate(
             { name: "wordsAndLinks" },
             { $pull: { Links: link } }
-          
           );
-    
     })
-
 });
-
-
-
-
