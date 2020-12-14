@@ -30,7 +30,3 @@
 * For each function, give a short comment of what it does
 * If a function has more than 10 lines of code, then split the code among multiple functions
 * Make one css file and js file for each screen
-
-# End of project checklist
-* Merge JS files into one file
-* Merge CSS files into one file
